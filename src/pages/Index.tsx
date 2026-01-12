@@ -41,6 +41,11 @@ const Index = () => {
       )}
 
       {/* Background Elements */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-20"
+        style={{ backgroundImage: 'url(/hero-bg.jpg)' }}
+      />
+      <div className="fixed inset-0 z-0 bg-black/80" /> {/* Dark Overlay for readability */}
       <ParticleBackground />
       <FloatingShapes />
 
