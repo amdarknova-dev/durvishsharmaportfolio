@@ -8,6 +8,7 @@ import AboutMe from "./pages/AboutMe";
 import BeyondWork from "./pages/BeyondWork";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import TheLab from "./pages/TheLab";
 import CustomCursor from "./components/CustomCursor";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/about-me" element={<AboutMe />} />
               <Route path="/beyond-work" element={<BeyondWork />} />
+              <Route path="/lab" element={<TheLab />} />
               <Route path="/contact" element={<Contact />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
