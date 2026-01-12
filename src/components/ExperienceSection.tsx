@@ -12,7 +12,13 @@ import { Code2, Cpu, Globe, Rocket, Terminal } from 'lucide-react';
 
 const ExperienceSection = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedSkill, setSelectedSkill] = useState<any>(null);
+  const [selectedSkill, setSelectedSkill] = useState<{
+    name: string;
+    level: string;
+    description: string;
+    built: string[];
+    related: string[];
+  } | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,7 +38,12 @@ const ExperienceSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  const skillDetails: Record<string, any> = {
+  const skillDetails: Record<string, {
+    level: string;
+    description: string;
+    built: string[];
+    related: string[];
+  }> = {
     'HTML5': {
       level: 'Advanced',
       description: 'Expertise in semantic markup, SEO best practices, and building accessible document structures.',
@@ -193,7 +204,7 @@ const ExperienceSection = () => {
   };
 
   return (
-    <section id="experience" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-background/50">
+    <section id="experience" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-background/50 scroll-mt-32">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
@@ -211,7 +222,7 @@ const ExperienceSection = () => {
             Technical Skills
           </h3>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {skillCategories.map((category, index) => (
               <Card
                 key={category.title}

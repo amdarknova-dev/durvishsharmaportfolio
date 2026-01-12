@@ -76,11 +76,12 @@ const ContactSection = () => {
         console.error('Web3Forms Error:', result);
         throw new Error(result.message || 'Form submission failed');
       }
-    } catch (error: any) {
+    } catch (error) {
+      const err = error as Error;
       console.error('Contact Form Error:', error);
       toast({
         title: "Oops! Something went wrong",
-        description: error.message || "Please try again or email me directly at durvishsharma23221@gmail.com",
+        description: err.message || "Please try again or email me directly at durvishsharma23221@gmail.com",
         variant: "destructive",
         duration: 5000,
       });
@@ -111,15 +112,6 @@ const ContactSection = () => {
       href: 'https://instagram.com/durvish_sharma.22.23',
       color: 'hover:text-pink-400',
     },
-
-    {
-      icon: github,
-      label: 'github',
-    },
-    {
-      icon: discord,
-      label: 'discord',
-    },
     {
       icon: Facebook,
       label: 'Facebook',
@@ -147,7 +139,7 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-primary/5">
+    <section id="contact" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-primary/5 scroll-mt-32">
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
         <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
@@ -161,7 +153,7 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Contact Form */}
           <Card className={`glass p-8 border-white/10 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
             }`}>

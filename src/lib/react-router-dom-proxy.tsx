@@ -23,8 +23,8 @@ const routesReadyOrTimeout = (ms = 1200) =>
 
 type AnyEl = React.ReactNode;
 
-function normalize(p: string) { 
-  return p.replace(/\/+/g, "/"); 
+function normalize(p: string) {
+  return p.replace(/\/+/g, "/");
 }
 
 function join(base: string, child?: string) {
@@ -39,10 +39,10 @@ function flattenRoutes(node: AnyEl, base = "", acc = new Set<string>()) {
     const isRoute = child.type === (RRD as any).Route ||
       (typeof child.type === "function" && (child.type as any).name === "Route");
     if (isRoute) {
-      const { path, index, children } = (child.props ?? {}) as { 
-        path?: string; 
-        index?: boolean; 
-        children?: AnyEl; 
+      const { path, index, children } = (child.props ?? {}) as {
+        path?: string;
+        index?: boolean;
+        children?: AnyEl;
       };
       const cur = index ? (base || "/") : (path ? join(base, path) : base);
       if (index || path) acc.add(cur || "/");
@@ -59,17 +59,17 @@ function postAllRoutesOnce(children: AnyEl) {
   if (routesPosted) return;
   try {
     const list = Array.from(flattenRoutes(children)).sort();
-    
+
     // Always log routes in development for debugging
     if (process.env.NODE_ENV === 'development') {
       console.log('Routes:', list);
     }
-    
+
     // Check if route messaging is enabled
     if (!__ROUTE_MESSAGING_ENABLED__) {
       return;
     }
-    
+
     if (window.top && window.top !== window) {
       // Use the same format as ROUTES_INFO in use-route-messenger
       const routesForMessage = list.map(route => ({
@@ -105,12 +105,12 @@ function emitRouteChange(location: ReturnType<typeof RRD.useLocation>) {
   const path = `${location.pathname}${location.search}${location.hash}`;
   if (path === lastEmittedPath) return;
   lastEmittedPath = path;
-  
+
   // Check if route messaging is enabled
   if (!__ROUTE_MESSAGING_ENABLED__) {
     return;
   }
-  
+
   if (window.top && window.top !== window) {
     const routeChangeMessage = {
       type: 'ROUTE_CHANGE',
@@ -150,19 +150,20 @@ function RouterBridge() {
 
   React.useEffect(() => {
     function onMessage(e: MessageEvent) {
-      const data = e.data as IframeCmd | any;
-      if (!data) return;
-      
+      const data = e.data as IframeCmd;
+      if (!data || typeof data !== 'object') return;
+
       // Check if route messaging is enabled
       if (!__ROUTE_MESSAGING_ENABLED__) {
         return;
       }
 
       try {
-        if (data.type === "ROUTE_CONTROL") {
-          const { action, path, replace = false } = data;
-          
-          console.log('Received route control command:', data);
+        const cmd = data as any;
+        if (cmd.type === "ROUTE_CONTROL") {
+          const { action, path, replace = false } = cmd;
+
+          console.log('Received route control command:', cmd);
 
           switch (action) {
             case 'navigate':
@@ -173,17 +174,17 @@ function RouterBridge() {
                 console.error('Route control: path is required for navigate action');
               }
               break;
-              
+
             case 'back':
               navigate(-1);
               console.log('Navigated back');
               break;
-              
+
             case 'forward':
               navigate(1);
               console.log('Navigated forward');
               break;
-              
+
             case 'replace':
               if (path) {
                 navigate(path, { replace: true });
@@ -192,11 +193,11 @@ function RouterBridge() {
                 console.error('Route control: path is required for replace action');
               }
               break;
-              
+
             default:
               console.warn('Route control: unknown action', action);
           }
-        } else if (data.type === "RELOAD") {
+        } else if (cmd.type === "RELOAD") {
           window.location.reload();
           console.log('Reloaded');
         }

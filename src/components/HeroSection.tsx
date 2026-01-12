@@ -42,13 +42,13 @@ const HeroSection = () => {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="space-y-10"
+          className="space-y-10 text-center lg:text-left"
         >
           <div className="space-y-6">
-            <h1 className="text-7xl md:text-8xl font-bold text-white tracking-tight leading-tight">
+            <h1 className="text-5xl md:text-8xl font-bold text-white tracking-tight leading-tight">
               Durvish Sharma
             </h1>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
+            <h2 className="text-2xl md:text-4xl font-bold text-white">
               I'm a <span className="text-primary">Frontend Developer</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-lg leading-relaxed font-light">
@@ -57,7 +57,7 @@ const HeroSection = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-8 items-center">
+          <div className="flex flex-wrap gap-6 items-center justify-center lg:justify-start">
 
 
             <div className="flex gap-5">

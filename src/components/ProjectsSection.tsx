@@ -14,7 +14,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const ProjectsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  interface Project {
+    title: string;
+    description: string;
+    longDescription?: string;
+    features?: string[];
+    image: string;
+    tech: string[];
+    category: string;
+    featured: boolean;
+    year: string;
+  }
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,7 +122,7 @@ const ProjectsSection = () => {
   const featuredProjects = projects.filter(p => p.featured);
   const otherProjects = projects.filter(p => !p.featured);
 
-  const cardVariants: any = {
+  const cardVariants = {
     initial: { scale: 1.1, opacity: 0, y: 50 },
     animate: {
       scale: 1,
@@ -122,9 +133,9 @@ const ProjectsSection = () => {
         ease: [0.22, 1, 0.36, 1]
       }
     }
-  };
+  } as any;
 
-  const contentVars: any = {
+  const contentVars = {
     initial: { opacity: 0, x: -20 },
     animate: {
       opacity: 1,
@@ -135,10 +146,10 @@ const ProjectsSection = () => {
         ease: "easeOut"
       }
     }
-  };
+  } as any;
 
   return (
-    <section id="projects" ref={sectionRef} className="relative py-40 px-6 bg-[#050505] overflow-hidden">
+    <section id="projects" ref={sectionRef} className="relative py-32 px-6 bg-[#050505] scroll-mt-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <motion.div
@@ -244,7 +255,7 @@ const ProjectsSection = () => {
             Parallel Tracks
           </motion.h3>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {otherProjects.map((project, index) => (
               <motion.div
                 key={project.title}
@@ -301,7 +312,7 @@ const ProjectsSection = () => {
                     <h4 className="text-xl font-bold text-white flex items-center gap-2">
                       <Info className="w-5 h-5 text-primary" /> Key Features
                     </h4>
-                    <ul className="grid md:grid-cols-2 gap-3">
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {selectedProject.features?.map((feature: string, i: number) => (
                         <li key={i} className="flex items-start gap-2 text-gray-400">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
