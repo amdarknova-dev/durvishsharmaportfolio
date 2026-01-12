@@ -13,26 +13,29 @@ import CustomCursor from "./components/CustomCursor";
 const queryClient = new QueryClient();
 
 import SmoothScroll from "./components/SmoothScroll";
+import { SoundProvider } from "./context/SoundContext";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <SmoothScroll>
-      <TooltipProvider>
-        <CustomCursor />
-        <Toaster />
-        <Sonner />
-        <HashRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about-me" element={<AboutMe />} />
-            <Route path="/beyond-work" element={<BeyondWork />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </HashRouter>
-      </TooltipProvider>
-    </SmoothScroll>
+    <SoundProvider>
+      <SmoothScroll>
+        <TooltipProvider>
+          <CustomCursor />
+          <Toaster />
+          <Sonner />
+          <HashRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about-me" element={<AboutMe />} />
+              <Route path="/beyond-work" element={<BeyondWork />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </HashRouter>
+        </TooltipProvider>
+      </SmoothScroll>
+    </SoundProvider>
   </QueryClientProvider>
 );
 

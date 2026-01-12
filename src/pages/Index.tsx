@@ -4,15 +4,20 @@ import ParticleBackground from '@/components/ParticleBackground';
 import FloatingShapes from '@/components/FloatingShapes';
 import HeroSection from '@/components/HeroSection';
 import AboutSection from '@/components/AboutSection';
+import SkillsSection from '@/components/SkillsSection';
 import ExperienceSection from '@/components/ExperienceSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import FAQSection from '@/components/FAQSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import CinematicPreloader from '@/components/CinematicPreloader';
 import { useLocation } from 'react-router-dom';
 
 const Index = () => {
   const { hash } = useLocation();
+  const [loading, setLoading] = React.useState(true);
+
 
   React.useEffect(() => {
     if (hash) {
@@ -30,6 +35,11 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen bg-background overflow-x-hidden">
+      {/* Cinematic Intro */}
+      {loading && (
+        <CinematicPreloader onComplete={() => setLoading(false)} />
+      )}
+
       {/* Background Elements */}
       <ParticleBackground />
       <FloatingShapes />
@@ -41,8 +51,10 @@ const Index = () => {
       <main className="relative z-10">
         <HeroSection />
         <AboutSection />
+        <SkillsSection />
         <ProjectsSection />
         <ExperienceSection />
+        <TestimonialsSection />
         <FAQSection />
         <ContactSection />
       </main>

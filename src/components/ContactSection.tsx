@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Mail, MapPin, Send, Github, Linkedin, Twitter, CheckCircle, AlertCircle, Instagram, Facebook } from 'lucide-react';
+import { Mail, MapPin, Send, Github, Linkedin, Twitter, CheckCircle, AlertCircle, Instagram, Facebook, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const ContactSection = () => {
@@ -103,6 +103,12 @@ const ContactSection = () => {
       value: 'Haryana, India',
       href: '#',
     },
+    {
+      icon: MessageSquare,
+      label: 'Discord',
+      value: 'darknova001.hd',
+      href: '#',
+    },
   ];
 
   const socialLinks = [
@@ -127,7 +133,7 @@ const ContactSection = () => {
     {
       icon: Linkedin,
       label: 'LinkedIn',
-      href: 'https://linkedin.com/in/yourusername',
+      href: 'https://www.linkedin.com/in/durvish-sharma-a936b93a5',
       color: 'hover:text-blue-400',
     },
     {

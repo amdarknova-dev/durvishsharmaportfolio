@@ -379,11 +379,18 @@ const Contact = () => {
                                 </div>
                             </div>
                             <div className="flex gap-4 pt-6">
-                                {[Instagram, Twitter, Linkedin, Github].map((Icon, i) => (
-                                    <a key={i} href="#" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                        <Icon className="w-5 h-5" />
-                                    </a>
-                                ))}
+                                <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                    <Instagram className="w-5 h-5" />
+                                </a>
+                                <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                    <Twitter className="w-5 h-5" />
+                                </a>
+                                <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                    <Linkedin className="w-5 h-5" />
+                                </a>
+                                <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                    <Github className="w-5 h-5" />
+                                </a>
                             </div>
                         </div>
                     </div>
