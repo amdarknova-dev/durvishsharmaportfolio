@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Sparkles } from 'lucide-react';
+import { Github, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -8,96 +10,133 @@ const HeroSection = () => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!heroRef.current) return;
-
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
-
       const xPos = (clientX / innerWidth - 0.5) * 20;
       const yPos = (clientY / innerHeight - 0.5) * 20;
-
       heroRef.current.style.transform = `translate(${xPos}px, ${yPos}px)`;
     };
-
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const scrollToAbout = () => {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const socialLinks = [
+    { icon: Github, href: 'https://github.com/amdarknova-dev' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/durvish-sharma' },
+    { icon: Twitter, href: 'https://x.com/durvishsharma01' },
+    { icon: Youtube, href: '#' },
+  ];
+
+  const navigate = useNavigate();
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#11161d] pt-20">
+      {/* Background radial glow */}
+      <div className="absolute bottom-[-15%] left-[-10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[140px]" />
+      <div className="absolute top-[10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
 
-      {/* Animated background elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
+      <div className="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 items-center relative z-20">
 
-      {/* Main content */}
-      <div ref={heroRef} className="relative z-20 text-center px-6 transition-transform duration-300 ease-out">
-        {/* Sparkle icon */}
-        <div className="flex justify-center mb-8">
-          <div className="relative">
-            <Sparkles className="w-12 h-12 text-primary animate-pulse" />
-            <div className="absolute inset-0 w-12 h-12 bg-primary/20 rounded-full blur-xl" />
+        {/* Left Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="space-y-10"
+        >
+          <div className="space-y-6">
+            <h1 className="text-7xl md:text-8xl font-bold text-white tracking-tight leading-tight">
+              Durvish Sharma
+            </h1>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">
+              I'm a <span className="text-primary">Frontend Developer</span>
+            </h2>
+            <p className="text-gray-400 text-lg max-w-lg leading-relaxed font-light">
+              Designing and developing high-performance, beautiful, and interactive web digital experiences.
+              Focused on performance and modern design systems.
+            </p>
           </div>
-        </div>
 
-        {/* Main heading */}
-        <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-          <span className="block text-gradient">Hi, I'm Durvish Sharma</span>
-          <span className="block text-white text-4xl md:text-6xl mt-4">Creative Frontend Developer</span>
-        </h1>
+          <div className="flex flex-wrap gap-8 items-center">
 
-        {/* Subtitle */}
-        <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Building immersive digital experiences with modern web technologies
-        </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Button
-            size="lg"
-            onClick={scrollToAbout}
-            className="group relative px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-2xl transition-all duration-300 glow-primary hover:scale-105"
-          >
-            <span className="relative z-10 flex items-center gap-2 text-lg font-semibold">
-              Explore Work
-              <ArrowDown className="w-5 h-5 group-hover:translate-y-1 transition-transform duration-300" />
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </Button>
-
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-8 py-4 border-2 border-white/20 text-white hover:bg-white/10 rounded-2xl transition-all duration-300 hover:scale-105 hover:border-primary/50"
-          >
-            <span className="text-lg font-semibold">Get In Touch</span>
-          </Button>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse" />
+            <div className="flex gap-5">
+              {socialLinks.map((social, i) => (
+                <a
+                  key={i}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-14 h-14 rounded-full border-2 border-primary/40 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground hover:scale-110 transition-all duration-300"
+                >
+                  <social.icon size={24} />
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-20 w-2 h-2 bg-primary rounded-full animate-ping" />
-      <div className="absolute top-40 right-32 w-1 h-1 bg-accent rounded-full animate-ping delay-500" />
-      <div className="absolute bottom-32 left-16 w-1.5 h-1.5 bg-primary rounded-full animate-ping delay-1000" />
-      <div className="absolute bottom-20 right-20 w-2 h-2 bg-accent rounded-full animate-ping delay-1500" />
+        {/* Right Content - Visual Portrait */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="relative flex justify-center lg:justify-end"
+        >
+          <div className="relative w-[320px] h-[320px] md:w-[500px] md:h-[500px]">
+            {/* Glowing Ring Animation */}
+            <svg className="absolute inset-0 w-full h-full -rotate-90">
+              <circle
+                cx="50%"
+                cy="50%"
+                r="48%"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                className="text-white/10"
+              />
+              <motion.circle
+                cx="50%"
+                cy="50%"
+                r="48%"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeDasharray="120 1000"
+                className="text-primary drop-shadow-[0_0_15px_rgba(34,197,94,0.9)]"
+                animate={{ strokeDashoffset: [0, -1000] }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              />
+              <circle
+                cx="50%"
+                cy="50%"
+                r="48%"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeDasharray="40 320"
+                className="text-primary/30"
+              />
+            </svg>
+
+            {/* Profile Image Clip */}
+            <div className="absolute inset-[8%] rounded-full overflow-hidden border-[6px] border-[#11161d] shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+              <div ref={heroRef} className="w-full h-full rounded-full overflow-hidden bg-slate-900 shadow-inner group transition-transform duration-300">
+                <img
+                  src="https://images.unsplash.com/photo-1549416878-b9ca35c2d47b?w=800&auto=format&fit=crop&q=80"
+                  alt="Durvish Sharma"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[30%] hover:grayscale-0"
+                />
+              </div>
+            </div>
+
+            {/* Floating Decorative Elements */}
+            <div className="absolute top-[15%] right-[10%] w-5 h-5 bg-primary rounded-full animate-pulse shadow-[0_0_15px_rgba(34,197,94,1)]" />
+            <div className="absolute bottom-[20%] left-[5%] w-3 h-3 bg-white/20 rounded-full" />
+          </div>
+        </motion.div>
+
+      </div>
     </section>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github, Play, X, Info } from 'lucide-react';
+import { ExternalLink, Github, Play, X, Info, ArrowDown } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ProjectsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,13 +24,9 @@ const ProjectsSection = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -43,10 +40,11 @@ const ProjectsSection = () => {
         'Dynamic pricing toggle and feature comparison grid',
         'Smooth scroll navigation and scroll-triggered reveals'
       ],
-      image: 'https://images.unsplash.com/photo-1633436245198-44bc17f86b89?w=600&auto=format&fit=crop&q=80',
+      image: 'https://images.unsplash.com/photo-1633436245198-44bc17f86b89?w=800&auto=format&fit=crop&q=80',
       tech: ['Next.js', 'TypeScript', 'Framer Motion', 'Tailwind CSS'],
       category: 'Landing Page',
       featured: true,
+      year: '2024'
     },
     {
       title: 'Horizon Dashboard',
@@ -57,10 +55,11 @@ const ProjectsSection = () => {
         'Interactive charts and customizable data tables',
         'Role-based view simulation and sidebar navigation'
       ],
-      image: 'https://images.unsplash.com/photo-1510519138101-570d1dca3d66?w=600&auto=format&fit=crop&q=80',
+      image: 'https://images.unsplash.com/photo-1510519138101-570d1dca3d66?w=800&auto=format&fit=crop&q=80',
       tech: ['React', 'Recharts', 'shadcn/ui', 'Tailwind CSS'],
       category: 'Dashboard',
       featured: true,
+      year: '2023'
     },
     {
       title: 'Aura E-commerce',
@@ -71,10 +70,11 @@ const ProjectsSection = () => {
         'Persistent shopping cart using browser storage',
         'Multi-step checkout flow simulation'
       ],
-      image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&auto=format&fit=crop&q=80',
+      image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
       tech: ['React', 'Context API', 'Tailwind CSS', 'Vite'],
       category: 'E-commerce',
       featured: false,
+      year: '2023'
     },
     {
       title: 'Solaris 3D Experience',
@@ -85,10 +85,11 @@ const ProjectsSection = () => {
         'Texture mapping and dynamic lighting effects',
         'Informational overlays for each celestial body'
       ],
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80',
       tech: ['React Three Fiber', 'Three.js', 'GSAP'],
       category: '3D Web Experience',
       featured: false,
+      year: '2024'
     },
     {
       title: 'Vanguard SaaS Website',
@@ -99,216 +100,170 @@ const ProjectsSection = () => {
         'Customer testimonial carousel and FAQ section',
         'Responsive lead generation forms'
       ],
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop&q=80',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80',
       tech: ['Next.js', 'Framer Motion', 'Tailwind CSS'],
       category: 'SaaS Marketing',
       featured: false,
-    },
-    {
-      title: 'Pulse Mini Game',
-      description: 'A rhythm-based web game testing user reaction times and precision.',
-      longDescription: 'Pulse is an experimental web game that synchronizes visual elements with audio beats, providing a challenging and addictive gameplay experience.',
-      features: [
-        'Audio-visual synchronization using Web Audio API',
-        'Global high score tracking simulation',
-        'Mobile-responsive touch controls'
-      ],
-      image: 'https://images.unsplash.com/photo-1550745679-33d01608216a?w=600&auto=format&fit=crop&q=80',
-      tech: ['JavaScript', 'HTML5 Canvas', 'CSS3'],
-      category: 'Web Game',
-      featured: false,
-    },
-    {
-      title: 'Nova Portfolio v1',
-      description: 'My initial personal portfolio transition from vanilla JavaScript to React.',
-      longDescription: 'The first iteration of my professional portfolio, focusing on clean grid layouts and efficient project filtering.',
-      features: [
-        'Project archiving and category filtering',
-        'Contact form integration and validation logic',
-        'Minimalist grid-based project layout'
-      ],
-      image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=600&auto=format&fit=crop&q=80',
-      tech: ['React', 'CSS Modules', 'Vite'],
-      category: 'Portfolio',
-      featured: false,
-    },
-    {
-      title: 'Stellar Startup Concept',
-      description: 'A landing page mockup for a fintech startup focusing on visual hierarchy.',
-      longDescription: 'A modern design exploration for a financial technology company, featuring glassmorphism and interactive data components.',
-      features: [
-        'Parallax background effects and typography reveals',
-        'Interactive credit card visualizer',
-        'Modern glassmorphism UI elements'
-      ],
-      image: 'https://images.unsplash.com/photo-1551288049-bbbda536639a?w=600&auto=format&fit=crop&q=80',
-      tech: ['React', 'GSAP', 'Tailwind CSS'],
-      category: 'Startup Website',
-      featured: false,
-    },
-    {
-      title: 'Atlas Blog Platform',
-      description: 'A content-heavy platform optimized for readability and fast loading.',
-      longDescription: 'Atlas is built for creators, providing a distraction-free reading experience with fast performance and dynamic content management.',
-      features: [
-        'Dynamic routing for article pages',
-        'Search functionality and tag cloud filtering',
-        'Reading time estimator and social sharing hooks'
-      ],
-      image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&auto=format&fit=crop&q=80',
-      tech: ['Next.js', 'Markdown', 'Tailwind CSS'],
-      category: 'Content Platform',
-      featured: false,
-    },
-    {
-      title: 'Zenith App Landing Page',
-      description: 'A promotional page for a mobile application showcasing app features and downloads.',
-      longDescription: 'Zenith uses high-fidelity device mockups and scroll-triggered animations to demonstrate mobile app functionality on the web.',
-      features: [
-        'Device mockups with animated screen transitions',
-        'App Store and Play Store CTA sections',
-        'User review slider and feature grid'
-      ],
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&auto=format&fit=crop&q=80',
-      tech: ['React', 'Framer Motion', 'Tailwind CSS'],
-      category: 'Landing Page',
-      featured: false,
+      year: '2023'
     }
   ];
 
   const featuredProjects = projects.filter(p => p.featured);
   const otherProjects = projects.filter(p => !p.featured);
 
+  const cardVariants: any = {
+    initial: { scale: 1.1, opacity: 0, y: 50 },
+    animate: {
+      scale: 1,
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1]
+      }
+    }
+  };
+
+  const contentVars: any = {
+    initial: { opacity: 0, x: -20 },
+    animate: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: 0.5,
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <section id="projects" ref={sectionRef} className="relative py-32 px-6">
+    <section id="projects" ref={sectionRef} className="relative py-40 px-6 bg-[#050505] overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="text-gradient">Featured</span> <span className="text-white">Projects</span>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-32"
+        >
+          <span className="text-primary font-mono text-sm tracking-[0.3em] uppercase mb-4 block">Archive</span>
+          <h2 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter text-white">
+            Selected <span className="text-gradient">Projects</span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
-          <p className="text-xl text-gray-300 mt-6 max-w-2xl mx-auto">
-            A showcase of my latest work in web development, 3D graphics, and interactive experiences.
-          </p>
-        </div>
+          <div className="w-24 h-[1px] bg-white/20 mx-auto rounded-full" />
+        </motion.div>
 
         {/* Featured Projects */}
-        <div className="mb-20">
-          <div className="grid lg:grid-cols-2 gap-8">
-            {featuredProjects.map((project, index) => (
-              <Card
-                key={project.title}
+        <div className="space-y-40">
+          {featuredProjects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              variants={cardVariants}
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true, margin: "-10%" }}
+              className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center`}
+            >
+              {/* Image Container */}
+              <div
                 onClick={() => setSelectedProject(project)}
-                className={`group glass border-white/10 hover:border-primary/30 transition-all duration-700 hover:scale-[1.02] overflow-hidden cursor-pointer ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${200 + index * 200}ms` }}
+                className="relative lg:w-3/5 aspect-[16/10] overflow-hidden rounded-3xl cursor-pointer group"
               >
-                {/* Project Image */}
-                <div className="relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10" />
+                <motion.img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
 
-                  {/* Overlay icon */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center backdrop-blur-sm border border-white/20">
-                      <Info className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-
-                  {/* Category badge */}
-                  <Badge className="absolute top-4 left-4 bg-primary/90 text-white">
+                {/* Floating Category Badge */}
+                <div className="absolute top-8 left-8 z-20 overflow-hidden">
+                  <motion.div initial={{ y: "100%" }} whileInView={{ y: 0 }} transition={{ delay: 0.8 }} className="glass px-4 py-2 rounded-full border-white/10 text-xs tracking-widest uppercase text-white">
                     {project.category}
-                  </Badge>
+                  </motion.div>
                 </div>
 
-                {/* Project Content */}
-                <div className="p-6 space-y-4">
-                  <h3 className="text-2xl font-bold text-white group-hover:text-gradient transition-all duration-300">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed line-clamp-2">{project.description}</p>
-
-                  {/* Tech stack */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <Badge
-                        key={tech}
-                        variant="secondary"
-                        className="bg-white/10 text-white border-white/20 hover:bg-primary/20 transition-colors duration-300"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
+                  <div className="w-16 h-16 rounded-full glass border-white/20 flex items-center justify-center">
+                    <Info className="w-8 h-8 text-white" />
                   </div>
                 </div>
-              </Card>
-            ))}
-          </div>
+              </div>
+
+              {/* Content Container */}
+              <motion.div
+                variants={contentVars}
+                className="lg:w-2/5 space-y-6"
+              >
+                <div className="flex items-center gap-4 text-xs tracking-[0.3em] uppercase text-gray-500 font-mono">
+                  <span>{project.year}</span>
+                  <div className="w-8 h-[1px] bg-gray-800" />
+                  <span className="text-primary">{project.category}</span>
+                </div>
+
+                <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                  {project.title}
+                </h3>
+
+                <p className="text-xl text-gray-400 font-light leading-relaxed">
+                  {project.description}
+                </p>
+
+                <div className="pt-6 flex flex-wrap gap-4">
+                  {project.tech.map(t => (
+                    <span key={t} className="text-xs font-mono text-gray-600 border border-gray-800 px-3 py-1 rounded-md">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="pt-8">
+                  <Button
+                    variant="link"
+                    onClick={() => setSelectedProject(project)}
+                    className="text-white hover:text-primary p-0 h-auto text-lg group items-center gap-2"
+                  >
+                    View Case Study
+                    <ArrowDown className="w-4 h-4 -rotate-90 group-hover:translate-x-2 transition-transform" />
+                  </Button>
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Other Projects Grid */}
-        <div>
-          <h3 className={`text-3xl font-bold text-white mb-12 text-center transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-            }`}>
-            More Projects
-          </h3>
+        {/* Other Projects Section */}
+        <div className="mt-60">
+          <motion.h3
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-2xl font-mono tracking-[0.4em] uppercase text-gray-500 text-center mb-20"
+          >
+            Parallel Tracks
+          </motion.h3>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {otherProjects.map((project, index) => (
-              <Card
+              <motion.div
                 key={project.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
                 onClick={() => setSelectedProject(project)}
-                className={`group glass border-white/10 hover:border-primary/30 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${600 + index * 100}ms` }}
+                className="group relative cursor-pointer"
               >
-                {/* Project Image */}
-                <div className="relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                  {/* Category badge */}
-                  <Badge className="absolute top-3 left-3 bg-primary/90 text-white text-xs">
-                    {project.category}
-                  </Badge>
+                <div className="relative aspect-video overflow-hidden rounded-2xl mb-6">
+                  <img src={project.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="" />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors" />
                 </div>
-
-                {/* Project Content */}
-                <div className="p-5 space-y-3">
-                  <h4 className="text-lg font-bold text-white group-hover:text-gradient transition-all duration-300">
-                    {project.title}
-                  </h4>
-                  <p className="text-sm text-gray-300 leading-relaxed line-clamp-2">{project.description}</p>
-
-                  {/* Tech stack */}
-                  <div className="flex flex-wrap gap-1">
-                    {project.tech.slice(0, 3).map((tech) => (
-                      <Badge
-                        key={tech}
-                        variant="secondary"
-                        className="bg-white/10 text-white border-white/20 text-xs"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                    {project.tech.length > 3 && (
-                      <Badge variant="secondary" className="bg-white/10 text-white border-white/20 text-xs">
-                        +{project.tech.length - 3}
-                      </Badge>
-                    )}
-                  </div>
+                <div className="space-y-2">
+                  <h4 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{project.title}</h4>
+                  <div className="text-xs font-mono text-gray-500 uppercase tracking-widest">{project.category} / {project.year || '2023'}</div>
                 </div>
-              </Card>
+              </motion.div>
             ))}
           </div>
         </div>

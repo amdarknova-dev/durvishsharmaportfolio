@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Sheet,
   SheetContent,
@@ -11,41 +12,66 @@ const Navigation = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const navItems = [
     { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'games', label: 'Games' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'about-me', label: 'About', path: '/about-me' },
+    { id: 'projects', label: 'Portfolio' },
+    { id: 'experience', label: 'Service' },
+    { id: 'beyond-work', label: 'Beyond Work', path: '/beyond-work' },
+    { id: 'contact', label: 'Contact', path: '/contact' },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      // Update active section based on scroll position
-      const sections = navItems.map(item => document.getElementById(item.id));
-      const scrollPosition = window.scrollY + 100;
+      // Only update active section on the home page
+      if (location.pathname === '/') {
+        // Find elements and filter out those that don't exist
+        const scrollSections = navItems
+          .filter(i => !i.path)
+          .map(item => ({ id: item.id, element: document.getElementById(item.id) }))
+          .filter(item => item.element !== null);
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(navItems[i].id);
-          break;
+        const scrollPosition = window.scrollY + 150;
+
+        // Find the current active section based on scroll
+        for (let i = scrollSections.length - 1; i >= 0; i--) {
+          const section = scrollSections[i].element;
+          if (section && section.offsetTop <= scrollPosition) {
+            setActiveSection(scrollSections[i].id);
+            break;
+          }
         }
+      } else {
+        const currentItem = navItems.find(i => i.path === location.pathname);
+        if (currentItem) setActiveSection(currentItem.id);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [location.pathname]);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleNavClick = (item: typeof navItems[0]) => {
+    if (item.path) {
+      navigate(item.path);
+      setIsOpen(false);
+      return;
+    }
+
+    if (location.pathname !== '/') {
+      // Use window.location.hash to trigger scroll on Index page load
+      navigate('/#' + item.id);
+    } else {
+      const element = document.getElementById(item.id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
     setIsOpen(false);
   };
@@ -61,7 +87,7 @@ const Navigation = () => {
               key={item.id}
               variant="ghost"
               size="sm"
-              onClick={() => scrollToSection(item.id)}
+              onClick={() => handleNavClick(item)}
               className={`relative px-4 py-2 rounded-xl transition-all duration-300 ${activeSection === item.id
                 ? 'text-white bg-primary/20 glow-primary'
                 : 'text-gray-300 hover:text-white hover:bg-white/10'
@@ -90,7 +116,7 @@ const Navigation = () => {
                 <Button
                   key={item.id}
                   variant="ghost"
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => handleNavClick(item)}
                   className={`w-full justify-start text-lg py-6 rounded-xl transition-all duration-300 ${activeSection === item.id
                     ? 'text-white bg-primary/20'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'

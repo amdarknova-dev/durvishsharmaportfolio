@@ -6,10 +6,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Mail, MapPin, Send, Github, Linkedin, Twitter, CheckCircle, AlertCircle, Instagram, Facebook } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useGames } from '@/context/GameContext';
 
 const ContactSection = () => {
-  const { unlockGames } = useGames();
   const [isVisible, setIsVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -69,10 +67,9 @@ const ContactSection = () => {
       if (result.success) {
         toast({
           title: "Message Sent! ✓",
-          description: "Thank you for reaching out. Hidden games have been unlocked!",
+          description: "Thank you for reaching out. I'll get back to you soon!",
           duration: 5000,
         });
-        unlockGames();
         // Reset form
         setFormData({ name: '', email: '', message: '' });
       } else {
@@ -248,7 +245,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-400">{info.label}</p>
-                    <p className="text-white font-medium">{info.value}</p>
+                    <p className="text-white font-medium select-text">{info.value}</p>
                   </div>
                 </a>
               ))}

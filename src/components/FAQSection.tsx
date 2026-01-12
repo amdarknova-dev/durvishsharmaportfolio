@@ -29,32 +29,48 @@ const FAQSection = () => {
 
     const faqs = [
         {
-            question: "What services do you offer?",
-            answer: "I specialize in frontend development, creating responsive web applications, interactive user interfaces, and immersive 3D web experiences using modern frameworks and motion tools."
+            question: "What kind of developer are you?",
+            answer: "I’m a frontend-focused developer who enjoys building clean, modern, and interactive web experiences. I mainly work on responsive UI, animations, and performance-focused interfaces."
+        },
+        {
+            question: "What technologies do you work with?",
+            answer: "I primarily use HTML, CSS, JavaScript, React, and Tailwind CSS. For animations and visuals, I work with Framer Motion, GSAP, and occasionally Three.js for 3D interactions."
         },
         {
             question: "Are you open to freelance or full-time opportunities?",
-            answer: "Yes, I am currently available for freelance projects, contractual work, and full-time positions where I can contribute to building high-quality digital products."
+            answer: "Yes. I’m open to freelance projects, internships, contract work, and full-time opportunities where I can grow, contribute, and work on meaningful products."
         },
         {
-            question: "What technologies do you specialize in?",
-            answer: "My core expertise lies in React, Next.js, and TypeScript, combined with motion libraries like GSAP and Framer Motion, and 3D integration via React Three Fiber."
+            question: "What type of projects do you usually take on?",
+            answer: "I enjoy working on portfolio websites, landing pages, dashboards, interactive web experiences, and small web-based games. I’m also open to collaborating on early-stage product ideas."
         },
         {
-            question: "Can you collaborate with designers or teams?",
-            answer: "I have significant experience working with Figma designs and collaborating closely with design teams to ensure pixel-perfect implementation and maintain visual consistency across platforms."
+            question: "Can you work with designers or teams?",
+            answer: "Yes. I’m comfortable collaborating with designers, developers, and product teams. I can translate design files into clean, responsive, and accessible code."
         },
         {
-            question: "Do you take on small or short-term projects?",
-            answer: "Yes, I am open to discussing projects of all sizes, including short-term landing pages, specific feature implementations, or UI/UX performance optimizations."
+            question: "Do you only work on frontend?",
+            answer: "My main focus is frontend development, but I have basic experience working with APIs, authentication, and backend services like Firebase or Supabase when required."
         },
         {
-            question: "How do people usually contact you?",
-            answer: "The best way to reach me is through the contact form on this website or by sending an email directly. I typically respond to all inquiries within 24 hours."
+            question: "Are you willing to learn new technologies?",
+            answer: "Absolutely. I enjoy learning new tools and frameworks when a project requires it. I believe adaptability and continuous learning are essential in modern development."
         },
         {
-            question: "Are you open to learning new tools or stacks?",
-            answer: "As a developer, I am committed to continuous learning and am always open to expanding my skill set to meet the specific technical requirements of a project or team."
+            question: "How can someone contact you?",
+            answer: "You can reach me directly through the contact form below. I usually respond within a short time."
+        },
+        {
+            question: "Are your projects personal or client-based?",
+            answer: "Most projects showcased here are personal, freelance, or concept-based projects created to explore real-world problems, design systems, and modern web technologies."
+        },
+        {
+            question: "What are you currently focused on improving?",
+            answer: "I’m currently improving my skills in advanced React patterns, motion design, performance optimization, and creating more interactive web experiences."
+        },
+        {
+            question: "Are you available for collaboration?",
+            answer: "Yes. I’m always open to collaborating with like-minded developers, designers, and creators on interesting ideas and projects."
         }
     ];
 
