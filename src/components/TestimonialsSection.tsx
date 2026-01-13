@@ -51,7 +51,7 @@ const TestimonialsSection = () => {
             ([entry]) => {
                 if (entry.isIntersecting) setIsVisible(true);
             },
-            { threshold: 0.2 }
+            { threshold: 0.05 } // Lowered for better visibility
         );
 
         if (sectionRef.current) observer.observe(sectionRef.current);
@@ -66,7 +66,7 @@ const TestimonialsSection = () => {
 
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'}`}>
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
                         <span className="text-white">Client</span> <span className="text-gradient">Stories</span>
                     </h2>
@@ -77,7 +77,7 @@ const TestimonialsSection = () => {
                 </div>
 
                 {/* Carousel */}
-                <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+                <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'}`}>
                     <div className="overflow-hidden" ref={emblaRef}>
                         <div className="flex -ml-4">
                             {testimonials.map((testimonial) => (

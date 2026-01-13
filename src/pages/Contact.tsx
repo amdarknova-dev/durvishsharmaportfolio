@@ -20,18 +20,32 @@ import {
     Twitter,
     Linkedin,
     Github,
-    Plus
+    Plus,
+    ArrowUpRight
 } from 'lucide-react';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
+import { useSound } from '@/context/SoundContext';
+import { useEmailJS } from '@/lib/emailjs';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const FAQItem = ({ number, question, answer }: { number: string; question: string; answer: string }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { playHover, playClick } = useSound();
 
     return (
         <div className="border-b border-white/10 overflow-hidden">
             <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => { playClick(); setIsOpen(!isOpen); }}
+                onMouseEnter={() => playHover()}
                 className="w-full py-8 flex items-center justify-between text-left group"
             >
                 <div className="flex items-center gap-8">
@@ -69,12 +83,22 @@ const Contact = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
+        countryCode: '+91',
         email: '',
         phone: '',
+        inquiryType: 'none',
         message: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [mana, setMana] = useState(0); // For gamified input
+    const [isTransmitting, setIsTransmitting] = useState(false);
     const { toast } = useToast();
+    const { playHover, playClick, playSuccess } = useSound();
+    const { sendEmail, isSubmitting: emailSubmitting } = useEmailJS();
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+    const recaptchaRef = React.useRef<ReCAPTCHA>(null);
+
+    const captchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"; // Default is Google Test Key
 
     const faqs = [
         {
@@ -130,49 +154,54 @@ const Contact = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+
+        if (name === 'message') {
+            // Calculate mana based on length (max 500 chars)
+            const newMana = Math.min((value.length / 500) * 100, 100);
+            setMana(newMana);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);
 
-        try {
-            const response = await fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    access_key: 'a13b7359-c155-42a5-90bc-67fbd016acad',
-                    name: `${formData.firstName} ${formData.lastName}`,
-                    email: formData.email,
-                    phone: formData.phone,
-                    message: formData.message,
-                    from_name: "Durvish Portfolio",
-                    subject: `New Snappy Contact from ${formData.firstName}`,
-                }),
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                toast({
-                    title: "Message Sent Successfully!",
-                    description: "I'll get back to you as soon as possible.",
-                    duration: 5000,
-                });
-                setFormData({ firstName: '', lastName: '', email: '', phone: '', message: '' });
-            } else {
-                throw new Error('Submission failed');
-            }
-        } catch (error) {
+        if (!captchaToken) {
             toast({
-                title: "Submission Failed",
-                description: "Please try again or email me directly.",
-                variant: "destructive",
+                title: "Security Check Required",
+                description: "Please complete the reCAPTCHA to verify you're human.",
+                variant: "destructive"
             });
-        } finally {
-            setIsSubmitting(false);
+            return;
+        }
+
+        playSuccess(); // Play Warp Sound
+        setIsTransmitting(true); // Trigger visual warp
+
+        // Wait for animation start (500ms)
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Send email using EmailJS
+        const success = await sendEmail(formData);
+
+        // Wait for animation completion (1.5 seconds)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        setIsTransmitting(false);
+
+        if (success) {
+            // Clear form on success
+            setFormData({
+                firstName: '',
+                lastName: '',
+                countryCode: '+91',
+                email: '',
+                phone: '',
+                inquiryType: 'none',
+                message: '',
+            });
+            setMana(0);
+            setCaptchaToken(null);
+            recaptchaRef.current?.reset();
         }
     };
 
@@ -262,14 +291,13 @@ const Contact = () => {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-gray-400">Last Name</Label>
+                                        <Label className="text-gray-400">Last Name <span className="text-gray-500 text-sm">(Optional)</span></Label>
                                         <Input
                                             name="lastName"
                                             value={formData.lastName}
                                             onChange={handleInputChange}
                                             placeholder="Doe"
                                             className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20"
-                                            required
                                         />
                                     </div>
                                 </div>
@@ -289,39 +317,147 @@ const Contact = () => {
 
                                 <div className="space-y-2">
                                     <Label className="text-gray-400">Phone Number</Label>
-                                    <Input
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleInputChange}
-                                        placeholder="+91 00000 00000"
-                                        className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20"
-                                    />
+                                    <div className="flex gap-2">
+                                        <Select
+                                            name="countryCode"
+                                            value={formData.countryCode}
+                                            onValueChange={(value) => setFormData(prev => ({ ...prev, countryCode: value }))}
+                                        >
+                                            <SelectTrigger className="w-[100px] bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20">
+                                                <SelectValue placeholder="+91" />
+                                            </SelectTrigger>
+                                            <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl max-h-60">
+                                                <SelectItem value="+91">IN +91</SelectItem>
+                                                <SelectItem value="+1">US +1</SelectItem>
+                                                <SelectItem value="+44">UK +44</SelectItem>
+                                                <SelectItem value="+61">AU +61</SelectItem>
+                                                <SelectItem value="+81">JP +81</SelectItem>
+                                                <SelectItem value="+49">DE +49</SelectItem>
+                                                <SelectItem value="+33">FR +33</SelectItem>
+                                                <SelectItem value="+86">CN +86</SelectItem>
+                                                <SelectItem value="+971">AE +971</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <Input
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            placeholder="00000 00000"
+                                            className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20 flex-1"
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <div className="flex justify-between">
-                                        <Label className="text-gray-400">Message</Label>
-                                        <span className="text-xs text-gray-600">{formData.message.length}/500</span>
+                                    <Label className="text-gray-400">Inquiry Type</Label>
+                                    <Select
+                                        name="inquiryType"
+                                        value={formData.inquiryType}
+                                        onValueChange={(value) => setFormData(prev => ({ ...prev, inquiryType: value }))}
+                                    >
+                                        <SelectTrigger className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20">
+                                            <SelectValue placeholder="Select an option" />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl">
+                                            <SelectItem value="none">General Inquiry (None)</SelectItem>
+                                            <SelectItem value="game">Game Development</SelectItem>
+                                            <SelectItem value="website">Website Development</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <div className="flex justify-between items-end">
+                                        <Label className="text-gray-400">Transmission Content</Label>
+                                        <div className="flex flex-col items-end">
+                                            <span className={`text-[10px] uppercase font-mono tracking-widest ${mana > 60 ? 'text-green-400' : mana > 30 ? 'text-yellow-400' : 'text-red-400'}`}>
+                                                Signal Strength: {mana > 60 ? 'OPTIMAL' : mana > 30 ? 'STABLE' : 'WEAK'}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <Textarea
-                                        name="message"
-                                        value={formData.message}
-                                        onChange={handleInputChange}
-                                        placeholder="Tell me about your project..."
-                                        className="bg-white/5 border-white/10 text-white min-h-[150px] rounded-xl focus:ring-primary/20 resize-none"
-                                        maxLength={500}
-                                        required
-                                    />
+                                    <div className="relative group">
+                                        <div className={`absolute -inset-0.5 rounded-xl blur opacity-20 transition duration-500 group-hover:opacity-40 ${mana > 60 ? 'bg-green-500' : mana > 30 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
+                                        <Textarea
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleInputChange}
+                                            placeholder="Initialize data transmission..."
+                                            className="bg-black/40 border-white/10 text-white min-h-[150px] rounded-xl focus:ring-0 focus:border-white/30 resize-none z-10 relative font-mono text-sm leading-relaxed"
+                                            maxLength={500}
+                                            required
+                                        />
+
+                                        {/* HUD Elements */}
+                                        <div className="absolute top-2 right-2 flex gap-1">
+                                            {[1, 2, 3].map(i => (
+                                                <div key={i} className={`w-1 h-1 rounded-full ${mana > 0 ? 'bg-white/50 animate-pulse' : 'bg-white/10'}`} />
+                                            ))}
+                                        </div>
+
+                                        {/* Mana Bar Indicator */}
+                                        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gray-900/50 rounded-b-xl overflow-hidden flex">
+                                            {/* Segmented Bar */}
+                                            {Array.from({ length: 10 }).map((_, i) => (
+                                                <div key={i} className="flex-1 border-r border-black/20 last:border-0 relative">
+                                                    <div
+                                                        className={`absolute inset-0 transition-all duration-300 ${(mana / 10) > i
+                                                            ? (mana > 60 ? 'bg-green-500' : mana > 30 ? 'bg-yellow-500' : 'bg-red-500')
+                                                            : 'bg-transparent'
+                                                            } ${(mana / 10) > i ? 'opacity-100' : 'opacity-0'}`}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between text-xs text-gray-600 font-mono pt-1">
+                                        <span>BYTES: {formData.message.length}/500</span>
+                                        <span>{(mana).toFixed(0)}% CHARGE</span>
+                                    </div>
+                                </div>
+
+                                {/* reCAPTCHA */}
+                                <div className="flex justify-center pt-2">
+                                    <div className="rounded-xl overflow-hidden border border-white/10 glass p-1">
+                                        <ReCAPTCHA
+                                            ref={recaptchaRef}
+                                            sitekey={captchaSiteKey}
+                                            onChange={(token) => setCaptchaToken(token)}
+                                            theme="dark"
+                                        />
+                                    </div>
                                 </div>
 
                                 <Button
                                     type="submit"
-                                    disabled={isSubmitting}
-                                    className="w-full bg-primary hover:bg-primary/90 text-white h-14 rounded-xl text-lg font-bold transition-all duration-300 transform active:scale-95"
+                                    disabled={emailSubmitting || isTransmitting}
+                                    onMouseEnter={() => playHover()}
+                                    onClick={() => playClick()}
+                                    className={`w-full h-14 rounded-xl text-lg font-bold transition-all duration-500 relative overflow-hidden group ${emailSubmitting || isTransmitting ? 'bg-primary' : 'bg-white/5 hover:bg-white/10 border border-white/10'
+                                        }`}
                                 >
-                                    {isSubmitting ? "Sending..." : "Send Message"}
+                                    <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000`} />
+
+                                    <span className="relative flex items-center justify-center gap-3">
+                                        {emailSubmitting || isTransmitting ? (
+                                            <>
+                                                <span className="animate-pulse">TRANSMITTING...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                INITIATE UPLINK <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                            </>
+                                        )}
+                                    </span>
                                 </Button>
                             </form>
+
+                            <div className="mt-8 text-center">
+                                <Link to="/beyond-work" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group">
+                                    Interested in my creative side projects?
+                                    <span className="text-primary underline-offset-4 group-hover:underline">Visit Beyond Work</span>
+                                    <ArrowUpRight className="w-4 h-4" />
+                                </Link>
+                            </div>
                         </Card>
                     </motion.div>
                 </div>
@@ -379,16 +515,16 @@ const Contact = () => {
                                 </div>
                             </div>
                             <div className="flex gap-4 pt-6">
-                                <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
                                     <Instagram className="w-5 h-5" />
                                 </a>
-                                <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
                                     <Twitter className="w-5 h-5" />
                                 </a>
-                                <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
                                     <Linkedin className="w-5 h-5" />
                                 </a>
-                                <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
                                     <Github className="w-5 h-5" />
                                 </a>
                             </div>
@@ -432,6 +568,65 @@ const Contact = () => {
             </main>
 
             <Footer />
+
+            <AnimatePresence>
+                {isTransmitting && (
+                    <motion.div
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        {/* Warp Lines */}
+                        <div className="absolute inset-0 overflow-hidden">
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)] z-10" />
+                            {Array.from({ length: 20 }).map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="absolute top-1/2 left-1/2 w-[200vw] h-[2px] bg-blue-500 shadow-[0_0_20px_#3b82f6]"
+                                    initial={{
+                                        x: "-50%",
+                                        y: "-50%",
+                                        rotate: i * 18,
+                                        scaleX: 0,
+                                        opacity: 0
+                                    }}
+                                    animate={{
+                                        scaleX: [0, 5, 20],
+                                        opacity: [0, 1, 0],
+                                        width: ["0%", "50%", "200%"]
+                                    }}
+                                    transition={{
+                                        duration: 1.5,
+                                        repeat: Infinity,
+                                        delay: Math.random() * 0.5,
+                                        ease: "circIn"
+                                    }}
+                                    style={{ transformOrigin: "center" }}
+                                />
+                            ))}
+                        </div>
+
+                        {/* Central Burst */}
+                        <motion.div
+                            className="w-4 h-4 bg-white rounded-full shadow-[0_0_100px_50px_rgba(59,130,246,0.5)] z-20"
+                            animate={{ scale: [1, 50, 150], opacity: [1, 1, 0] }}
+                            transition={{ duration: 1.5, ease: "circIn" }}
+                        />
+
+                        <div className="absolute bottom-20 text-center z-30">
+                            <motion.h2
+                                className="text-4xl font-black text-white tracking-[1em] uppercase"
+                                animate={{ opacity: [0, 1, 0] }}
+                                transition={{ duration: 2, times: [0, 0.2, 1] }}
+                            >
+                                TRANSMITTING
+                            </motion.h2>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div >
     );
 };

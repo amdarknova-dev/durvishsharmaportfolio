@@ -9,14 +9,17 @@ import ExperienceSection from '@/components/ExperienceSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import FAQSection from '@/components/FAQSection';
-import ContactSection from '@/components/ContactSection';
+import ContactCTA from '@/components/ContactCTA';
 import Footer from '@/components/Footer';
-import CinematicPreloader from '@/components/CinematicPreloader';
+import ProjectGlobe from '@/components/ProjectGlobe';
+import GithubStats from "@/components/GithubStats";
+import Leaderboard from "@/components/Leaderboard";
+
 import { useLocation } from 'react-router-dom';
 
 const Index = () => {
   const { hash } = useLocation();
-  const [loading, setLoading] = React.useState(true);
+
 
 
   React.useEffect(() => {
@@ -36,9 +39,7 @@ const Index = () => {
   return (
     <div className="relative min-h-screen bg-background overflow-x-hidden">
       {/* Cinematic Intro */}
-      {loading && (
-        <CinematicPreloader onComplete={() => setLoading(false)} />
-      )}
+
 
       {/* Background Elements */}
       <div
@@ -58,10 +59,23 @@ const Index = () => {
         <AboutSection />
         <SkillsSection />
         <ProjectsSection />
+
+        {/* Global Impact Section */}
+        <section className="py-24 px-6">
+          <div className="max-w-7xl mx-auto">
+            <ProjectGlobe />
+          </div>
+        </section>
+
+        <section className="scroll-mt-32">
+          <GithubStats />
+        </section>
+
         <ExperienceSection />
+        <Leaderboard />
         <TestimonialsSection />
         <FAQSection />
-        <ContactSection />
+        <ContactCTA />
       </main>
 
       {/* Footer */}

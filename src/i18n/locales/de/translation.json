@@ -1,0 +1,53 @@
+{
+    "nav": {
+        "home": "Startseite",
+        "about": "Über mich",
+        "skills": "Fähigkeiten",
+        "projects": "Projekte",
+        "services": "Dienstleistungen",
+        "beyond_work": "Jenseits der Arbeit",
+        "contact": "Kontakt"
+    },
+    "hero": {
+        "greeting": "Hallo, ich bin",
+        "role": "Kreativer Frontend-Entwickler",
+        "sub_role": "Full Stack Web- & Spieleentwickler",
+        "description": "Design und Entwicklung von hochperformanten, schönen und interaktiven digitalen Web-Erlebnissen. Fokus auf Performance und moderne Design-Systeme.",
+        "mission_title": "MISSION:",
+        "mission_desc": "Geheime Themen und Erfolge freischalten",
+        "cta_projects": "Projekte ansehen",
+        "cta_contact": "Kontaktiere mich"
+    },
+    "about": {
+        "title": "Über mich",
+        "description": "Ich bin ein leidenschaftlicher Entwickler, der es liebt, schöne und funktionale Benutzererlebnisse zu schaffen."
+    },
+    "skills": {
+        "title_prefix": "Technisches",
+        "title_suffix": "Arsenal",
+        "description": "Eine sich ständig erweiternde Galaxie von Werkzeugen und Technologien, mit denen ich Ideen zum Leben erwecke."
+    },
+    "projects": {
+        "archive": "Archiv",
+        "title_prefix": "Ausgewählte",
+        "title_suffix": "Projekte",
+        "view_case_study": "Fallstudie ansehen",
+        "parallel_tracks": "Parallelspuren",
+        "key_features": "Hauptmerkmale",
+        "tech_used": "Verwendete Technologien",
+        "live_demo": "Live-Demo",
+        "view_code": "Code anzeigen"
+    },
+    "experience": {
+        "title_prefix": "Erfahrung &",
+        "title_suffix": "Fähigkeiten",
+        "technical_proficiency": "Technische Kompetenz",
+        "professional_experience": "Berufserfahrung",
+        "contribution_title": "Wichtige Beiträge",
+        "workflow_title": "Zugehöriger Workflow"
+    },
+    "globe": {
+        "title": "Globale Präsenz",
+        "subtitle": "Weltweite Bereitstellung kinoreifer Lösungen"
+    }
+}

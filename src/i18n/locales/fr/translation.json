@@ -1,0 +1,53 @@
+{
+    "nav": {
+        "home": "Accueil",
+        "about": "À propos",
+        "skills": "Compétences",
+        "projects": "Projets",
+        "services": "Services",
+        "beyond_work": "Au-delà du travail",
+        "contact": "Contact"
+    },
+    "hero": {
+        "greeting": "Bonjour, je suis",
+        "role": "Développeur Frontend Créatif",
+        "sub_role": "Développeur Web Full Stack & Jeux Vidéo",
+        "description": "Conception et développement d'expériences numériques web performantes, belles et interactives. Accent mis sur la performance et les systèmes de design modernes.",
+        "mission_title": "MISSION:",
+        "mission_desc": "Débloquez les thèmes secrets et les succès",
+        "cta_projects": "Voir les projets",
+        "cta_contact": "Contactez-moi"
+    },
+    "about": {
+        "title": "À propos de moi",
+        "description": "Je suis un développeur passionné qui aime créer des expériences utilisateur belles et fonctionnelles."
+    },
+    "skills": {
+        "title_prefix": "Arsenal",
+        "title_suffix": "Technique",
+        "description": "Une galaxie d'outils et de technologies en constante expansion que j'utilise pour donner vie à mes idées."
+    },
+    "projects": {
+        "archive": "Archive",
+        "title_prefix": "Projets",
+        "title_suffix": "Sélectionnés",
+        "view_case_study": "Voir l'étude de cas",
+        "parallel_tracks": "Pistes parallèles",
+        "key_features": "Caractéristiques principales",
+        "tech_used": "Technologies utilisées",
+        "live_demo": "Démo en direct",
+        "view_code": "Voir le code"
+    },
+    "experience": {
+        "title_prefix": "Expérience &",
+        "title_suffix": "Compétences",
+        "technical_proficiency": "Compétence technique",
+        "professional_experience": "Expérience professionnelle",
+        "contribution_title": "Contributions clés",
+        "workflow_title": "Workflow associé"
+    },
+    "globe": {
+        "title": "Empreinte mondiale",
+        "subtitle": "Fournir des solutions cinématographiques dans le monde entier"
+    }
+}

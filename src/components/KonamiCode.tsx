@@ -1,0 +1,74 @@
+import React, { useEffect, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { useHack } from '@/context/HackContext';
+
+const KonamiCode = () => {
+    const [keys, setKeys] = useState<string[]>([]);
+    const { toast } = useToast();
+    const { setThemeMode, setGravity, setGlowIntensity } = useHack();
+
+    // Konami Code Sequence
+    const sequence = [
+        'ArrowUp', 'ArrowUp',
+        'ArrowDown', 'ArrowDown',
+        'ArrowLeft', 'ArrowRight',
+        'ArrowLeft', 'ArrowRight',
+        'b', 'a'
+    ];
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            setKeys((prev) => {
+                const newKeys = [...prev, e.key];
+                if (newKeys.length > sequence.length) {
+                    newKeys.shift();
+                }
+                return newKeys;
+            });
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    useEffect(() => {
+        const checkSequence = () => {
+            if (keys.join(',') === sequence.join(',')) {
+                // Konami Code Activated
+                handleActivation();
+            }
+        };
+        checkSequence();
+    }, [keys]);
+
+    const handleActivation = () => {
+        // Reset keys
+        setKeys([]);
+
+        // Unlock everything
+        toast({
+            title: "CHEAT CODE ACTIVATED",
+            description: "Super Developer Mode Unlocked. Matrix Logic Applied.",
+            className: "bg-green-900 border-green-500 text-green-100 font-mono tracking-widest",
+            duration: 6000,
+        });
+
+        // "Glitch" the site via HackContext
+        setThemeMode('matrix');
+        setGravity(0.5); // Floatier
+        setGlowIntensity(2.0); // Maximum Glow
+
+        // Play a glitch sound (create using AudioContext implicitly by toggling or just let the toast feedback serve as cues)
+        // Or we could manually create a beep if we had access, but for now visual feedback is strong.
+
+        // Add a temporary glitch class to body for CSS animations (shake effect)
+        document.body.classList.add('glitch-active');
+        setTimeout(() => {
+            document.body.classList.remove('glitch-active');
+        }, 1000);
+    };
+
+    return null; // Invisible component
+};
+
+export default KonamiCode;

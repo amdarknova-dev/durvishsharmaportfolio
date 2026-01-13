@@ -4,9 +4,11 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 interface SoundContextType {
     isPlaying: boolean;
     toggleSound: () => void;
-    playHover: () => void;
-    playClick: () => void;
+    playHover: (x?: number) => void;
+    playClick: (x?: number) => void;
     playWhoosh: () => void;
+    playSuccess: () => void;
+    playSpatial: (freq: number, dur: number, x: number) => void;
 }
 
 const SoundContext = createContext<SoundContextType | undefined>(undefined);
@@ -19,11 +21,14 @@ export const useSound = () => {
     return context;
 };
 
+
 export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isPlaying, setIsPlaying] = useState(false);
+    // Sound priority: default to true
+    const [isPlaying, setIsPlaying] = useState(true);
     const audioContextRef = useRef<AudioContext | null>(null);
     const droneOscillatorRef = useRef<OscillatorNode | null>(null);
     const droneGainRef = useRef<GainNode | null>(null);
+    const hasStartedRef = useRef(false);
 
     // Initialize Audio Context on user interaction (browser policy)
     const initAudio = () => {
@@ -37,6 +42,9 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const startDrone = () => {
         if (!audioContextRef.current) initAudio();
+        // Prevent multiple drones
+        if (droneOscillatorRef.current) return;
+
         const ctx = audioContextRef.current!;
 
         // Create Brown Noise for "Space Rumble"
@@ -68,11 +76,6 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         gain.connect(ctx.destination);
 
         noise.start();
-
-        // Store references to stop later (we're cheating a bit by not using the refs perfectly for the noise node itself in this simple implementation, but gain is enough to mute)
-        // Actually, let's store the noise node to stop it properly if we wanted, but standard "stop" is usually just gain=0 or disconnect. 
-        // For specific toggling, let's keep it simple: we recreate on start, stop on stop.
-        // Ideally we track the source node.
         (noise as any).stopNode = noise;
         droneGainRef.current = gain;
         droneOscillatorRef.current = noise as any;
@@ -105,52 +108,70 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
+    // Auto-start audio on first interaction if playing is true
+    useEffect(() => {
+        const handleInteraction = () => {
+            if (isPlaying && !hasStartedRef.current) {
+                initAudio();
+                startDrone();
+                hasStartedRef.current = true;
+            }
+        };
+
+        window.addEventListener('click', handleInteraction);
+        window.addEventListener('keydown', handleInteraction);
+
+        return () => {
+            window.removeEventListener('click', handleInteraction);
+            window.removeEventListener('keydown', handleInteraction);
+        };
+    }, [isPlaying]);
+
+
     // SFX Generators
-    const playHover = () => {
-        if (!isPlaying || !audioContextRef.current) return;
+    const playSpatial = (freq: number, dur: number, x: number = 0) => {
+        if (!isPlaying) return;
+        if (!audioContextRef.current) initAudio();
         const ctx = audioContextRef.current;
+        if (!ctx) return;
 
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
+        const panner = ctx.createPanner();
+
+        panner.panningModel = 'equalpower';
+        panner.setPosition(x, 0, 1 - Math.abs(x) / 2);
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(400, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.05);
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + dur);
 
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
 
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(panner);
+        panner.connect(ctx.destination);
 
         osc.start();
-        osc.stop(ctx.currentTime + 0.05);
+        osc.stop(ctx.currentTime + dur);
     };
 
-    const playClick = () => {
-        if (!isPlaying || !audioContextRef.current) return;
-        const ctx = audioContextRef.current;
+    const playHover = (x: number = 0) => {
+        playSpatial(400, 0.05, x);
+    };
 
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(150, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.1);
-
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start();
-        osc.stop(ctx.currentTime + 0.1);
+    const playClick = (x: number = 0) => {
+        playSpatial(150, 0.1, x);
     };
 
     const playWhoosh = () => {
-        if (!isPlaying || !audioContextRef.current) return;
+        if (!isPlaying) return;
+        if (!audioContextRef.current) initAudio();
+
         const ctx = audioContextRef.current;
+        if (!ctx) return;
+
         // White noise burst for "whoosh"
         const bufferSize = ctx.sampleRate * 0.5; // 0.5 seconds
         const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
@@ -181,9 +202,53 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         noise.start();
     };
 
+    const playSuccess = () => {
+        if (!isPlaying) return;
+        if (!audioContextRef.current) initAudio();
+
+        const ctx = audioContextRef.current;
+        if (!ctx) return;
+
+        // "Warp Drive" / Transmission sound
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(200, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.3); // Zip up
+        osc.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.6);
+
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + 0.8);
+
+        // Add a secondary chime
+        const chime = ctx.createOscillator();
+        const chimeGain = ctx.createGain();
+        chime.type = 'sine';
+        chime.frequency.setValueAtTime(800, ctx.currentTime);
+        chime.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+
+        chimeGain.gain.setValueAtTime(0, ctx.currentTime);
+        chimeGain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.1);
+        chimeGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.0);
+
+        chime.connect(chimeGain);
+        chimeGain.connect(ctx.destination);
+        chime.start();
+        chime.stop(ctx.currentTime + 1.0);
+    };
+
     return (
-        <SoundContext.Provider value={{ isPlaying, toggleSound, playHover, playClick, playWhoosh }}>
+        <SoundContext.Provider value={{ isPlaying, toggleSound, playHover, playClick, playWhoosh, playSuccess, playSpatial }}>
             {children}
         </SoundContext.Provider>
     );
 };
+

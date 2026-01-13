@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "skills": "Skills",
+        "projects": "Projects",
+        "services": "Services",
+        "beyond_work": "Beyond Work",
+        "contact": "Contact"
+    },
+    "hero": {
+        "greeting": "Hello, I'm",
+        "role": "Creative Frontend Developer",
+        "sub_role": "Full Stack Web Developer & Game Developer",
+        "description": "Designing and developing high-performance, beautiful, and interactive web digital experiences. Focused on performance and modern design systems.",
+        "mission_title": "MISSION:",
+        "mission_desc": "Unlock Secret Themes & Achievements",
+        "cta_projects": "View Projects",
+        "cta_contact": "Contact Me"
+    },
+    "about": {
+        "title": "About Me",
+        "description": "I am a passionate developer who loves creating beautiful and functional user experiences."
+    },
+    "skills": {
+        "title_prefix": "Technical",
+        "title_suffix": "Arsenal",
+        "description": "A constantly expanding galaxy of tools and technologies I use to bring ideas to life."
+    },
+    "projects": {
+        "archive": "Archive",
+        "title_prefix": "Selected",
+        "title_suffix": "Projects",
+        "view_case_study": "View Case Study",
+        "parallel_tracks": "Parallel Tracks",
+        "key_features": "Key Features",
+        "tech_used": "Technologies Used",
+        "live_demo": "Live Demo",
+        "view_code": "View Code"
+    },
+    "experience": {
+        "title_prefix": "Experience &",
+        "title_suffix": "Skills",
+        "technical_proficiency": "Technical Proficiency",
+        "professional_experience": "Professional Experience",
+        "contribution_title": "Key Contributions",
+        "workflow_title": "Associated Workflow"
+    },
+    "globe": {
+        "title": "Global Footprint",
+        "subtitle": "Delivering cinematic solutions worldwide",
+        "project": "Project",
+        "client": "Client",
+        "view_case_study": "View Case Study",
+        "status_completed": "COMPLETED",
+        "status_progress": "IN_PROGRESS"
+    }
+}

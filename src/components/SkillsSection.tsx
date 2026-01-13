@@ -1,96 +1,34 @@
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, TrackballControls, Float } from '@react-three/drei';
-import * as THREE from 'three';
+import React, { useEffect, useRef, useState } from 'react';
+import SkillConstellation from './SkillConstellation';
+import { useCommentary } from '@/context/CommentaryContext';
+import Hotspot from './DirectorMode/Hotspot';
+import { useTranslation } from 'react-i18next';
+import { useMobile } from '@/hooks/useMobile';
+import { Badge } from './ui/badge';
+import { motion } from 'framer-motion';
 
-const skills = [
-    'React', 'TypeScript', 'Next.js', 'Tailwind',
-    'Node.js', 'Three.js', 'Git', 'Figma',
-    'GSAP', 'HTML5', 'CSS3', 'JavaScript',
-    'Vite', 'Redux', 'GraphQL', 'Framer',
-    'PostgreSQL', 'Prisma', 'Docker', 'AWS'
+const skillsList = [
+    { name: 'JavaScript', category: 'Frontend', color: '#F7DF1E' },
+    { name: 'TypeScript', category: 'Frontend', color: '#3178C6' },
+    { name: 'React', category: 'Frontend', color: '#61DAFB' },
+    { name: 'Next.js', category: 'Frontend', color: '#FFFFFF' },
+    { name: 'Three.js', category: 'Creative', color: '#FFFFFF' },
+    { name: 'GSAP', category: 'Creative', color: '#88CE02' },
+    { name: 'Framer Motion', category: 'Creative', color: '#0055FF' },
+    { name: 'Tailwind CSS', category: 'Frontend', color: '#38B2AC' },
+    { name: 'Node.js', category: 'Backend', color: '#339933' },
+    { name: 'SQL', category: 'Backend', color: '#4479A1' },
+    { name: 'Git', category: 'Tools', color: '#F05032' },
+    { name: 'Figma', category: 'Tools', color: '#F24E1E' },
 ];
 
-const Word = ({ children, position, color }: { children: string; position: THREE.Vector3; color: string }) => {
-    const fontRef = useRef<THREE.Mesh>(null);
-    const [hovered, setHovered] = useState(false);
-
-    useFrame(({ camera }) => {
-        if (!fontRef.current) return;
-        // Make text always face the camera
-        fontRef.current.quaternion.copy(camera.quaternion);
-    });
-
-    return (
-        <Float floatIntensity={1} rotationIntensity={0}>
-            <Text
-                ref={fontRef}
-                position={position}
-                fontSize={hovered ? 0.6 : 0.45}
-                color={hovered ? '#60A5FA' : color} // bright blue on hover
-                anchorX="center"
-                anchorY="middle"
-                onPointerOver={() => {
-                    document.body.style.cursor = 'pointer';
-                    setHovered(true);
-                }}
-                onPointerOut={() => {
-                    document.body.style.cursor = 'auto';
-                    setHovered(false);
-                }}
-            >
-                {children}
-            </Text>
-        </Float>
-    );
-};
-
-const Cloud = ({ count = 4, radius = 20 }) => {
-    // Create a count x count random words with spherical distribution
-    const words = useMemo(() => {
-        const temp = [];
-        const phiSpan = Math.PI * (3 - Math.sqrt(5)); // golden angle
-
-        for (let i = 0; i < skills.length; i++) {
-            // Spherical distribution
-            const y = 1 - (i / (skills.length - 1)) * 2; // y goes from 1 to -1
-            const radiusAtY = Math.sqrt(1 - y * y); // radius at y
-
-            const theta = phiSpan * i; // golden angle increment
-
-            const x = Math.cos(theta) * radiusAtY;
-            const z = Math.sin(theta) * radiusAtY;
-
-            // Scale by radius
-            temp.push([new THREE.Vector3(x * radius, y * radius, z * radius), skills[i]]);
-        }
-        return temp;
-    }, [count, radius]);
-
-    const groupRef = useRef<THREE.Group>(null);
-
-    useFrame((state) => {
-        if (!groupRef.current) return;
-        // Constant rotation
-        groupRef.current.rotation.y += 0.001;
-        groupRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.1;
-    })
-
-    return (
-        <group ref={groupRef}>
-            {words.map(([pos, word], index) => (
-                <Word key={index} position={pos as THREE.Vector3} color="#FFFFFF">
-                    {word as string}
-                </Word>
-            ))}
-        </group>
-    );
-};
-
 const SkillsSection = () => {
+    const { t } = useTranslation();
+    const isMobile = useMobile();
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
+    const { isCommentaryOpen } = useCommentary();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -99,7 +37,7 @@ const SkillsSection = () => {
                     setIsVisible(true);
                 }
             },
-            { threshold: 0.1 }
+            { threshold: 0 }
         );
 
         if (sectionRef.current) {
@@ -111,25 +49,51 @@ const SkillsSection = () => {
 
     return (
         <section id="skills" ref={sectionRef} className="relative py-20 px-6 min-h-[80vh] flex flex-col justify-center items-center overflow-hidden">
+            {/* Direct Comment Hotspot */}
+            <div className="absolute top-10 right-10 z-30">
+                <Hotspot
+                    title="3D Force Graph"
+                    description="Instead of a standard word cloud, I built a custom 3D constellation. Nodes are positioned using a partial force-directed layout logic to cluster related technologies together."
+                    codeSnippet={`const connections = [\n  ['react', 'next'],\n  ['three', 'gsap']\n]; // Graph edges`}
+                    placement="left"
+                />
+            </div>
+
             {/* Header */}
-            <div className={`text-center mb-10 transition-all duration-1000 z-10 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}>
+            <div className={`text-center mb-10 transition-all duration-1000 z-10 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
                 <h2 className="text-5xl md:text-6xl font-bold mb-6">
-                    <span className="text-white">Technical</span> <span className="text-gradient">Arsenal</span>
+                    <span className="text-white">{t('skills.title_prefix')}</span> <span className="text-gradient">{t('skills.title_suffix')}</span>
                 </h2>
                 <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
                 <p className="mt-4 text-gray-400 text-lg max-w-2xl mx-auto">
-                    A constantly expanding galaxy of tools and technologies I use to bring ideas to life.
+                    {t('skills.description')}
                 </p>
             </div>
 
-            {/* 3D Canvas */}
-            <div className={`w-full h-[600px] cursor-grab active:cursor-grabbing transition-opacity duration-1000 delay-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-                <Canvas camera={{ position: [0, 0, 10], fov: 50 }} dpr={[1, 2]}>
-                    <fog attach="fog" args={['#030712', 10, 25]} />
-                    <Cloud count={8} radius={4.5} />
-                    <TrackballControls noZoom />
-                </Canvas>
+            {/* 3D Canvas or Mobile Grid */}
+            <div className={`w-full max-w-5xl transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-10'}`}>
+                {isMobile ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 px-4 py-8 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-sm">
+                        {skillsList.map((skill, index) => (
+                            <motion.div
+                                key={skill.name}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: index * 0.05 }}
+                                className="flex flex-col items-center p-4 rounded-2xl bg-black/40 border border-white/5 hover:border-primary/30 transition-colors"
+                            >
+                                <div
+                                    className="w-2 h-2 rounded-full mb-3 shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                                    style={{ backgroundColor: skill.color }}
+                                />
+                                <span className="text-white font-medium text-center text-sm">{skill.name}</span>
+                                <span className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{skill.category}</span>
+                            </motion.div>
+                        ))}
+                    </div>
+                ) : (
+                    <SkillConstellation />
+                )}
             </div>
 
             {/* Background Gradients */}

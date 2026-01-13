@@ -99,3 +99,15 @@ Thumbs.db
 # --- Uploaded Files ---
 uploaded_files/
 
+# --- Development documentation (optional - keep if you want them in git) ---
+# Uncomment these if you don't want to commit documentation
+# FEATURES_COMPLETE.md
+# NAVIGATION_FIX.md
+# PERFORMANCE_OPTIMIZED.md
+# UI_ENHANCEMENTS.md
+# PORTFOLIO_CONTENT.md
+
+# --- Temporary/Test files ---
+*.tmp
+*.temp
+.artifacts/

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Code, Palette, Zap, Heart } from 'lucide-react';
+import { SplitParallaxText } from './ParallaxText';
 
 const AboutSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,7 +14,7 @@ const AboutSection = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.05 } // Lowered from 0.3 to trigger earlier
     );
 
     if (sectionRef.current) {
@@ -52,16 +53,14 @@ const AboutSection = () => {
         {/* Section header */}
         <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="text-gradient">About</span> <span className="text-white">Me</span>
-          </h2>
+          <SplitParallaxText text="About Me" className="text-5xl md:text-6xl font-bold mb-6 text-gradient" />
           <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </div>
 
         {/* Main content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Text content */}
-          <div className={`space-y-8 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+          <div className={`space-y-8 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'translate-x-0'
             }`}>
             <div className="space-y-6">
               <p className="text-xl text-gray-300 leading-relaxed">
@@ -95,7 +94,7 @@ const AboutSection = () => {
           </div>
 
           {/* Feature cards */}
-          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
+          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-x-0' : 'translate-x-0'
             }`}>
             {features.map((feature, index) => (
               <Card

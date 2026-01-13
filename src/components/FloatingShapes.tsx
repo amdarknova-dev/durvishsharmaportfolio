@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useHack } from '@/context/HackContext';
 
 interface Shape {
   x: number;
@@ -17,6 +18,7 @@ const FloatingShapes = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const shapesRef = useRef<Shape[]>([]);
   const animationRef = useRef<number>();
+  const { gravity, glowIntensity, themeMode } = useHack();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -54,7 +56,8 @@ const FloatingShapes = () => {
         shape.rotation += shape.rotationSpeed;
 
         // Update floating motion
-        const floatY = Math.sin(time * shape.floatSpeed + shape.floatOffset) * 20;
+        // Apply gravity multiplier to speed and amplitude
+        const floatY = Math.sin(time * (shape.floatSpeed * gravity) + shape.floatOffset) * (20 * gravity);
 
         // Create shape element
         const shapeElement = document.createElement('div');
@@ -64,7 +67,7 @@ const FloatingShapes = () => {
         shapeElement.style.width = `${shape.size}px`;
         shapeElement.style.height = `${shape.size}px`;
         shapeElement.style.transform = `rotate(${shape.rotation}deg)`;
-        shapeElement.style.opacity = shape.opacity.toString();
+        shapeElement.style.opacity = (shape.opacity * glowIntensity).toString();
 
         // Apply shape-specific styles
         if (shape.type === 'cube') {
@@ -106,7 +109,7 @@ const FloatingShapes = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [gravity, glowIntensity]);
 
   return (
     <div

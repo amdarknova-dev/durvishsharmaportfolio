@@ -9,9 +9,15 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Code2, Cpu, Globe, Rocket, Terminal } from 'lucide-react';
+import { useSound } from '@/context/SoundContext';
+import SkillTree from './SkillTree';
+import TiltCard from './ui/TiltCard';
+import { useTranslation } from 'react-i18next';
 
 const ExperienceSection = () => {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
+  const { playHover, playClick } = useSound();
   const [selectedSkill, setSelectedSkill] = useState<{
     name: string;
     level: string;
@@ -28,7 +34,7 @@ const ExperienceSection = () => {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.05 } // Lowered for better visibility
     );
 
     if (sectionRef.current) {
@@ -207,75 +213,38 @@ const ExperienceSection = () => {
     <section id="experience" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-background/50 scroll-mt-32">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'
           }`}>
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="text-white">Experience &</span> <span className="text-gradient">Skills</span>
+            <span className="text-white">{t('experience.title_prefix')}</span> <span className="text-gradient">{t('experience.title_suffix')}</span>
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full" />
         </div>
 
-        {/* Skills Grid */}
-        <div className="mb-20">
+        {/* Skills Tree */}
+        <div className="mb-32">
           <h3 className={`text-3xl font-bold text-white mb-12 text-center transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}>
-            Technical Skills
+            {t('experience.technical_proficiency')}
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {skillCategories.map((category, index) => (
-              <Card
-                key={category.title}
-                className={`glass p-6 border-white/10 hover:border-primary/30 transition-all duration-500 hover:scale-[1.03] group ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${300 + index * 100}ms` }}
-              >
-                <div className="space-y-4">
-                  {/* Category header */}
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="p-2 rounded-lg bg-white/5 border border-white/10 group-hover:border-primary/30 transition-colors">
-                      {category.icon}
-                    </div>
-                    <h4 className="font-bold text-white text-lg tracking-tight leading-tight">{category.title}</h4>
-                  </div>
-
-                  {/* Skills */}
-                  <div className="flex flex-wrap gap-2">
-                    {category.skills.map((skill) => (
-                      <Badge
-                        key={skill}
-                        variant="secondary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSkillClick(skill);
-                        }}
-                        className="bg-white/5 text-gray-300 border-white/5 hover:bg-primary/20 hover:text-white hover:border-primary/40 transition-all duration-300 cursor-pointer py-1 px-3 text-sm"
-                      >
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-
-                  {/* Gradient line */}
-                  <div className={`h-1 bg-gradient-to-r ${category.color} rounded-full opacity-40 group-hover:opacity-100 transition-opacity duration-300 mt-4`} />
-                </div>
-              </Card>
-            ))}
+          <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'scale-100'}`}>
+            <SkillTree />
           </div>
         </div>
 
         {/* Experience Timeline */}
         <div>
-          <h3 className={`text-3xl font-bold text-white mb-12 text-center transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          <h3 className={`text-3xl font-bold text-white mb-12 text-center transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'
             }`}>
-            Professional Experience
+            {t('experience.professional_experience')}
           </h3>
 
           <div className="space-y-8 max-w-5xl mx-auto">
             {experiences.map((exp, index) => (
-              <Card
+              <TiltCard
                 key={exp.title}
-                className={`glass p-8 border-white/10 hover:border-primary/30 transition-all duration-500 hover:scale-[1.01] group ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+                className={`glass p-8 border border-white/10 hover:border-primary/30 rounded-2xl group ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
                   }`}
                 style={{ transitionDelay: `${500 + index * 150}ms` }}
               >
@@ -300,7 +269,7 @@ const ExperienceSection = () => {
 
                 {/* Hover effect line */}
                 <div className="h-0.5 bg-gradient-to-r from-primary/50 to-accent/50 rounded-full mt-8 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
-              </Card>
+              </TiltCard>
             ))}
           </div>
         </div>
@@ -326,7 +295,7 @@ const ExperienceSection = () => {
 
                 <div className="space-y-4">
                   <h4 className="text-xl font-bold text-white flex items-center gap-2">
-                    <Rocket className="w-5 h-5 text-accent" /> Key Contributions
+                    <Rocket className="w-5 h-5 text-accent" /> {t('experience.contribution_title')}
                   </h4>
                   <ul className="space-y-3">
                     {selectedSkill.built.map((item: string, i: number) => (
@@ -339,7 +308,7 @@ const ExperienceSection = () => {
                 </div>
 
                 <div className="space-y-3 pt-2">
-                  <h4 className="text-lg font-bold text-white">Associated Workflow</h4>
+                  <h4 className="text-lg font-bold text-white">{t('experience.workflow_title')}</h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedSkill.related.map((item: string) => (
                       <Badge

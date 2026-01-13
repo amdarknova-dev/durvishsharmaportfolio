@@ -78,7 +78,7 @@ const FAQSection = () => {
         <section id="faq" ref={sectionRef} className="relative py-32 px-6 scroll-mt-32">
             <div className="max-w-4xl mx-auto">
                 {/* Section header */}
-                <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'
                     }`}>
                     <h2 className="text-5xl md:text-6xl font-bold mb-6">
                         <span className="text-white">Frequently Asked</span> <span className="text-gradient">Questions</span>
@@ -87,7 +87,7 @@ const FAQSection = () => {
                 </div>
 
                 {/* FAQ Accordion */}
-                <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'
                     }`}>
                     <Accordion type="single" collapsible className="w-full space-y-4">
                         {faqs.map((faq, index) => (

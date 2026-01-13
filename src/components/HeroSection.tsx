@@ -1,24 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Github, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Github, Linkedin, Twitter, Youtube, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useSound } from '@/context/SoundContext';
+import { useTranslation } from 'react-i18next';
+import ThreeScene from '@/components/ThreeScene';
+import HeroTerminal from './HeroTerminal';
+import Hotspot from './DirectorMode/Hotspot';
+import { useMobile } from '@/hooks/useMobile';
+import StatusBadge from './StatusBadge';
+import { useCommentary } from '@/context/CommentaryContext';
 
 const HeroSection = () => {
-  const heroRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!heroRef.current) return;
-      const { clientX, clientY } = e;
-      const { innerWidth, innerHeight } = window;
-      const xPos = (clientX / innerWidth - 0.5) * 20;
-      const yPos = (clientY / innerHeight - 0.5) * 20;
-      heroRef.current.style.transform = `translate(${xPos}px, ${yPos}px)`;
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  const { t } = useTranslation();
+  const isMobile = useMobile();
 
   const socialLinks = [
     { icon: Github, href: 'https://github.com/amdarknova-dev' },
@@ -28,6 +24,16 @@ const HeroSection = () => {
   ];
 
   const navigate = useNavigate();
+  const { playHover, playClick } = useSound();
+  const { playCommentary } = useCommentary();
+
+  React.useEffect(() => {
+    // Welcome message after 2 seconds
+    const timer = setTimeout(() => {
+      playCommentary("Welcome to my digital nexus. Every pixel here was designed with purpose. Feel free to explore the hidden layers using the terminal.");
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [playCommentary]);
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#11161d] pt-20">
@@ -39,44 +45,79 @@ const HeroSection = () => {
 
         {/* Left Content */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: isMobile ? 0 : -50, y: isMobile ? 20 : 0 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="space-y-10 text-center lg:text-left"
         >
+          <div className="flex justify-center lg:justify-start">
+            <StatusBadge />
+          </div>
           <div className="space-y-6">
             <h1 className="text-5xl md:text-8xl font-bold text-white tracking-tight leading-tight">
               Durvish Sharma
             </h1>
             <h2 className="text-2xl md:text-4xl font-bold text-white">
-              I'm a <span className="text-primary">Frontend Developer</span>
+              {t('hero.greeting')} <span className="text-primary">{t('hero.sub_role')}</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-lg leading-relaxed font-light">
-              Designing and developing high-performance, beautiful, and interactive web digital experiences.
-              Focused on performance and modern design systems.
+              {t('hero.description')}
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-6 items-center justify-center lg:justify-start">
-
-
-            <div className="flex gap-5">
-              {socialLinks.map((social, i) => (
-                <a
-                  key={i}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-14 h-14 rounded-full border-2 border-primary/40 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground hover:scale-110 transition-all duration-300"
-                >
-                  <social.icon size={24} />
-                </a>
-              ))}
+          <div className="flex items-center gap-4 text-xs text-gray-500 font-mono bg-white/5 p-3 rounded-lg border border-white/5 max-w-md relative group">
+            <Hotspot
+              title="Gamified Onboarding"
+              description="This mission panel isn't just decoration. It teaches the user how to interact with the hidden layers of the site (Konami code, terminal, etc.) without a boring tutorial."
+              placement="right"
+              className="absolute -right-3 -top-3"
+            />
+            <div className="flex flex-col gap-1">
+              <p className="flex items-center gap-2">
+                <span className="text-primary">{t('hero.mission_title')}</span>
+                <span className="text-white">{t('hero.mission_desc')}</span>
+              </p>
+              <p>
+                [1] Click the <span className="text-white border px-1 rounded border-white/20">Terminal Icon {`>_`}</span> (bottom-right)
+              </p>
+              <p>
+                [2] Complete tasks like <span className="text-accent">"Combo Breaker"</span> or input the <span className="text-accent">Konami Code</span> to hack the system.
+              </p>
             </div>
           </div>
+
+          <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start">
+            <Button
+              size="lg"
+              onClick={() => {
+                playClick();
+                const el = document.getElementById('projects');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-primary hover:bg-primary/90 text-white px-8 rounded-xl h-14 text-lg font-bold glow-primary transition-all hover:scale-105"
+            >
+              {t('projects.title_prefix')} {t('projects.title_suffix')}
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="glass border-white/10 text-white px-8 rounded-xl h-14 text-lg font-bold hover:bg-white/10 transition-all hover:scale-105"
+              onClick={() => {
+                playClick();
+                // Replace with actual resume link
+                window.open('https://example.com/durvish_sharma_resume.pdf', '_blank');
+              }}
+            >
+              <Download className="w-5 h-5 mr-2" /> Download CV
+            </Button>
+          </div>
+
+          <br />
+          <HeroTerminal />
         </motion.div>
 
         {/* Right Content - Visual Portrait */}
+        {/* Right Content - Visual Portrait with 3D */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -84,44 +125,16 @@ const HeroSection = () => {
           className="relative flex justify-center lg:justify-end"
         >
           <div className="relative w-[320px] h-[320px] md:w-[500px] md:h-[500px]">
-            {/* Glowing Ring Animation */}
-            <svg className="absolute inset-0 w-full h-full -rotate-90">
-              <circle
-                cx="50%"
-                cy="50%"
-                r="48%"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-                className="text-white/10"
-              />
-              <motion.circle
-                cx="50%"
-                cy="50%"
-                r="48%"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeDasharray="120 1000"
-                className="text-primary drop-shadow-[0_0_15px_rgba(34,197,94,0.9)]"
-                animate={{ strokeDashoffset: [0, -1000] }}
-                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              />
-              <circle
-                cx="50%"
-                cy="50%"
-                r="48%"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeDasharray="40 320"
-                className="text-primary/30"
-              />
-            </svg>
+            {/* 3D Scene Background (Replaces Ring) */}
+            {!isMobile && (
+              <div className="absolute inset-[-20%] z-0">
+                <ThreeScene />
+              </div>
+            )}
 
             {/* Profile Image Clip */}
-            <div className="absolute inset-[8%] rounded-full overflow-hidden border-[6px] border-[#11161d] shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-              <div ref={heroRef} className="w-full h-full rounded-full overflow-hidden bg-slate-900 shadow-inner group transition-transform duration-300">
+            <div className="absolute inset-[15%] rounded-full overflow-hidden border-[6px] border-[#11161d] shadow-[0_0_50px_rgba(34,197,94,0.3)] z-10 glass">
+              <div className="w-full h-full rounded-full overflow-hidden bg-slate-900 shadow-inner group transition-transform duration-300">
                 <img
                   src="https://images.unsplash.com/photo-1549416878-b9ca35c2d47b?w=800&auto=format&fit=crop&q=80"
                   alt="Durvish Sharma"
@@ -130,14 +143,13 @@ const HeroSection = () => {
               </div>
             </div>
 
-            {/* Floating Decorative Elements */}
-            <div className="absolute top-[15%] right-[10%] w-5 h-5 bg-primary rounded-full animate-pulse shadow-[0_0_15px_rgba(34,197,94,1)]" />
-            <div className="absolute bottom-[20%] left-[5%] w-3 h-3 bg-white/20 rounded-full" />
+            {/* Tech Overlay Elements */}
+            <div className="absolute top-[10%] right-[10%] w-3 h-3 bg-white rounded-full animate-ping z-20" />
           </div>
         </motion.div>
 
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 
