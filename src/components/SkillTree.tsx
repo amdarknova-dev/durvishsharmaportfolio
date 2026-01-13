@@ -106,7 +106,7 @@ const SkillTree = () => {
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]" />
 
             {/* SVG Connections Layer */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
                 {skillNodes.map(node => {
                     return node.parents.map(parentId => {
                         const parent = skillNodes.find(n => n.id === parentId);
@@ -117,7 +117,7 @@ const SkillTree = () => {
                         return (
                             <motion.path
                                 key={`${parentId}-${node.id}`}
-                                d={`M ${parent.x}% ${parent.y}% C ${parent.x + 10}% ${parent.y}%, ${node.x - 10}% ${node.y}%, ${node.x}% ${node.y}%`}
+                                d={`M ${parent.x} ${parent.y} C ${parent.x + 10} ${parent.y}, ${node.x - 10} ${node.y}, ${node.x} ${node.y}`}
                                 fill="none"
                                 stroke={isPathActive ? getStrokeColor(node.category) : 'rgba(255,255,255,0.1)'}
                                 strokeWidth={isPathActive ? 2 : 1}

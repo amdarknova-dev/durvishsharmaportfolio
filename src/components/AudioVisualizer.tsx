@@ -107,7 +107,7 @@ const AudioVisualizer = () => {
 
             {/* Cassette UI */}
             <motion.div
-                className="relative w-[140px] h-[88px] bg-black/80 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden cursor-pointer group shadow-2xl shadow-primary/10"
+                className="relative w-[110px] md:w-[140px] h-[70px] md:h-[88px] bg-black/80 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden cursor-pointer group shadow-2xl shadow-primary/10"
                 onClick={() => setIsExpanded(!isExpanded)}
                 whileHover={{ scale: 1.05 }}
             >

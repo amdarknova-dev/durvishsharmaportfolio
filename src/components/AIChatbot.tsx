@@ -187,8 +187,8 @@ const AIChatbot = () => {
                                         onClick={handleSend}
                                         disabled={!inputValue.trim()}
                                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${inputValue.trim()
-                                                ? 'bg-primary text-white scale-100 shadow-[0_0_15px_rgba(34,197,94,0.4)]'
-                                                : 'bg-white/5 text-gray-600 scale-95'
+                                            ? 'bg-primary text-white scale-100 shadow-[0_0_15px_rgba(34,197,94,0.4)]'
+                                            : 'bg-white/5 text-gray-600 scale-95'
                                             }`}
                                     >
                                         <Send className="w-4 h-4 ml-0.5" />
@@ -208,7 +208,7 @@ const AIChatbot = () => {
                     whileHover={{ scale: 1.1, y: -5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => { playClick(); setIsOpen(true); }}
-                    className="fixed bottom-6 right-6 w-16 h-16 rounded-[24px] bg-primary shadow-[0_15px_30px_rgba(34,197,94,0.4)] flex items-center justify-center z-50 group transition-all"
+                    className="fixed bottom-6 right-6 w-12 h-12 md:w-16 md:h-16 rounded-[20px] md:rounded-[24px] bg-primary shadow-[0_15px_30px_rgba(34,197,94,0.4)] flex items-center justify-center z-50 group transition-all"
                 >
                     <div className="absolute inset-0 rounded-[24px] bg-white/20 animate-ping group-hover:scale-110" />
                     <MessageSquare className="w-7 h-7 text-white" />

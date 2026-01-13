@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 type WeatherCondition = 'clear' | 'clouds' | 'rain' | 'storm' | 'snow' | 'night';
 

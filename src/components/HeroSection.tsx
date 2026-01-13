@@ -36,7 +36,7 @@ const HeroSection = () => {
   }, [playCommentary]);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#11161d] pt-20">
+    <section id="home" className="relative min-h-screen lg:h-screen flex items-center justify-center overflow-hidden bg-[#11161d] py-20 lg:py-0 pt-32 md:pt-40 scroll-mt-24">
       {/* Background radial glow */}
       <div className="absolute bottom-[-15%] left-[-10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[140px]" />
       <div className="absolute top-[10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
@@ -53,7 +53,7 @@ const HeroSection = () => {
           <div className="flex justify-center lg:justify-start">
             <StatusBadge />
           </div>
-          <div className="space-y-6">
+          <div className="space-y-6 mt-4 md:mt-8">
             <h1 className="text-5xl md:text-8xl font-bold text-white tracking-tight leading-tight">
               Durvish Sharma
             </h1>

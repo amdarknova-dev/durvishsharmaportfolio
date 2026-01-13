@@ -138,7 +138,7 @@ const HeroTerminal = () => {
 
     return (
         <div
-            className={`w-full max-w-lg mt-8 bg-black/80 border ${isAdmin ? 'border-red-500/30' : 'border-white/20'} rounded-lg p-4 font-mono text-sm shadow-2xl backdrop-blur-md relative overflow-hidden group cursor-text transition-colors duration-500 ${condition === 'storm' ? 'glitch-active' : ''}`}
+            className={`w-full max-w-lg mt-8 bg-black/80 border ${isAdmin ? 'border-red-500/30' : 'border-white/20'} rounded-lg p-3 md:p-4 font-mono text-xs md:text-sm shadow-2xl backdrop-blur-md relative overflow-hidden group cursor-text transition-colors duration-500 ${condition === 'storm' ? 'glitch-active' : ''}`}
             onClick={() => inputRef.current?.focus()}
         >
             {/* Header */}

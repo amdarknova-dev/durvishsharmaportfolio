@@ -56,8 +56,8 @@ Transforming your digital identity from a website into an **Interactive Operatin
 
 ## 🎬 Phase 3: Immersive Tech
 
-### 7. 🔊 **Directional Spatial Audio**
-- **What:** Sounds that move with your mouse.
+### 7. 🔊 **Dir move with ectional Spatial Audio**
+- **What:** Sounds thatyour mouse.
 - **Details:** 
   - Hovering over left cards triggers sound in the left ear.
   - Deep drone bass that increases as you scroll towards "Experience."
@@ -86,7 +86,7 @@ Transforming your digital identity from a website into an **Interactive Operatin
   - Show code snippets of things that *didn't* work and why.
   - Great for showing technical depth to senior recruiters.
 
-### 11. 📦 **Live NPM Stats**
+### 11. 📦 **L Sive NPMtats**
 - **What:** If you have packages on NPM, show live download counts.
 - **Details:** 
   - Real-time badges for your open-source contributions.
