@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type ThemeMode = 'default' | 'cyberpunk' | 'matrix' | 'sunset' | 'ocean' | 'cherry' | 'gold';
 
+type UserType = 'guest' | 'user' | 'admin';
+
 type HackContextType = {
     gravity: number; // 0.1 to 2.0
     setGravity: (val: number) => void;
@@ -13,6 +15,11 @@ type HackContextType = {
     setIsAdmin: (val: boolean) => void;
     isOverclocked: boolean;
     toggleOverclock: () => void;
+    userType: UserType;
+    setUserType: (type: UserType) => void;
+    username: string;
+    setUsername: (name: string) => void;
+    logout: () => void;
 };
 
 const HackContext = createContext<HackContextType | undefined>(undefined);
@@ -31,6 +38,31 @@ export const HackProvider = ({ children }: { children: React.ReactNode }) => {
     const [themeMode, setThemeMode] = useState<ThemeMode>('default');
     const [isAdmin, setIsAdmin] = useState(false);
     const [isOverclocked, setIsOverclocked] = useState(false);
+    const [userType, setUserType] = useState<UserType>('guest');
+    const [username, setUsername] = useState('');
+
+    // Load user data from localStorage on mount
+    useEffect(() => {
+        const savedUserType = localStorage.getItem('userType') as UserType;
+        const savedUsername = localStorage.getItem('username');
+        if (savedUserType) setUserType(savedUserType);
+        if (savedUsername) setUsername(savedUsername);
+        if (savedUserType === 'admin') setIsAdmin(true);
+    }, []);
+
+    // Save user data to localStorage when it changes
+    useEffect(() => {
+        localStorage.setItem('userType', userType);
+        localStorage.setItem('username', username);
+    }, [userType, username]);
+
+    const logout = () => {
+        setUserType('guest');
+        setUsername('');
+        setIsAdmin(false);
+        localStorage.removeItem('userType');
+        localStorage.removeItem('username');
+    };
 
     const toggleOverclock = () => {
         setIsOverclocked(prev => !prev);
@@ -115,7 +147,10 @@ export const HackProvider = ({ children }: { children: React.ReactNode }) => {
             glowIntensity, setGlowIntensity,
             themeMode, setThemeMode,
             isAdmin, setIsAdmin,
-            isOverclocked, toggleOverclock
+            isOverclocked, toggleOverclock,
+            userType, setUserType,
+            username, setUsername,
+            logout
         }}>
             {children}
         </HackContext.Provider>

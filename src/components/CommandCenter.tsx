@@ -35,8 +35,10 @@ const CommandCenter = () => {
         { id: '4', title: 'Experience', description: 'Career path', icon: Target, section: 'experience', keywords: ['jobs', 'history', 'cv'] },
         { id: '5', title: 'Blog', description: 'Read articles', icon: FileText, path: '/blog', keywords: ['journal', 'thoughts', 'writing'] },
         { id: '6', title: 'Contact', description: 'Get in touch', icon: Smartphone, section: 'contact', keywords: ['email', 'message', 'hire'] },
-        { id: '7', title: 'The Lab', description: 'Experiments', icon: Code2, path: '/the-lab', keywords: ['experiments', 'r&d', 'testing'] },
+        { id: '7', title: 'The Lab', description: 'Experiments', icon: Code2, path: '/lab', keywords: ['experiments', 'r&d', 'testing'] },
         { id: '8', title: 'Three.js Projects', description: 'Immersive WebGL work', icon: Globe, section: 'projects', keywords: ['three', '3d', 'webgl'] },
+        { id: '9', title: 'Login', description: 'Access admin or user area', icon: Command, path: '/login', keywords: ['signin', 'auth', 'authenticate', 'admin', 'user'] },
+        { id: '10', title: 'Hall of Fame', description: 'Join the legendary visitors', icon: Target, section: 'leaderboard', keywords: ['fame', 'visitors', 'community', 'join', 'pioneers', 'leaderboard'] },
     ], []);
 
     const filteredCommands = useMemo(() => {

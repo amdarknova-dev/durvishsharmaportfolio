@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "ホーム",
+        "about": "について",
+        "skills": "スキル",
+        "projects": "プロジェクト",
+        "services": "サービス",
+        "beyond_work": "仕事以外",
+        "contact": "お問い合わせ"
+    },
+    "hero": {
+        "greeting": "こんにちは、私は",
+        "role": "クリエイティブフロントエンド開発者",
+        "sub_role": "フルスタックWeb開発者＆ゲーム開発者",
+        "description": "高性能で美しく、インタラクティブなWebデジタル体験を設計・開発しています。パフォーマンスと最新のデザインシステムに焦点を当てています。",
+        "mission_title": "ミッション：",
+        "mission_desc": "秘密のテーマと実績をアンロック",
+        "cta_projects": "プロジェクトを見る",
+        "cta_contact": "お問い合わせ"
+    },
+    "about": {
+        "title": "私について",
+        "description": "美しく機能的なユーザー体験を作ることが大好きな情熱的な開発者です。"
+    },
+    "skills": {
+        "title_prefix": "技術的",
+        "title_suffix": "武器庫",
+        "description": "アイデアを実現するために使用するツールとテクノロジーの絶えず拡大する銀河。"
+    },
+    "projects": {
+        "archive": "アーカイブ",
+        "title_prefix": "選択された",
+        "title_suffix": "プロジェクト",
+        "view_case_study": "ケーススタディを見る",
+        "parallel_tracks": "並行トラック",
+        "key_features": "主な機能",
+        "tech_used": "使用技術",
+        "live_demo": "ライブデモ",
+        "view_code": "コードを見る"
+    },
+    "experience": {
+        "title_prefix": "経験と",
+        "title_suffix": "スキル",
+        "technical_proficiency": "技術的熟練度",
+        "professional_experience": "職務経験",
+        "contribution_title": "主な貢献",
+        "workflow_title": "関連ワークフロー"
+    },
+    "globe": {
+        "title": "グローバルフットプリント",
+        "subtitle": "世界中にシネマティックなソリューションを提供",
+        "project": "プロジェクト",
+        "client": "クライアント",
+        "view_case_study": "ケーススタディを見る",
+        "status_completed": "完了",
+        "status_progress": "進行中"
+    }
+}

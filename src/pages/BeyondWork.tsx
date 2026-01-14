@@ -150,7 +150,7 @@ In my latest project, I removed all color except for the primary action button. 
     ];
 
     return (
-        <div className="relative min-h-screen overflow-x-hidden pt-32 selection:bg-primary/30 selection:text-white">
+        <div className="relative min-h-screen overflow-x-hidden pt-24 md:pt-32 lg:pt-40 selection:bg-primary/30 selection:text-white">
             {/* Cinematic Thor Background */}
             <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
                 <img

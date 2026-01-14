@@ -39,7 +39,7 @@ const DeveloperConsole = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2 }}
-                className="fixed bottom-6 right-28 z-50"
+                className="fixed bottom-20 md:bottom-6 right-20 md:right-28 z-[60]"
             >
                 <Button
                     variant="outline"

@@ -30,13 +30,13 @@ const HeroSection = () => {
   React.useEffect(() => {
     // Welcome message after 2 seconds
     const timer = setTimeout(() => {
-      playCommentary("Welcome to my digital nexus. Every pixel here was designed with purpose. Feel free to explore the hidden layers using the terminal.");
+      playCommentary("Welcome to my cinematic portfolio. I'm Durvish Sharma, and you've just entered an interactive experience where design meets innovation. Click the Director Mode icon to unlock behind-the-scenes insights, or dive into the terminal below to discover hidden easter eggs and achievements. Every element here tells a story.");
     }, 2000);
     return () => clearTimeout(timer);
   }, [playCommentary]);
 
   return (
-    <section id="home" className="relative min-h-screen lg:h-screen flex items-center justify-center overflow-hidden bg-[#11161d] py-20 lg:py-0 pt-32 md:pt-40 scroll-mt-24">
+    <section id="home" className="relative min-h-screen lg:h-screen flex items-start justify-center overflow-hidden bg-[#11161d] py-20 lg:py-0 pt-56 md:pt-64 scroll-mt-24">
       {/* Background radial glow */}
       <div className="absolute bottom-[-15%] left-[-10%] w-[50%] h-[50%] bg-primary/20 rounded-full blur-[140px]" />
       <div className="absolute top-[10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
@@ -54,7 +54,7 @@ const HeroSection = () => {
             <StatusBadge />
           </div>
           <div className="space-y-6 mt-4 md:mt-8">
-            <h1 className="text-5xl md:text-8xl font-bold text-white tracking-tight leading-tight">
+            <h1 className="text-4xl md:text-7xl font-bold text-white tracking-tight leading-tight">
               Durvish Sharma
             </h1>
             <h2 className="text-2xl md:text-4xl font-bold text-white">
@@ -137,7 +137,7 @@ const HeroSection = () => {
               <div className="w-full h-full rounded-full overflow-hidden bg-slate-900 shadow-inner group transition-transform duration-300">
                 <img
                   src="https://images.unsplash.com/photo-1549416878-b9ca35c2d47b?w=800&auto=format&fit=crop&q=80"
-                  alt="Durvish Sharma"
+                  alt=""
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale-[30%] hover:grayscale-0"
                 />
               </div>

@@ -21,7 +21,8 @@ import {
     Linkedin,
     Github,
     Plus,
-    ArrowUpRight
+    ArrowUpRight,
+    AlertCircle
 } from 'lucide-react';
 import {
     Select,
@@ -89,6 +90,10 @@ const Contact = () => {
         inquiryType: 'none',
         message: '',
     });
+    const [errors, setErrors] = useState({
+        email: '',
+        phone: '',
+    });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [mana, setMana] = useState(0); // For gamified input
     const [isTransmitting, setIsTransmitting] = useState(false);
@@ -151,9 +156,49 @@ const Contact = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    const validateEmail = (email: string): string => {
+        if (!email) return '';
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return 'Please enter a valid email address';
+        }
+        return '';
+    };
+
+    const validatePhone = (phone: string): string => {
+        if (!phone) return '';
+        // Remove all non-digit characters for validation
+        const digitsOnly = phone.replace(/\D/g, '');
+
+        // Check if it contains only digits and common phone characters
+        const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+        if (!phoneRegex.test(phone)) {
+            return 'Phone number can only contain digits, spaces, +, -, ( )';
+        }
+
+        // Check length (minimum 10 digits, maximum 15)
+        if (digitsOnly.length < 10) {
+            return 'Phone number must be at least 10 digits';
+        }
+        if (digitsOnly.length > 15) {
+            return 'Phone number cannot exceed 15 digits';
+        }
+
+        return '';
+    };
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+
+        // Real-time validation
+        if (name === 'email') {
+            const error = validateEmail(value);
+            setErrors(prev => ({ ...prev, email: error }));
+        } else if (name === 'phone') {
+            const error = validatePhone(value);
+            setErrors(prev => ({ ...prev, phone: error }));
+        }
 
         if (name === 'message') {
             // Calculate mana based on length (max 500 chars)
@@ -164,6 +209,24 @@ const Contact = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validate all fields before submission
+        const emailError = validateEmail(formData.email);
+        const phoneError = formData.phone ? validatePhone(formData.phone) : '';
+
+        if (emailError || phoneError) {
+            setErrors({
+                email: emailError,
+                phone: phoneError,
+            });
+            toast({
+                title: "Validation Error",
+                description: "Please fix the errors in the form before submitting.",
+                variant: "destructive",
+                duration: 3000,
+            });
+            return;
+        }
 
         if (!captchaToken) {
             toast({
@@ -199,6 +262,7 @@ const Contact = () => {
                 inquiryType: 'none',
                 message: '',
             });
+            setErrors({ email: '', phone: '' });
             setMana(0);
             setCaptchaToken(null);
             recaptchaRef.current?.reset();
@@ -227,7 +291,7 @@ const Contact = () => {
     ];
 
     return (
-        <div className="relative min-h-screen bg-background overflow-x-hidden pt-32">
+        <div className="relative min-h-screen bg-background overflow-x-hidden pt-24 md:pt-32 lg:pt-40">
             <ParticleBackground />
             <Navigation />
 
@@ -310,13 +374,22 @@ const Contact = () => {
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         placeholder="john@example.com"
-                                        className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20"
+                                        className={`bg-white/5 text-white h-12 rounded-xl focus:ring-primary/20 ${errors.email
+                                            ? 'border-red-500/50 focus:border-red-500'
+                                            : 'border-white/10 focus:border-primary/50'
+                                            }`}
                                         required
                                     />
+                                    {errors.email && (
+                                        <p className="text-red-400 text-sm flex items-center gap-1">
+                                            <AlertCircle className="w-4 h-4" />
+                                            {errors.email}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label className="text-gray-400">Phone Number</Label>
+                                    <Label className="text-gray-400">Phone Number <span className="text-gray-500 text-sm">(Optional)</span></Label>
                                     <div className="flex gap-2">
                                         <Select
                                             name="countryCode"
@@ -343,9 +416,18 @@ const Contact = () => {
                                             value={formData.phone}
                                             onChange={handleInputChange}
                                             placeholder="00000 00000"
-                                            className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20 flex-1"
+                                            className={`bg-white/5 text-white h-12 rounded-xl focus:ring-primary/20 flex-1 ${errors.phone
+                                                ? 'border-red-500/50 focus:border-red-500'
+                                                : 'border-white/10 focus:border-primary/50'
+                                                }`}
                                         />
                                     </div>
+                                    {errors.phone && (
+                                        <p className="text-red-400 text-sm flex items-center gap-1">
+                                            <AlertCircle className="w-4 h-4" />
+                                            {errors.phone}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">

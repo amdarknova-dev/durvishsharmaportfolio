@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "Chi Sono",
+        "skills": "Competenze",
+        "projects": "Progetti",
+        "services": "Servizi",
+        "beyond_work": "Oltre il Lavoro",
+        "contact": "Contatti"
+    },
+    "hero": {
+        "greeting": "Ciao, sono",
+        "role": "Sviluppatore Frontend Creativo",
+        "sub_role": "Sviluppatore Web Full Stack e Sviluppatore di Giochi",
+        "description": "Progettazione e sviluppo di esperienze digitali web ad alte prestazioni, belle e interattive. Focalizzato sulle prestazioni e sui sistemi di design moderni.",
+        "mission_title": "MISSIONE:",
+        "mission_desc": "Sblocca Temi Segreti e Obiettivi",
+        "cta_projects": "Visualizza Progetti",
+        "cta_contact": "Contattami"
+    },
+    "about": {
+        "title": "Chi Sono",
+        "description": "Sono uno sviluppatore appassionato che ama creare esperienze utente belle e funzionali."
+    },
+    "skills": {
+        "title_prefix": "Arsenale",
+        "title_suffix": "Tecnico",
+        "description": "Una galassia in continua espansione di strumenti e tecnologie che uso per dare vita alle idee."
+    },
+    "projects": {
+        "archive": "Archivio",
+        "title_prefix": "Progetti",
+        "title_suffix": "Selezionati",
+        "view_case_study": "Visualizza Caso Studio",
+        "parallel_tracks": "Tracce Parallele",
+        "key_features": "Caratteristiche Principali",
+        "tech_used": "Tecnologie Utilizzate",
+        "live_demo": "Demo dal Vivo",
+        "view_code": "Visualizza Codice"
+    },
+    "experience": {
+        "title_prefix": "Esperienza e",
+        "title_suffix": "Competenze",
+        "technical_proficiency": "Competenza Tecnica",
+        "professional_experience": "Esperienza Professionale",
+        "contribution_title": "Contributi Chiave",
+        "workflow_title": "Flusso di Lavoro Associato"
+    },
+    "globe": {
+        "title": "Impronta Globale",
+        "subtitle": "Fornendo soluzioni cinematografiche in tutto il mondo",
+        "project": "Progetto",
+        "client": "Cliente",
+        "view_case_study": "Visualizza Caso Studio",
+        "status_completed": "COMPLETATO",
+        "status_progress": "IN_CORSO"
+    }
+}

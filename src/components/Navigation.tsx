@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useMobile } from '@/hooks/useMobile';
 import { Github, Linkedin, Twitter, MessageSquare } from 'lucide-react';
+import UserMenu from './UserMenu';
 
 const Navigation = () => {
   const { t } = useTranslation();
@@ -191,6 +192,9 @@ const Navigation = () => {
 
         {/* Language Switcher */}
         <LanguageSwitcher />
+
+        {/* User Menu */}
+        <UserMenu />
 
       </nav>
 

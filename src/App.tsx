@@ -21,6 +21,7 @@ import AIChatbot from "./components/AIChatbot";
 import LoadingScreen from "./components/LoadingScreen";
 import WeatherEffects from "./components/WeatherEffects";
 import CommandCenter from "./components/CommandCenter";
+import KeyboardShortcuts from "./components/KeyboardShortcuts";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,7 @@ const App = () => (
                     <KonamiCode />
                     <WarpTransition />
                     <AIChatbot />
+                    <KeyboardShortcuts />
                     <CommentaryOverlay />
                     <Toaster />
                     <Sonner />

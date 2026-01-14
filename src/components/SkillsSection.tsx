@@ -48,7 +48,7 @@ const SkillsSection = () => {
     }, []);
 
     return (
-        <section id="skills" ref={sectionRef} className="relative py-20 px-6 min-h-[80vh] flex flex-col justify-center items-center overflow-hidden">
+        <section id="skills" ref={sectionRef} className="relative py-20 px-6 min-h-[80vh] flex flex-col justify-center items-center overflow-hidden scroll-mt-24 md:scroll-mt-32">
             {/* Direct Comment Hotspot */}
             <div className="absolute top-10 right-10 z-30">
                 <Hotspot

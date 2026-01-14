@@ -210,7 +210,7 @@ const ExperienceSection = () => {
   };
 
   return (
-    <section id="experience" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-background/50 scroll-mt-32">
+    <section id="experience" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-background/50 scroll-mt-24 md:scroll-mt-32">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'

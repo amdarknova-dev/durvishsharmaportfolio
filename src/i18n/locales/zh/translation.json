@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "首页",
+        "about": "关于",
+        "skills": "技能",
+        "projects": "项目",
+        "services": "服务",
+        "beyond_work": "工作之外",
+        "contact": "联系"
+    },
+    "hero": {
+        "greeting": "你好，我是",
+        "role": "创意前端开发者",
+        "sub_role": "全栈Web开发者和游戏开发者",
+        "description": "设计和开发高性能、美观且互动的Web数字体验。专注于性能和现代设计系统。",
+        "mission_title": "任务：",
+        "mission_desc": "解锁秘密主题和成就",
+        "cta_projects": "查看项目",
+        "cta_contact": "联系我"
+    },
+    "about": {
+        "title": "关于我",
+        "description": "我是一名充满热情的开发者，热爱创造美观且功能强大的用户体验。"
+    },
+    "skills": {
+        "title_prefix": "技术",
+        "title_suffix": "武器库",
+        "description": "一个不断扩展的工具和技术星系，我用它们将想法变为现实。"
+    },
+    "projects": {
+        "archive": "档案",
+        "title_prefix": "精选",
+        "title_suffix": "项目",
+        "view_case_study": "查看案例研究",
+        "parallel_tracks": "并行轨道",
+        "key_features": "关键功能",
+        "tech_used": "使用的技术",
+        "live_demo": "在线演示",
+        "view_code": "查看代码"
+    },
+    "experience": {
+        "title_prefix": "经验与",
+        "title_suffix": "技能",
+        "technical_proficiency": "技术熟练度",
+        "professional_experience": "专业经验",
+        "contribution_title": "主要贡献",
+        "workflow_title": "相关工作流程"
+    },
+    "globe": {
+        "title": "全球足迹",
+        "subtitle": "在全球范围内提供电影级解决方案",
+        "project": "项目",
+        "client": "客户",
+        "view_case_study": "查看案例研究",
+        "status_completed": "已完成",
+        "status_progress": "进行中"
+    }
+}

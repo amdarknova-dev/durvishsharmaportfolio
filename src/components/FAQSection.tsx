@@ -75,7 +75,7 @@ const FAQSection = () => {
     ];
 
     return (
-        <section id="faq" ref={sectionRef} className="relative py-32 px-6 scroll-mt-32">
+        <section id="faq" ref={sectionRef} className="relative py-32 px-6 scroll-mt-24 md:scroll-mt-32">
             <div className="max-w-4xl mx-auto">
                 {/* Section header */}
                 <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-0'

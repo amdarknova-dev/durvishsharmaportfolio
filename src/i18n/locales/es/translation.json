@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "Inicio",
+        "about": "Acerca de",
+        "skills": "Habilidades",
+        "projects": "Proyectos",
+        "services": "Servicios",
+        "beyond_work": "Más allá del trabajo",
+        "contact": "Contacto"
+    },
+    "hero": {
+        "greeting": "Hola, soy",
+        "role": "Desarrollador Frontend Creativo",
+        "sub_role": "Desarrollador Web Full Stack y Desarrollador de Juegos",
+        "description": "Diseñando y desarrollando experiencias digitales web de alto rendimiento, hermosas e interactivas. Enfocado en el rendimiento y sistemas de diseño modernos.",
+        "mission_title": "MISIÓN:",
+        "mission_desc": "Desbloquear Temas Secretos y Logros",
+        "cta_projects": "Ver Proyectos",
+        "cta_contact": "Contáctame"
+    },
+    "about": {
+        "title": "Sobre Mí",
+        "description": "Soy un desarrollador apasionado que ama crear experiencias de usuario hermosas y funcionales."
+    },
+    "skills": {
+        "title_prefix": "Arsenal",
+        "title_suffix": "Técnico",
+        "description": "Una galaxia en constante expansión de herramientas y tecnologías que uso para dar vida a las ideas."
+    },
+    "projects": {
+        "archive": "Archivo",
+        "title_prefix": "Proyectos",
+        "title_suffix": "Seleccionados",
+        "view_case_study": "Ver Caso de Estudio",
+        "parallel_tracks": "Pistas Paralelas",
+        "key_features": "Características Clave",
+        "tech_used": "Tecnologías Utilizadas",
+        "live_demo": "Demo en Vivo",
+        "view_code": "Ver Código"
+    },
+    "experience": {
+        "title_prefix": "Experiencia y",
+        "title_suffix": "Habilidades",
+        "technical_proficiency": "Competencia Técnica",
+        "professional_experience": "Experiencia Profesional",
+        "contribution_title": "Contribuciones Clave",
+        "workflow_title": "Flujo de Trabajo Asociado"
+    },
+    "globe": {
+        "title": "Huella Global",
+        "subtitle": "Entregando soluciones cinematográficas en todo el mundo",
+        "project": "Proyecto",
+        "client": "Cliente",
+        "view_case_study": "Ver Caso de Estudio",
+        "status_completed": "COMPLETADO",
+        "status_progress": "EN_PROGRESO"
+    }
+}

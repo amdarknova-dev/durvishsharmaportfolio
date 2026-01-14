@@ -15,12 +15,13 @@ import SpotlightCard from './ui/SpotlightCard';
 import { useTranslation } from 'react-i18next';
 import { useCommentary } from '@/context/CommentaryContext';
 import { useSound } from '@/context/SoundContext';
+import ShareButtons from './ShareButtons';
 
 const COMMENTARIES: Record<string, string> = {
-  'NexusAI Landing Page': 'NexusAI was an experiment in high-speed motion design. I wanted to see if we could achieve 60FPS while running complex SVG path morphing.',
-  'Horizon Dashboard': 'The challenge here was data density. I focused on building a design system that scales without feeling cluttered.',
-  'Aura E-commerce': 'Minimalism is harder than it looks. Every pixel had to earn its place to maintain that high-end fashion aesthetic.',
-  'Solaris 3D Experience': 'This is my favorite project. I spent weeks optimizing the shaders to run smoothly on older mobile devices.',
+  'NexusAI Landing Page': 'NexusAI pushed the boundaries of web performance. The real challenge was achieving buttery-smooth 60FPS animations while running complex SVG morphing and parallax effects. I implemented a custom animation pipeline using requestAnimationFrame and GPU-accelerated transforms to ensure every interaction felt instantaneous, even on mid-range devices.',
+  'Horizon Dashboard': 'Building Horizon taught me that great dashboard design is about information hierarchy, not just aesthetics. The key was creating a scalable design system that could handle dense data without overwhelming users. I focused on progressive disclosure showing critical metrics upfront while keeping detailed analytics just a click away.',
+  'Aura E-commerce': 'Aura was an exercise in restraint. In e-commerce there is always pressure to add more features more CTAs more everything. But true luxury brands understand that less is more. Every element had to justify its existence. The result was a 40 percent increase in time on site and significantly higher conversion rates through focused intentional design.',
+  'Solaris 3D Experience': 'This project became my obsession. Creating a performant 3D solar system in the browser meant diving deep into WebGL optimization texture atlasing LOD systems and custom shaders. The breakthrough came when I implemented instanced rendering for asteroid fields allowing thousands of objects to render at 60FPS on mobile devices.',
 };
 
 const ProjectsSection = () => {
@@ -176,7 +177,7 @@ const ProjectsSection = () => {
   } as any;
 
   return (
-    <section id="projects" ref={sectionRef} className="relative py-32 px-6 bg-[#050505] scroll-mt-32 overflow-hidden">
+    <section id="projects" ref={sectionRef} className="relative py-32 px-6 bg-[#050505] scroll-mt-24 md:scroll-mt-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <motion.div
@@ -399,6 +400,12 @@ const ProjectsSection = () => {
                     <DialogDescription className="text-gray-400 text-lg leading-relaxed pt-4 max-w-2xl">
                       {selectedProject.longDescription || selectedProject.description}
                     </DialogDescription>
+                    <div className="pt-4">
+                      <ShareButtons
+                        title={selectedProject.title}
+                        description={selectedProject.description}
+                      />
+                    </div>
                   </DialogHeader>
 
                   {/* Feature Simulation Grid */}

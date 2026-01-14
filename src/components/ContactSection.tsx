@@ -13,7 +13,12 @@ const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     message: '',
+  });
+  const [errors, setErrors] = useState({
+    email: '',
+    phone: '',
   });
   const sectionRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -35,13 +40,72 @@ const ContactSection = () => {
     return () => observer.disconnect();
   }, []);
 
+  const validateEmail = (email: string): string => {
+    if (!email) return '';
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      return 'Please enter a valid email address';
+    }
+    return '';
+  };
+
+  const validatePhone = (phone: string): string => {
+    if (!phone) return '';
+    // Remove all non-digit characters for validation
+    const digitsOnly = phone.replace(/\D/g, '');
+
+    // Check if it contains only digits and common phone characters
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+    if (!phoneRegex.test(phone)) {
+      return 'Phone number can only contain digits, spaces, +, -, ( )';
+    }
+
+    // Check length (minimum 10 digits, maximum 15)
+    if (digitsOnly.length < 10) {
+      return 'Phone number must be at least 10 digits';
+    }
+    if (digitsOnly.length > 15) {
+      return 'Phone number cannot exceed 15 digits';
+    }
+
+    return '';
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+
+    // Real-time validation
+    if (name === 'email') {
+      const error = validateEmail(value);
+      setErrors(prev => ({ ...prev, email: error }));
+    } else if (name === 'phone') {
+      const error = validatePhone(value);
+      setErrors(prev => ({ ...prev, phone: error }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate all fields before submission
+    const emailError = validateEmail(formData.email);
+    const phoneError = formData.phone ? validatePhone(formData.phone) : '';
+
+    if (emailError || phoneError) {
+      setErrors({
+        email: emailError,
+        phone: phoneError,
+      });
+      toast({
+        title: "Validation Error",
+        description: "Please fix the errors in the form before submitting.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -71,7 +135,8 @@ const ContactSection = () => {
           duration: 5000,
         });
         // Reset form
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', phone: '', message: '' });
+        setErrors({ email: '', phone: '' });
       } else {
         console.error('Web3Forms Error:', result);
         throw new Error(result.message || 'Form submission failed');
@@ -145,7 +210,7 @@ const ContactSection = () => {
   ];
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-primary/5 scroll-mt-32">
+    <section id="contact" ref={sectionRef} className="relative py-32 px-6 bg-gradient-to-b from-background to-primary/5 scroll-mt-24 md:scroll-mt-32">
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
         <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
@@ -190,9 +255,42 @@ const ContactSection = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="your.email@example.com"
-                  className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-primary/50 focus:ring-primary/20"
+                  className={`bg-white/5 text-white placeholder:text-gray-400 focus:ring-primary/20 ${errors.email
+                      ? 'border-red-500/50 focus:border-red-500'
+                      : 'border-white/20 focus:border-primary/50'
+                    }`}
                   required
                 />
+                {errors.email && (
+                  <p className="text-red-400 text-sm flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.email}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="text-white font-medium">
+                  Phone Number <span className="text-gray-500 text-sm">(Optional)</span>
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="+1 (555) 123-4567"
+                  className={`bg-white/5 text-white placeholder:text-gray-400 focus:ring-primary/20 ${errors.phone
+                      ? 'border-red-500/50 focus:border-red-500'
+                      : 'border-white/20 focus:border-primary/50'
+                    }`}
+                />
+                {errors.phone && (
+                  <p className="text-red-400 text-sm flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.phone}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">

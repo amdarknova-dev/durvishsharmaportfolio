@@ -1,47 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Lock, Star, X } from 'lucide-react';
+import { Trophy, Lock, Star, X, Lightbulb } from 'lucide-react';
 import { useAchievements } from '@/context/AchievementContext';
 import { useSound } from '@/context/SoundContext';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-// Reusing types from context since they aren't exported.
-// In a real scenario we'd export them, but for now we'll duplicate the shape or just infer.
-// Actually, let's keep it robust. It's better to just use the data we have.
-
 const TrophyCase = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { unlocked } = useAchievements();
+    const { unlocked, achievements } = useAchievements();
     const { playHover, playClick } = useSound();
 
-    // Configuration for achievements content (matching Context IDs)
-    const achievementList = [
-        {
-            id: 'night-owl',
-            title: 'Night Owl',
-            description: 'Visit the site late at night (10 PM - 4 AM).',
-            icon: Trophy,
-            color: 'text-yellow-400',
-            bg: 'bg-yellow-400/10'
-        },
-        {
-            id: 'explorer',
-            title: 'Explorer',
-            description: 'Visit all main pages of the portfolio.',
-            icon: Star,
-            color: 'text-blue-400',
-            bg: 'bg-blue-400/10'
-        },
-        {
-            id: 'combo-breaker',
-            title: 'Combo Breaker',
-            description: 'Click 5 times in rapid succession!',
-            icon: Trophy,
-            color: 'text-red-500',
-            bg: 'bg-red-500/10'
-        }
-    ];
+    const achievementList = Object.values(achievements);
 
     return (
         <>
@@ -113,11 +83,10 @@ const TrophyCase = () => {
                                     </div>
                                 </div>
 
-                                <ScrollArea className="h-[300px] pr-4">
+                                <ScrollArea className="h-[400px] pr-4">
                                     <div className="space-y-4">
                                         {achievementList.map((achievement) => {
                                             const isUnlocked = unlocked.includes(achievement.id);
-                                            const Icon = achievement.icon;
 
                                             return (
                                                 <div
@@ -126,24 +95,34 @@ const TrophyCase = () => {
                                                         relative p-4 rounded-xl border transition-all duration-300
                                                         ${isUnlocked
                                                             ? 'bg-white/5 border-white/10'
-                                                            : 'bg-black/40 border-white/5 opacity-50 grayscale'
+                                                            : 'bg-black/40 border-white/5'
                                                         }
                                                     `}
                                                 >
                                                     <div className="flex items-start gap-4">
                                                         <div className={`
                                                             w-12 h-12 rounded-full flex items-center justify-center shrink-0
-                                                            ${isUnlocked ? `${achievement.bg} ${achievement.color} shadow-lg shadow-${achievement.color}/20` : 'bg-gray-900 text-gray-600'}
+                                                            ${isUnlocked ? 'bg-yellow-400/20 text-yellow-400' : 'bg-gray-900 text-gray-600'}
                                                         `}>
-                                                            {isUnlocked ? <Icon className="w-6 h-6" /> : <Lock className="w-5 h-5" />}
+                                                            {isUnlocked ? achievement.icon : <Lock className="w-5 h-5" />}
                                                         </div>
-                                                        <div>
+                                                        <div className="flex-1">
                                                             <h3 className={`font-bold mb-1 ${isUnlocked ? 'text-white' : 'text-gray-500'}`}>
-                                                                {achievement.title}
+                                                                {isUnlocked ? achievement.title : '???'}
                                                             </h3>
-                                                            <p className="text-xs text-gray-400 leading-relaxed">
-                                                                {isUnlocked ? achievement.description : '??? (Keep exploring to unlock)'}
+                                                            <p className="text-xs text-gray-400 leading-relaxed mb-2">
+                                                                {isUnlocked ? achievement.description : 'Keep exploring to unlock!'}
                                                             </p>
+
+                                                            {/* Hint for locked achievements */}
+                                                            {!isUnlocked && (
+                                                                <div className="flex items-start gap-2 mt-2 p-2 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                                                                    <Lightbulb className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                                                                    <p className="text-xs text-blue-300">
+                                                                        {achievement.hint}
+                                                                    </p>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>

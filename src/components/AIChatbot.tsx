@@ -48,23 +48,70 @@ const AIChatbot = () => {
         };
 
         setMessages(prev => [...prev, newMessage]);
+        const userInput = inputValue.toLowerCase();
         setInputValue('');
         setIsTyping(true);
 
-        // Simulate AI response
+        // Intelligent response system
         setTimeout(() => {
-            const responses = [
-                "I've updated my internal protocols to process that request.",
-                "Accessing neural pathways... interesting input.",
-                "Durvish is currently unavailable, but I have logged your query.",
-                "Visual systems optimized. Transmission received.",
-                "That exceeds my current parameters, but I'm learning."
-            ];
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            let responseText = '';
+
+            // Greetings
+            if (/^(hi|hello|hey|greetings|good morning|good afternoon|good evening)/.test(userInput)) {
+                const greetings = [
+                    "Hello! I'm Nexus, Durvish's AI assistant. How can I help you explore this portfolio today?",
+                    "Greetings! Welcome to Durvish's digital realm. What would you like to know?",
+                    "Hey there! I'm here to help you navigate through Durvish's work. What interests you?",
+                ];
+                responseText = greetings[Math.floor(Math.random() * greetings.length)];
+            }
+            // Farewells
+            else if (/^(bye|goodbye|see you|later|farewell)/.test(userInput)) {
+                const farewells = [
+                    "Goodbye! Feel free to return anytime you want to explore more.",
+                    "See you later! Don't forget to check out the projects section!",
+                    "Farewell! Hope you enjoyed your visit to Durvish's portfolio.",
+                ];
+                responseText = farewells[Math.floor(Math.random() * farewells.length)];
+            }
+            // Help
+            else if (/help|assist|guide|how/.test(userInput)) {
+                responseText = "I can help you with:\n• Information about Durvish\n• His skills and technologies\n• Project details\n• Contact information\n• Navigation tips\n\nJust ask me anything!";
+            }
+            // About Durvish
+            else if (/about|who is|tell me/.test(userInput)) {
+                responseText = "Durvish Sharma is a Full Stack Web Developer and Game Developer passionate about creating high-performance, beautiful, and interactive digital experiences. He specializes in React, Three.js, and modern web technologies with a focus on cinematic design.";
+            }
+            // Skills
+            else if (/skill|technology|tech stack|what.*know/.test(userInput)) {
+                responseText = "Durvish's tech stack includes:\n• Frontend: React, TypeScript, Tailwind CSS\n• 3D/Animation: Three.js, Framer Motion, GSAP\n• Backend: Node.js, Supabase\n• Game Dev: Unity, C#\n• Tools: Vite, Git, VS Code\n\nCheck out the Skills section for more details!";
+            }
+            // Contact
+            else if (/contact|email|reach|hire|work/.test(userInput)) {
+                responseText = "You can reach Durvish at:\n📧 Email: durvishsharma01@gmail.com\n💼 LinkedIn: linkedin.com/in/durvish-sharma\n🐙 GitHub: github.com/durvishsharma\n\nOr use the Contact form on this site!";
+            }
+            // Projects
+            else if (/project|work|portfolio|built/.test(userInput)) {
+                responseText = "Durvish has built amazing projects including:\n• NexusAI Landing Page\n• Horizon Dashboard\n• Aura E-commerce\n• Solaris 3D Experience\n\nScroll down to the Projects section to see them all!";
+            }
+            // Thanks
+            else if (/thank|thanks|appreciate/.test(userInput)) {
+                responseText = "You're welcome! Happy to help. Feel free to ask anything else!";
+            }
+            // Default responses
+            else {
+                const defaults = [
+                    "That's an interesting question! For specific details, you might want to explore the portfolio or contact Durvish directly.",
+                    "I'm still learning about that topic. Try asking about Durvish's skills, projects, or how to contact him!",
+                    "Hmm, I'm not sure about that. Would you like to know about Durvish's projects or skills instead?",
+                    "I've logged your query. For detailed information, feel free to navigate through the portfolio sections!",
+                ];
+                responseText = defaults[Math.floor(Math.random() * defaults.length)];
+            }
 
             const aiMessage: Message = {
                 id: (Date.now() + 1).toString(),
-                text: randomResponse,
+                text: responseText,
                 sender: 'ai',
                 senderName: 'Nexus AI',
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -89,7 +136,7 @@ const AIChatbot = () => {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed bottom-24 right-6 w-80 md:w-[400px] z-50"
+                        className="fixed bottom-24 md:bottom-24 right-6 w-[calc(100vw-3rem)] md:w-[400px] max-w-[400px] z-50"
                     >
                         <Card className="bg-[#111827]/95 backdrop-blur-2xl border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col h-[550px] rounded-[32px]">
                             {/* Header */}
@@ -208,7 +255,7 @@ const AIChatbot = () => {
                     whileHover={{ scale: 1.1, y: -5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => { playClick(); setIsOpen(true); }}
-                    className="fixed bottom-6 right-6 w-12 h-12 md:w-16 md:h-16 rounded-[20px] md:rounded-[24px] bg-primary shadow-[0_15px_30px_rgba(34,197,94,0.4)] flex items-center justify-center z-50 group transition-all"
+                    className="fixed bottom-6 right-6 md:right-6 w-12 h-12 md:w-16 md:h-16 rounded-[20px] md:rounded-[24px] bg-primary shadow-[0_15px_30px_rgba(34,197,94,0.4)] flex items-center justify-center z-[55] group transition-all"
                 >
                     <div className="absolute inset-0 rounded-[24px] bg-white/20 animate-ping group-hover:scale-110" />
                     <MessageSquare className="w-7 h-7 text-white" />

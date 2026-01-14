@@ -8,6 +8,7 @@ type Achievement = {
     id: string;
     title: string;
     description: string;
+    hint: string; // How to unlock this achievement
     icon: React.ReactNode;
 };
 
@@ -18,6 +19,7 @@ type AchievementContextType = {
     totalSystems: number;
     globalPioneers: any[];
     syncHandle: (handle: string) => Promise<void>;
+    achievements: Record<string, Achievement>; // Expose achievements
 };
 
 const AchievementContext = createContext<AchievementContextType | undefined>(undefined);
@@ -50,24 +52,28 @@ export const AchievementProvider = ({ children }: { children: React.ReactNode })
             id: 'night-owl',
             title: 'Night Owl',
             description: 'Visited the site late at night (10 PM - 4 AM).',
+            hint: '🌙 Visit this portfolio between 10 PM and 4 AM',
             icon: <Trophy className="w-5 h-5 text-yellow-400" />,
         },
         'explorer': {
             id: 'explorer',
             title: 'Explorer',
             description: 'Visited all main pages.',
+            hint: '🗺️ Navigate to at least 8 different pages/sections',
             icon: <Trophy className="w-5 h-5 text-blue-400" />,
         },
         'combo-breaker': {
             id: 'combo-breaker',
             title: 'Combo Breaker',
             description: 'Clicked 5 times in rapid succession!',
+            hint: '🖱️ Click anywhere on the page 5 times quickly',
             icon: <Trophy className="w-5 h-5 text-red-500" />,
         },
         'ghost-in-machine': {
             id: 'ghost-in-machine',
             title: 'Ghost in the Machine',
             description: 'Discovered the hidden ghost command.',
+            hint: '👻 Try typing "ghost" in the terminal or command center',
             icon: <Trophy className="w-5 h-5 text-green-400" />,
         },
     };
@@ -198,7 +204,8 @@ export const AchievementProvider = ({ children }: { children: React.ReactNode })
             systemsExplored: visitedRoutes.size,
             totalSystems,
             globalPioneers,
-            syncHandle
+            syncHandle,
+            achievements // Expose achievements with hints
         }}>
             {children}
         </AchievementContext.Provider>

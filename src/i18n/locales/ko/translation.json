@@ -1,0 +1,58 @@
+{
+    "nav": {
+        "home": "홈",
+        "about": "소개",
+        "skills": "기술",
+        "projects": "프로젝트",
+        "services": "서비스",
+        "beyond_work": "업무 외",
+        "contact": "연락처"
+    },
+    "hero": {
+        "greeting": "안녕하세요, 저는",
+        "role": "크리에이티브 프론트엔드 개발자",
+        "sub_role": "풀스택 웹 개발자 및 게임 개발자",
+        "description": "고성능의 아름답고 인터랙티브한 웹 디지털 경험을 설계하고 개발합니다. 성능과 현대적인 디자인 시스템에 중점을 둡니다.",
+        "mission_title": "미션:",
+        "mission_desc": "비밀 테마 및 업적 잠금 해제",
+        "cta_projects": "프로젝트 보기",
+        "cta_contact": "연락하기"
+    },
+    "about": {
+        "title": "소개",
+        "description": "아름답고 기능적인 사용자 경험을 만드는 것을 좋아하는 열정적인 개발자입니다."
+    },
+    "skills": {
+        "title_prefix": "기술",
+        "title_suffix": "무기고",
+        "description": "아이디어를 실현하기 위해 사용하는 도구와 기술의 끊임없이 확장되는 은하계."
+    },
+    "projects": {
+        "archive": "아카이브",
+        "title_prefix": "선택된",
+        "title_suffix": "프로젝트",
+        "view_case_study": "사례 연구 보기",
+        "parallel_tracks": "병렬 트랙",
+        "key_features": "주요 기능",
+        "tech_used": "사용된 기술",
+        "live_demo": "라이브 데모",
+        "view_code": "코드 보기"
+    },
+    "experience": {
+        "title_prefix": "경험 및",
+        "title_suffix": "기술",
+        "technical_proficiency": "기술 숙련도",
+        "professional_experience": "전문 경험",
+        "contribution_title": "주요 기여",
+        "workflow_title": "관련 워크플로우"
+    },
+    "globe": {
+        "title": "글로벌 발자취",
+        "subtitle": "전 세계에 영화 같은 솔루션 제공",
+        "project": "프로젝트",
+        "client": "클라이언트",
+        "view_case_study": "사례 연구 보기",
+        "status_completed": "완료됨",
+        "status_progress": "진행_중"
+    }
+}

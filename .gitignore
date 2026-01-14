@@ -99,13 +99,20 @@ Thumbs.db
 # --- Uploaded Files ---
 uploaded_files/
 
-# --- Development documentation (optional - keep if you want them in git) ---
-# Uncomment these if you don't want to commit documentation
-# FEATURES_COMPLETE.md
-# NAVIGATION_FIX.md
-# PERFORMANCE_OPTIMIZED.md
-# UI_ENHANCEMENTS.md
-# PORTFOLIO_CONTENT.md
+# --- Development documentation ---
+# Ignore all temporary documentation files
+*_SUMMARY.md
+*_COMPLETE.md
+*_GUIDE.md
+*_ROADMAP.md
+FEATURES_*.md
+IMPLEMENTATION_*.md
+LANGUAGES_*.md
+TRANSLATION_*.md
+ACHIEVEMENTS_*.md
+LOGIN_*.md
+# Keep only README.md
+!README.md
 
 # --- Temporary/Test files ---
 *.tmp

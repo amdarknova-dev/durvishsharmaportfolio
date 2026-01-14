@@ -30,7 +30,7 @@ const CommentaryOverlay = () => {
                     initial={{ opacity: 0, x: 100 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 100 }}
-                    className="fixed bottom-10 right-10 z-[10000] w-[350px]"
+                    className="fixed bottom-10 right-10 z-[10000] w-[300px] md:w-[350px] mb-24 md:mb-0 mr-4 md:mr-0"
                 >
                     <div className="relative glass-dark border border-primary/30 rounded-[24px] overflow-hidden p-6 shadow-[0_0_50px_rgba(34,197,94,0.1)]">
                         {/* Header */}

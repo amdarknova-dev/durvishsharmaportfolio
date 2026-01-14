@@ -70,7 +70,7 @@ const AboutMe = () => {
     ];
 
     return (
-        <div className="relative min-h-screen bg-background overflow-x-hidden pt-32">
+        <div className="relative min-h-screen bg-background overflow-x-hidden pt-24 md:pt-32 lg:pt-40">
             <ParticleBackground />
             <Navigation />
 
