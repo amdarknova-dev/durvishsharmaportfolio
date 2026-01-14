@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Lock, Star, X, Lightbulb } from 'lucide-react';
-import { useAchievements } from '@/context/AchievementContext';
+import { Trophy, Lock, X, Lightbulb } from 'lucide-react';
+import { useAchievements, ACHIEVEMENTS } from '@/context/AchievementContext';
 import { useSound } from '@/context/SoundContext';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const TrophyCase = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { unlocked, achievements } = useAchievements();
+    const { unlockedAchievements } = useAchievements();
     const { playHover, playClick } = useSound();
 
-    const achievementList = Object.values(achievements);
+    const achievementList = ACHIEVEMENTS;
 
     return (
         <>
@@ -24,9 +24,9 @@ const TrophyCase = () => {
                 className="relative glass border-white/10 hover:bg-white/10 rounded-xl w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-yellow-400"
             >
                 <Trophy className="w-5 h-5" />
-                {unlocked.length > 0 && (
+                {unlockedAchievements.length > 0 && (
                     <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white font-bold">
-                        {unlocked.length}
+                        {unlockedAchievements.length}
                     </span>
                 )}
             </Button>
@@ -70,14 +70,14 @@ const TrophyCase = () => {
                                         Trophy Case
                                     </h2>
                                     <p className="text-gray-400 text-sm">
-                                        {unlocked.length} / {achievementList.length} Achievements Unlocked
+                                        {unlockedAchievements.length} / {achievementList.length} Achievements Unlocked
                                     </p>
 
                                     {/* Progress Bar */}
                                     <div className="w-full h-2 bg-gray-800 rounded-full mt-4 overflow-hidden">
                                         <motion.div
                                             initial={{ width: 0 }}
-                                            animate={{ width: `${(unlocked.length / achievementList.length) * 100}%` }}
+                                            animate={{ width: `${(unlockedAchievements.length / achievementList.length) * 100}%` }}
                                             className="h-full bg-gradient-to-r from-yellow-600 to-yellow-400"
                                         />
                                     </div>
@@ -86,7 +86,7 @@ const TrophyCase = () => {
                                 <ScrollArea className="h-[400px] pr-4">
                                     <div className="space-y-4">
                                         {achievementList.map((achievement) => {
-                                            const isUnlocked = unlocked.includes(achievement.id);
+                                            const isUnlocked = unlockedAchievements.includes(achievement.id);
 
                                             return (
                                                 <div
@@ -104,7 +104,7 @@ const TrophyCase = () => {
                                                             w-12 h-12 rounded-full flex items-center justify-center shrink-0
                                                             ${isUnlocked ? 'bg-yellow-400/20 text-yellow-400' : 'bg-gray-900 text-gray-600'}
                                                         `}>
-                                                            {isUnlocked ? achievement.icon : <Lock className="w-5 h-5" />}
+                                                            {isUnlocked ? <Trophy className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
                                                         </div>
                                                         <div className="flex-1">
                                                             <h3 className={`font-bold mb-1 ${isUnlocked ? 'text-white' : 'text-gray-500'}`}>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
@@ -24,6 +24,8 @@ interface AchievementContextType {
     progress: number;
     globalPioneers: Pioneer[];
     syncHandle: (handle: string) => Promise<void>;
+    systemsExplored: number;
+    totalSystems: number;
 }
 
 const AchievementContext = createContext<AchievementContextType | undefined>(undefined);
@@ -44,6 +46,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     { id: 'explorer', title: 'Early Explorer', description: 'First time visiting the portfolio.', hint: 'Just show up!' }
 ];
 
+const TOTAL_SYSTEM_ROUTES = 5; // Home, Projects, Contact, Beyond Work, Lab
+
 export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>([]);
     const [visitedRoutes, setVisitedRoutes] = useState<Set<string>>(new Set());
@@ -51,31 +55,43 @@ export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ c
     const [clickCount, setClickCount] = useState(0);
     const location = useLocation();
     const { toast } = useToast();
-    const { username } = useHack();
+    const toastRef = useRef(toast);
+    toastRef.current = toast;
 
     // Load from local storage
     useEffect(() => {
         const saved = localStorage.getItem('achievements');
         if (saved) {
-            setUnlockedAchievements(JSON.parse(saved));
+            try {
+                setUnlockedAchievements(JSON.parse(saved));
+            } catch (e) {
+                console.error("Failed to parse achievements", e);
+            }
         }
     }, []);
 
     // Save to local storage
     useEffect(() => {
-        localStorage.setItem('achievements', JSON.stringify(unlockedAchievements));
+        if (unlockedAchievements.length > 0) {
+            localStorage.setItem('achievements', JSON.stringify(unlockedAchievements));
+        }
     }, [unlockedAchievements]);
 
     const unlockAchievement = useCallback((id: string) => {
-        if (!unlockedAchievements.includes(id)) {
-            setUnlockedAchievements(prev => [...prev, id]);
-            toast({
-                title: "ACHIEVEMENT UNLOCKED",
-                description: id,
-                className: "bg-primary border-primary text-black font-bold",
-            });
-        }
-    }, [unlockedAchievements, toast]);
+        setUnlockedAchievements(prev => {
+            if (prev.includes(id)) return prev;
+
+            setTimeout(() => {
+                toastRef.current({
+                    title: "ACHIEVEMENT UNLOCKED",
+                    description: id,
+                    className: "bg-primary border-primary text-black font-bold",
+                });
+            }, 0);
+
+            return [...prev, id];
+        });
+    }, []);
 
     const fetchGlobalStats = useCallback(async () => {
         const { data, error } = await supabase
@@ -105,20 +121,20 @@ export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }
     }, [unlockedAchievements.length, fetchGlobalStats]);
 
-    // Track page visits
     useEffect(() => {
         setVisitedRoutes(prev => {
+            if (prev.has(location.pathname)) return prev;
             const next = new Set(prev);
             next.add(location.pathname);
             return next;
         });
+    }, [location.pathname]);
 
+    useEffect(() => {
         if (location.pathname === '/' && !location.hash) {
-            if (!unlockedAchievements.includes('explorer')) {
-                unlockAchievement('explorer');
-            }
+            unlockAchievement('explorer');
         }
-    }, [location.pathname, location.hash, unlockedAchievements, unlockAchievement]);
+    }, [location.pathname, location.hash, unlockAchievement]);
 
     useEffect(() => {
         if (visitedRoutes.size >= 3) {
@@ -138,7 +154,6 @@ export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ c
         }
     }, [unlockedAchievements.length, unlockAchievement]);
 
-    // Combo Breaker Check
     useEffect(() => {
         if (clickCount >= 5) {
             unlockAchievement('combo-breaker');
@@ -168,7 +183,9 @@ export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ c
             unlockAchievement,
             progress,
             globalPioneers,
-            syncHandle
+            syncHandle,
+            systemsExplored: visitedRoutes.size,
+            totalSystems: TOTAL_SYSTEM_ROUTES
         }}>
             {children}
         </AchievementContext.Provider>

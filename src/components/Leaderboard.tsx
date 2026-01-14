@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Medal, Crown, Star, User, ShieldCheck, Terminal, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Trophy, Medal, Crown, Star, ShieldCheck, Terminal } from 'lucide-react';
 import { useAchievements, Pioneer } from '@/context/AchievementContext';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Progress } from './ui/progress';
 
 const Leaderboard = () => {
-    const { systemsExplored, totalSystems, unlocked, globalPioneers, syncHandle } = useAchievements();
+    const { systemsExplored, totalSystems, unlockedAchievements, globalPioneers, syncHandle } = useAchievements();
     const [name, setName] = useState('');
     const [isClaimed, setIsClaimed] = useState(false);
     const [isSyncing, setIsSyncing] = useState(false);
@@ -25,9 +25,9 @@ const Leaderboard = () => {
     };
 
     const getBadge = (count: number) => {
-        if (count >= 12) return 'Apex Pioneer';
-        if (count >= 8) return 'System Architect';
-        if (count >= 4) return 'Void Walker';
+        if (count >= 5) return 'Apex Pioneer';
+        if (count >= 3) return 'System Architect';
+        if (count >= 1) return 'Void Walker';
         return 'Binary Soul';
     };
 
@@ -83,7 +83,7 @@ const Leaderboard = () => {
                         <div className="pt-6 border-t border-white/5 grid grid-cols-2 gap-4">
                             <div className="space-y-1">
                                 <p className="text-[10px] text-gray-600 uppercase font-mono">Unlocked</p>
-                                <p className="text-xl font-bold text-white">{unlocked.length} <span className="text-xs text-gray-500 font-normal">Achievements</span></p>
+                                <p className="text-xl font-bold text-white">{unlockedAchievements.length} <span className="text-xs text-gray-500 font-normal">Achievements</span></p>
                             </div>
                             <div className="space-y-1 text-right">
                                 <p className="text-[10px] text-gray-600 uppercase font-mono">Rank</p>
@@ -163,13 +163,13 @@ const Leaderboard = () => {
                                                 {index === 0 && <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
                                             </div>
                                             <div className="text-[10px] text-gray-600 uppercase tracking-[0.2em] font-mono">
-                                                {getBadge(leader.systems_explored)}
+                                                {getBadge(leader.achievements)}
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="text-right">
-                                        <div className="text-xl font-bold text-white">{leader.systems_explored}</div>
+                                        <div className="text-xl font-bold text-white">{leader.achievements}</div>
                                         <div className="text-[10px] text-gray-600 font-mono italic">{formatDate(leader.last_active)}</div>
                                     </div>
                                 </div>

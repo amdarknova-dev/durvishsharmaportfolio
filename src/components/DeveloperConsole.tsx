@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, X, Minimize2, Settings, Zap, Moon, Sun, Smartphone, Trophy, Lock } from 'lucide-react';
+import { Terminal, X, Settings, Zap, Trophy, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select";
 import { useHack, ThemeMode } from '@/context/HackContext';
 import { useSound } from '@/context/SoundContext';
-import { Card } from '@/components/ui/card';
 import { useAchievements } from '@/context/AchievementContext';
 import { useWeather } from '@/context/WeatherContext';
 import { CloudRain, CloudLightning, Sun as SunIcon, Moon as MoonIcon, Cloud } from 'lucide-react';
@@ -22,7 +21,7 @@ const DeveloperConsole = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { gravity, setGravity, glowIntensity, setGlowIntensity, themeMode, setThemeMode, isOverclocked, toggleOverclock } = useHack();
     const { playClick, playHover } = useSound();
-    const { unlocked, unlockAchievement } = useAchievements();
+    const { unlockedAchievements, unlockAchievement } = useAchievements();
     const { condition, setCondition, temp, location } = useWeather();
 
     // Hardcoded list for display (duplicating context generic list logic for UI simplicity here, normally should export list from context)
@@ -31,13 +30,6 @@ const DeveloperConsole = () => {
         { id: 'night-owl', title: 'Night Owl', desc: 'Visit late at night (10PM-4AM)' },
         { id: 'combo-breaker', title: 'Combo Breaker', desc: 'Click 5 times rapidly' }
     ];
-
-    useEffect(() => {
-        // Initial check for 'Systems Explorer' (viewed 3 unique routes)
-        if (visitedRoutes.size >= 3) {
-            unlockAchievement('Systems Explorer');
-        }
-    }, [visitedRoutes.size, unlockAchievement]);
 
     return (
         <>
@@ -227,11 +219,11 @@ const DeveloperConsole = () => {
                                 {/* Achievements Panel */}
                                 <div className="space-y-4">
                                     <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider flex items-center gap-2">
-                                        <Trophy className="w-4 h-4" /> Achievements ({unlocked.length}/{allAchievements.length})
+                                        <Trophy className="w-4 h-4" /> Achievements ({unlockedAchievements.length}/{allAchievements.length})
                                     </h3>
                                     <div className="grid gap-3">
                                         {allAchievements.map(ach => {
-                                            const isUnlocked = unlocked.includes(ach.id);
+                                            const isUnlocked = unlockedAchievements.includes(ach.id);
                                             return (
                                                 <div
                                                     key={ach.id}
