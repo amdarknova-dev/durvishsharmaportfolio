@@ -11,7 +11,7 @@ interface CommandItem {
     id: string;
     title: string;
     description: string;
-    icon: any;
+    icon: LucideIcon;
     section?: string;
     path?: string;
     keywords: string[];

@@ -8,30 +8,25 @@ const VisitorCounter = () => {
     const [currentVisitor, setCurrentVisitor] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        initializeVisitor();
-    }, []);
-
-    const initializeVisitor = async () => {
+    const fetchVisitorCount = React.useCallback(async () => {
         try {
-            // Check if visitor has been counted before
-            const hasVisited = localStorage.getItem('portfolio_visited');
+            const { data } = await supabase
+                .from('visitor_stats')
+                .select('total_visitors')
+                .eq('id', 'main')
+                .single();
 
-            if (!hasVisited) {
-                // Increment visitor count
-                await incrementVisitorCount();
-                localStorage.setItem('portfolio_visited', 'true');
-            } else {
-                // Just fetch current count
-                await fetchVisitorCount();
+            if (data) {
+                setTotalVisitors(data.total_visitors);
             }
         } catch (error) {
-            console.error('Error initializing visitor:', error);
+            console.error('Error fetching visitor count:', error);
+        } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
-    const incrementVisitorCount = async () => {
+    const incrementVisitorCount = React.useCallback(async () => {
         try {
             // Get current count
             const { data: currentData } = await supabase
@@ -60,25 +55,30 @@ const VisitorCounter = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
-    const fetchVisitorCount = async () => {
+    const initializeVisitor = React.useCallback(async () => {
         try {
-            const { data } = await supabase
-                .from('visitor_stats')
-                .select('total_visitors')
-                .eq('id', 'main')
-                .single();
+            // Check if visitor has been counted before
+            const hasVisited = localStorage.getItem('portfolio_visited');
 
-            if (data) {
-                setTotalVisitors(data.total_visitors);
+            if (!hasVisited) {
+                // Increment visitor count
+                await incrementVisitorCount();
+                localStorage.setItem('portfolio_visited', 'true');
+            } else {
+                // Just fetch current count
+                await fetchVisitorCount();
             }
         } catch (error) {
-            console.error('Error fetching visitor count:', error);
-        } finally {
+            console.error('Error initializing visitor:', error);
             setIsLoading(false);
         }
-    };
+    }, [incrementVisitorCount, fetchVisitorCount]);
+
+    useEffect(() => {
+        initializeVisitor();
+    }, [initializeVisitor]);
 
     const formatNumber = (num: number) => {
         return num.toLocaleString();

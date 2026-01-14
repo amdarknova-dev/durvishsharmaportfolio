@@ -119,7 +119,7 @@ const Carousel = ({ projects, onSelect }: { projects: Project[], onSelect: (p: P
     );
 };
 
-const HolographicProjectGallery = ({ projects, onSelectProject }: { projects: any[], onSelectProject: (p: any) => void }) => {
+const HolographicProjectGallery = ({ projects, onSelectProject }: { projects: Project[], onSelectProject: (p: Project) => void }) => {
     return (
         <div className="w-full h-[600px] border border-white/10 rounded-3xl overflow-hidden bg-black/50 relative">
             <div className="absolute top-4 left-4 z-10 pointer-events-none">

@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 
 interface SoundContextType {
     isPlaying: boolean;
@@ -22,27 +22,32 @@ export const useSound = () => {
 };
 
 
+declare global {
+    interface Window {
+        webkitAudioContext: typeof AudioContext;
+    }
+}
+
 export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     // Sound priority: default to true
     const [isPlaying, setIsPlaying] = useState(true);
     const audioContextRef = useRef<AudioContext | null>(null);
-    const droneOscillatorRef = useRef<OscillatorNode | null>(null);
+    const droneOscillatorRef = useRef<AudioBufferSourceNode | OscillatorNode | null>(null);
     const droneGainRef = useRef<GainNode | null>(null);
     const hasStartedRef = useRef(false);
 
     // Initialize Audio Context on user interaction (browser policy)
-    const initAudio = () => {
+    const initAudio = useCallback(() => {
         if (!audioContextRef.current) {
-            audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+            audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
         }
         if (audioContextRef.current.state === 'suspended') {
             audioContextRef.current.resume();
         }
-    };
+    }, []);
 
-    const startDrone = () => {
+    const startDrone = useCallback(() => {
         if (!audioContextRef.current) initAudio();
-        // Prevent multiple drones
         if (droneOscillatorRef.current) return;
 
         const ctx = audioContextRef.current!;
@@ -76,28 +81,26 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         gain.connect(ctx.destination);
 
         noise.start();
-        (noise as any).stopNode = noise;
         droneGainRef.current = gain;
-        droneOscillatorRef.current = noise as any;
-    };
+        droneOscillatorRef.current = noise;
+    }, [initAudio]);
 
-    const stopDrone = () => {
+    const stopDrone = useCallback(() => {
         if (droneGainRef.current) {
-            // Fade out
             const ctx = audioContextRef.current;
             if (ctx) {
                 droneGainRef.current.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
                 setTimeout(() => {
                     if (droneOscillatorRef.current) {
-                        (droneOscillatorRef.current as any).stopNode?.stop();
+                        droneOscillatorRef.current.stop();
                         droneOscillatorRef.current = null;
                     }
                 }, 500);
             }
         }
-    };
+    }, []);
 
-    const toggleSound = () => {
+    const toggleSound = useCallback(() => {
         if (isPlaying) {
             stopDrone();
             setIsPlaying(false);
@@ -106,7 +109,7 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             startDrone();
             setIsPlaying(true);
         }
-    };
+    }, [isPlaying, stopDrone, initAudio, startDrone]);
 
     // Auto-start audio on first interaction if playing is true
     useEffect(() => {
@@ -125,11 +128,11 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             window.removeEventListener('click', handleInteraction);
             window.removeEventListener('keydown', handleInteraction);
         };
-    }, [isPlaying]);
+    }, [isPlaying, initAudio, startDrone]);
 
 
     // SFX Generators
-    const playSpatial = (freq: number, dur: number, x: number = 0) => {
+    const playSpatial = useCallback((freq: number, dur: number, x: number = 0) => {
         if (!isPlaying) return;
         if (!audioContextRef.current) initAudio();
         const ctx = audioContextRef.current;
@@ -155,25 +158,24 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
         osc.start();
         osc.stop(ctx.currentTime + dur);
-    };
+    }, [isPlaying, initAudio]);
 
-    const playHover = (x: number = 0) => {
+    const playHover = useCallback((x: number = 0) => {
         playSpatial(400, 0.05, x);
-    };
+    }, [playSpatial]);
 
-    const playClick = (x: number = 0) => {
+    const playClick = useCallback((x: number = 0) => {
         playSpatial(150, 0.1, x);
-    };
+    }, [playSpatial]);
 
-    const playWhoosh = () => {
+    const playWhoosh = useCallback(() => {
         if (!isPlaying) return;
         if (!audioContextRef.current) initAudio();
 
         const ctx = audioContextRef.current;
         if (!ctx) return;
 
-        // White noise burst for "whoosh"
-        const bufferSize = ctx.sampleRate * 0.5; // 0.5 seconds
+        const bufferSize = ctx.sampleRate * 0.5;
         const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
         const data = buffer.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) {
@@ -192,7 +194,6 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const gain = ctx.createGain();
         gain.gain.setValueAtTime(0, ctx.currentTime);
         gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.2);
-
         gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
 
         noise.connect(filter);
@@ -200,22 +201,21 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         gain.connect(ctx.destination);
 
         noise.start();
-    };
+    }, [isPlaying, initAudio]);
 
-    const playSuccess = () => {
+    const playSuccess = useCallback(() => {
         if (!isPlaying) return;
         if (!audioContextRef.current) initAudio();
 
         const ctx = audioContextRef.current;
         if (!ctx) return;
 
-        // "Warp Drive" / Transmission sound
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(200, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.3); // Zip up
+        osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.3);
         osc.frequency.linearRampToValueAtTime(1200, ctx.currentTime + 0.6);
 
         gain.gain.setValueAtTime(0, ctx.currentTime);
@@ -228,7 +228,6 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         osc.start();
         osc.stop(ctx.currentTime + 0.8);
 
-        // Add a secondary chime
         const chime = ctx.createOscillator();
         const chimeGain = ctx.createGain();
         chime.type = 'sine';
@@ -243,12 +242,21 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         chimeGain.connect(ctx.destination);
         chime.start();
         chime.stop(ctx.currentTime + 1.0);
-    };
+    }, [isPlaying, initAudio]);
+
+    const contextValue = useMemo(() => ({
+        isPlaying,
+        toggleSound,
+        playHover,
+        playClick,
+        playWhoosh,
+        playSuccess,
+        playSpatial
+    }), [isPlaying, toggleSound, playHover, playClick, playWhoosh, playSuccess, playSpatial]);
 
     return (
-        <SoundContext.Provider value={{ isPlaying, toggleSound, playHover, playClick, playWhoosh, playSuccess, playSpatial }}>
+        <SoundContext.Provider value={contextValue}>
             {children}
         </SoundContext.Provider>
     );
 };
-

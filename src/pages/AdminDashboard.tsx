@@ -14,11 +14,18 @@ type VisitorData = {
     org: string;
 };
 
+type LogEntry = {
+    timestamp: string;
+    ip: string;
+    status: string;
+    action: string;
+};
+
 const AdminDashboard = () => {
     const { isAdmin } = useHack();
     const navigate = useNavigate();
     const [visitor, setVisitor] = useState<VisitorData | null>(null);
-    const [logs, setLogs] = useState<any[]>([]);
+    const [logs, setLogs] = useState<LogEntry[]>([]);
     const [analytics, setAnalytics] = useState(getAnalyticsData());
 
     useEffect(() => {
@@ -40,7 +47,7 @@ const AdminDashboard = () => {
 
     }, [isAdmin, navigate]);
 
-    const generateFakelogs = (realData: any) => {
+    const generateFakelogs = (realData: Partial<VisitorData>) => {
         // Generate some visual "filler" logs to look cool
         const fakeIps = ['192.168.1.105', '10.0.0.52', '172.16.0.23', '203.54.12.5'];
         const actions = ['ACCESS_REQUEST', 'PORT_SCAN', 'PAGE_VIEW', 'FILE_DOWNLOAD'];

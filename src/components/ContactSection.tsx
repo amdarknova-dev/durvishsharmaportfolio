@@ -55,7 +55,7 @@ const ContactSection = () => {
     const digitsOnly = phone.replace(/\D/g, '');
 
     // Check if it contains only digits and common phone characters
-    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+    const phoneRegex = /^[\d\s\-+()]+$/;
     if (!phoneRegex.test(phone)) {
       return 'Phone number can only contain digits, spaces, +, -, ( )';
     }

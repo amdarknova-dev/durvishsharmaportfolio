@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Medal, Crown, Star, User, ShieldCheck, Terminal, ArrowRight } from 'lucide-react';
-import { useAchievements } from '@/context/AchievementContext';
+import { useAchievements, Pioneer } from '@/context/AchievementContext';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Progress } from './ui/progress';
@@ -145,7 +145,7 @@ const Leaderboard = () => {
 
                     <div className="space-y-4">
                         {globalPioneers.length > 0 ? (
-                            globalPioneers.map((leader: any, index: number) => (
+                            globalPioneers.map((leader: Pioneer, index: number) => (
                                 <div
                                     key={leader.handle}
                                     className="group flex items-center justify-between p-5 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300 relative overflow-hidden"

@@ -13,8 +13,8 @@ import * as t from '@babel/types';
 
 
 // CJS/ESM interop for Babel libs
-const traverse: typeof _traverse.default = ( (_traverse as any).default ?? _traverse ) as any;
-const generate: typeof _generate.default = ( (_generate as any).default ?? _generate ) as any;
+const traverse = ((_traverse as any).default ?? _traverse) as typeof _traverse;
+const generate = ((_generate as any).default ?? _generate) as typeof _generate;
 
 function cdnPrefixImages(): Plugin {
   const DEBUG = process.env.CDN_IMG_DEBUG === '1';
@@ -141,7 +141,7 @@ function cdnPrefixImages(): Plugin {
     const stack = [imagesDir];
     while (stack.length) {
       const cur = stack.pop()!;
-      let entries: any[] = [];
+      let entries: import('node:fs').Dirent[] = [];
       try {
         entries = await fs.readdir(cur, { withFileTypes: true });
       } catch {
@@ -216,7 +216,7 @@ export default defineConfig(({ mode }) => {
       mode === 'development' &&
       componentTagger(),
       cdnPrefixImages(),
-    ].filter(Boolean),
+    ].filter(Boolean) as Plugin[],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -231,7 +231,7 @@ export default defineConfig(({ mode }) => {
       // In production, this will be false by default unless explicitly set to 'true'
       // In development and test, this will be true by default
       __ROUTE_MESSAGING_ENABLED__: JSON.stringify(
-        mode === 'production' 
+        mode === 'production'
           ? process.env.VITE_ENABLE_ROUTE_MESSAGING === 'true'
           : process.env.VITE_ENABLE_ROUTE_MESSAGING !== 'false'
       ),

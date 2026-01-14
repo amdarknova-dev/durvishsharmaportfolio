@@ -11,7 +11,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useHack } from '@/context/HackContext';
+import { useHack, ThemeMode } from '@/context/HackContext';
 import { useSound } from '@/context/SoundContext';
 import { Card } from '@/components/ui/card';
 import { useAchievements } from '@/context/AchievementContext';
@@ -31,6 +31,13 @@ const DeveloperConsole = () => {
         { id: 'night-owl', title: 'Night Owl', desc: 'Visit late at night (10PM-4AM)' },
         { id: 'combo-breaker', title: 'Combo Breaker', desc: 'Click 5 times rapidly' }
     ];
+
+    useEffect(() => {
+        // Initial check for 'Systems Explorer' (viewed 3 unique routes)
+        if (visitedRoutes.size >= 3) {
+            unlockAchievement('Systems Explorer');
+        }
+    }, [visitedRoutes.size, unlockAchievement]);
 
     return (
         <>
@@ -98,7 +105,7 @@ const DeveloperConsole = () => {
                                         </h3>
                                         <Badge variant="outline" className="text-primary border-primary/20 bg-primary/10">Active</Badge>
                                     </div>
-                                    <Select value={themeMode} onValueChange={(val: any) => { playClick(); setThemeMode(val); }}>
+                                    <Select value={themeMode} onValueChange={(value: string) => { playClick(); setThemeMode(value as ThemeMode); }}>
                                         <SelectTrigger className="w-full bg-white/5 border-white/10 text-white">
                                             <SelectValue placeholder="Select Theme" />
                                         </SelectTrigger>
@@ -167,7 +174,7 @@ const DeveloperConsole = () => {
                                             min={0.1}
                                             max={3.0}
                                             step={0.1}
-                                            onValueChange={([val]) => setGravity(val)}
+                                            onValueChange={([val]: [number]) => setGravity(val)}
                                             className="cursor-pointer"
                                         />
                                     </div>

@@ -1,6 +1,12 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 
+declare global {
+    interface Window {
+        lenis: Lenis;
+    }
+}
+
 const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const lenis = new Lenis({
@@ -21,7 +27,7 @@ const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
         requestAnimationFrame(raf);
 
         // Provide lenis instance to global window for external access (like GSAP ScrollTrigger)
-        (window as any).lenis = lenis;
+        window.lenis = lenis;
 
         return () => {
             lenis.destroy();

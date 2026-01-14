@@ -44,7 +44,7 @@ const HallOfFame = () => {
                     schema: 'public',
                     table: 'hall_of_fame'
                 },
-                () => {
+                (_payload: { new: HallOfFameEntry }) => {
                     fetchEntries();
                 }
             )

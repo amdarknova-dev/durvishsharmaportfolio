@@ -1,13 +1,15 @@
-
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
-import { Gamepad2, Layers, Cpu, Code } from 'lucide-react';
+import { Gamepad2, Layers, Cpu, Code, LucideIcon } from 'lucide-react';
+import GravityWell from '@/components/experiments/GravityWell';
+import ShaderEditor from '@/components/ShaderEditor';
+import * as THREE from 'three';
 
 const AnimatedSphere = () => {
-    const sphereRef = useRef<any>(null);
+    const sphereRef = useRef<THREE.MeshDistortMaterialImpl>(null!);
     useFrame(({ clock }) => {
         if (sphereRef.current) {
             sphereRef.current.distort = 0.4 + Math.sin(clock.getElapsedTime()) * 0.2;
@@ -29,7 +31,7 @@ const AnimatedSphere = () => {
     );
 };
 
-const LabItem = ({ title, description, icon: Icon, type, onClick }: { title: string, description: string, icon: any, type: string, onClick?: () => void }) => {
+const LabItem = ({ title, description, icon: Icon, type, onClick }: { title: string, description: string, icon: LucideIcon, type: string, onClick?: () => void }) => {
     return (
         <motion.div
             whileHover={{ scale: 1.02 }}
@@ -59,8 +61,6 @@ const LabItem = ({ title, description, icon: Icon, type, onClick }: { title: str
         </motion.div>
     )
 }
-
-import ShaderEditor from '@/components/ShaderEditor';
 
 const TheLab = () => {
     const [activeExperiment, setActiveExperiment] = useState<string | null>(null);

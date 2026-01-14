@@ -77,12 +77,29 @@ const projectLocations = [
     }
 ];
 
+interface ProjectLocation {
+    id: number;
+    city: string;
+    country: string;
+    lat: number;
+    lng: number;
+    project: string;
+    client: string;
+    color: string;
+    size: number;
+}
+
+interface GlobeMethods {
+    controls: () => { autoRotate: boolean; autoRotateSpeed: number };
+    pointOfView: (pov: { lat: number; lng: number; altitude: number }, transitionMs?: number) => void;
+}
+
 const ProjectGlobe = () => {
-    const globeRef = useRef<any>(null);
+    const globeRef = useRef<GlobeMethods>(null!);
     const { t } = useTranslation();
     const isMobile = useMobile();
     const { playHover, playClick } = useSound();
-    const [selectedPoint, setSelectedPoint] = useState<any>(null);
+    const [selectedPoint, setSelectedPoint] = useState<ProjectLocation | null>(null);
 
     useEffect(() => {
         if (globeRef.current) {
@@ -116,7 +133,7 @@ const ProjectGlobe = () => {
             </div>
 
             <Globe
-                ref={globeRef}
+                ref={globeRef as any}
                 height={isMobile ? 400 : 600}
                 backgroundColor="rgba(0,0,0,0)"
                 globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
@@ -130,12 +147,13 @@ const ProjectGlobe = () => {
                 pointRadius="size"
                 pointAltitude={0.05}
                 pointsMerge={true}
-                onPointClick={(point: any) => {
+                onPointClick={(point: object) => {
+                    const p = point as ProjectLocation;
                     playClick();
-                    setSelectedPoint(point);
+                    setSelectedPoint(p);
                     globeRef.current.pointOfView({
-                        lat: point.lat,
-                        lng: point.lng,
+                        lat: p.lat,
+                        lng: p.lng,
                         altitude: 1.5
                     }, 800);
                 }}

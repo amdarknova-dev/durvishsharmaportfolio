@@ -29,7 +29,7 @@ const Navigation = () => {
   const [blobPosition, setBlobPosition] = useState({ left: 0, width: 0 });
   const navItemsRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
-  const navItems = [
+  const navItems = React.useMemo(() => [
     { id: 'home', label: t('nav.home') },
     { id: 'about', label: t('nav.about') },
     { id: 'skills', label: t('nav.skills') },
@@ -39,7 +39,7 @@ const Navigation = () => {
     { id: 'beyond-work', label: 'Beyond Work', path: '/beyond-work' },
     { id: 'blog', label: 'Blog', path: '/blog' },
     { id: 'contact', label: t('nav.contact'), path: '/contact' },
-  ];
+  ], [t]);
 
   const { playHover, playClick } = useSound();
 
@@ -74,7 +74,7 @@ const Navigation = () => {
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname]);
+  }, [location.pathname, navItems]);
 
   // Update blob position when active section changes
   useEffect(() => {
@@ -254,7 +254,7 @@ const Navigation = () => {
                     transition={{ delay: 0.5 + (i * 0.1) }}
                     className="w-12 h-12 rounded-2xl glass border-white/10 flex items-center justify-center text-gray-400 active:text-primary active:border-primary/50 active:scale-90 transition-all"
                   >
-                    {React.cloneElement(social.icon as React.ReactElement<any>, { size: 20 })}
+                    {React.cloneElement(social.icon as React.ReactElement<{ size: number }>, { size: 20 })}
                   </motion.button>
                 ))}
               </div>

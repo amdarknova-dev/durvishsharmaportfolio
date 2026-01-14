@@ -6,6 +6,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { supabase } from '@/lib/supabase';
 
+interface SystemStatus {
+    is_available: boolean;
+    status_message: string;
+}
+
 const StatusBadge = () => {
     const navigate = useNavigate();
     const [status, setStatus] = React.useState({
@@ -41,14 +46,14 @@ const StatusBadge = () => {
         const channel = supabase
             .channel('status_sync')
             .on(
-                'postgres_changes' as any,
+                'postgres_changes' as never,
                 {
                     event: 'UPDATE',
                     schema: 'public',
                     table: 'system_status',
                     filter: 'id=eq.current_status'
                 },
-                (payload: any) => {
+                (payload: { new: SystemStatus }) => {
                     setStatus({
                         isAvailable: payload.new.is_available,
                         message: payload.new.status_message

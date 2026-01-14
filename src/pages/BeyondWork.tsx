@@ -32,6 +32,16 @@ import { Button } from '@/components/ui/button';
 import { useSound } from '@/context/SoundContext';
 import { useNavigate } from 'react-router-dom';
 
+type NeuralThought = {
+    id: string;
+    title: string;
+    date: string;
+    readTime: string;
+    category: string;
+    excerpt: string;
+    content: string;
+};
+
 const BeyondWork = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [isGameOpen, setIsGameOpen] = useState(false);
@@ -87,7 +97,7 @@ const BeyondWork = () => {
         }
     ];
 
-    const [selectedThought, setSelectedThought] = useState<any>(null);
+    const [selectedThought, setSelectedThought] = useState<NeuralThought | null>(null);
 
     const neuralThoughts = [
         {

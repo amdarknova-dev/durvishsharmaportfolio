@@ -150,7 +150,7 @@ const ProjectsSection = () => {
   const featuredProjects = filteredProjects.filter(p => p.featured);
   const otherProjects = filteredProjects.filter(p => !p.featured);
 
-  const cardVariants = {
+  const cardVariants: import('framer-motion').Variants = {
     initial: { scale: 1.1, opacity: 0, y: 50 },
     animate: {
       scale: 1,
@@ -161,9 +161,9 @@ const ProjectsSection = () => {
         ease: [0.22, 1, 0.36, 1]
       }
     }
-  } as any;
+  };
 
-  const contentVars = {
+  const contentVars: import('framer-motion').Variants = {
     initial: { opacity: 0, x: -20 },
     animate: {
       opacity: 1,
@@ -174,7 +174,7 @@ const ProjectsSection = () => {
         ease: "easeOut"
       }
     }
-  } as any;
+  };
 
   return (
     <section id="projects" ref={sectionRef} className="relative py-32 px-6 bg-[#050505] scroll-mt-24 md:scroll-mt-32 overflow-hidden">

@@ -1,26 +1,30 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Trophy } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { useToast } from '@/hooks/use-toast';
+import { useHack } from './HackContext';
 
-type Achievement = {
+export interface Achievement {
     id: string;
     title: string;
     description: string;
-    hint: string; // How to unlock this achievement
-    icon: React.ReactNode;
-};
+    hint: string;
+}
 
-type AchievementContextType = {
-    unlocked: string[];
+export interface Pioneer {
+    handle: string;
+    points: number;
+    achievements: number;
+    last_active: string;
+}
+
+interface AchievementContextType {
+    unlockedAchievements: string[];
     unlockAchievement: (id: string) => void;
-    systemsExplored: number;
-    totalSystems: number;
-    globalPioneers: any[];
+    progress: number;
+    globalPioneers: Pioneer[];
     syncHandle: (handle: string) => Promise<void>;
-    achievements: Record<string, Achievement>; // Expose achievements
-};
+}
 
 const AchievementContext = createContext<AchievementContextType | undefined>(undefined);
 
@@ -32,189 +36,141 @@ export const useAchievements = () => {
     return context;
 };
 
-export const AchievementProvider = ({ children }: { children: React.ReactNode }) => {
-    const [unlocked, setUnlocked] = useState<string[]>(() => {
-        const saved = localStorage.getItem('nexus_achievements');
-        return saved ? JSON.parse(saved) : [];
-    });
-    const { toast } = useToast();
-    const location = useLocation();
-    const [visitedRoutes, setVisitedRoutes] = useState<Set<string>>(() => {
-        const saved = localStorage.getItem('nexus_visited_routes');
-        return saved ? new Set(JSON.parse(saved)) : new Set();
-    });
+export const ACHIEVEMENTS: Achievement[] = [
+    { id: 'Systems Explorer', title: 'Systems Explorer', description: 'Visited 3 unique routes.', hint: 'Explore more of the site.' },
+    { id: 'Hyper-Navigator', title: 'Hyper-Navigator', description: 'Visited projects, contact, and beyond-work.', hint: 'Visit the key sections.' },
+    { id: 'Achievement Hunter', title: 'Achievement Hunter', description: 'Unlocked 5 achievements.', hint: 'Keep collecting.' },
+    { id: 'combo-breaker', title: 'Combo Breaker', description: 'Clicked 5 times rapidly.', hint: 'Try clicking things fast.' },
+    { id: 'explorer', title: 'Early Explorer', description: 'First time visiting the portfolio.', hint: 'Just show up!' }
+];
+
+export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>([]);
+    const [visitedRoutes, setVisitedRoutes] = useState<Set<string>>(new Set());
+    const [globalPioneers, setGlobalPioneers] = useState<Pioneer[]>([]);
     const [clickCount, setClickCount] = useState(0);
-    const [globalPioneers, setGlobalPioneers] = useState<any[]>([]);
-    const totalSystems = 12; // Adjusted to include sections + pages
+    const location = useLocation();
+    const { toast } = useToast();
+    const { username } = useHack();
 
-    const achievements: Record<string, Achievement> = {
-        'night-owl': {
-            id: 'night-owl',
-            title: 'Night Owl',
-            description: 'Visited the site late at night (10 PM - 4 AM).',
-            hint: '🌙 Visit this portfolio between 10 PM and 4 AM',
-            icon: <Trophy className="w-5 h-5 text-yellow-400" />,
-        },
-        'explorer': {
-            id: 'explorer',
-            title: 'Explorer',
-            description: 'Visited all main pages.',
-            hint: '🗺️ Navigate to at least 8 different pages/sections',
-            icon: <Trophy className="w-5 h-5 text-blue-400" />,
-        },
-        'combo-breaker': {
-            id: 'combo-breaker',
-            title: 'Combo Breaker',
-            description: 'Clicked 5 times in rapid succession!',
-            hint: '🖱️ Click anywhere on the page 5 times quickly',
-            icon: <Trophy className="w-5 h-5 text-red-500" />,
-        },
-        'ghost-in-machine': {
-            id: 'ghost-in-machine',
-            title: 'Ghost in the Machine',
-            description: 'Discovered the hidden ghost command.',
-            hint: '👻 Try typing "ghost" in the terminal or command center',
-            icon: <Trophy className="w-5 h-5 text-green-400" />,
-        },
-    };
+    // Load from local storage
+    useEffect(() => {
+        const saved = localStorage.getItem('achievements');
+        if (saved) {
+            setUnlockedAchievements(JSON.parse(saved));
+        }
+    }, []);
 
-    const unlockAchievement = (id: string) => {
-        if (!unlocked.includes(id)) {
-            const newUnlocked = [...unlocked, id];
-            setUnlocked(newUnlocked);
-            localStorage.setItem('nexus_achievements', JSON.stringify(newUnlocked));
+    // Save to local storage
+    useEffect(() => {
+        localStorage.setItem('achievements', JSON.stringify(unlockedAchievements));
+    }, [unlockedAchievements]);
 
-            const achievement = achievements[id];
+    const unlockAchievement = useCallback((id: string) => {
+        if (!unlockedAchievements.includes(id)) {
+            setUnlockedAchievements(prev => [...prev, id]);
             toast({
-                title: "Achievement Unlocked! 🏆",
-                description: `${achievement.title}: ${achievement.description}`,
-                className: "border-primary/50 bg-black/90 text-white",
-                duration: 4000,
+                title: "ACHIEVEMENT UNLOCKED",
+                description: id,
+                className: "bg-primary border-primary text-black font-bold",
             });
         }
-    };
+    }, [unlockedAchievements, toast]);
 
-    // Night Owl Check
-    const hasCheckedOwl = React.useRef(false); // Ref to ensure we run this once per session/mount
+    const fetchGlobalStats = useCallback(async () => {
+        const { data, error } = await supabase
+            .from('pioneers')
+            .select('*')
+            .order('points', { ascending: false })
+            .limit(10);
 
-    useEffect(() => {
-        if (hasCheckedOwl.current) return;
-
-        const hours = new Date().getHours();
-        if (hours >= 22 || hours <= 4) {
-            unlockAchievement('night-owl');
+        if (!error && data) {
+            setGlobalPioneers(data as Pioneer[]);
         }
-        hasCheckedOwl.current = true;
-    }, []); // Run once on mount
+    }, []);
 
-    // Explorer Check
+    const syncHandle = useCallback(async (handle: string) => {
+        const points = unlockedAchievements.length * 100;
+        const { error } = await supabase
+            .from('pioneers')
+            .upsert({
+                handle,
+                points,
+                achievements: unlockedAchievements.length,
+                last_active: new Date().toISOString()
+            });
+
+        if (!error) {
+            fetchGlobalStats();
+        }
+    }, [unlockedAchievements.length, fetchGlobalStats]);
+
+    // Track page visits
     useEffect(() => {
-        const currentPath = location.pathname + (location.hash || '');
-        if (!visitedRoutes.has(currentPath)) {
-            const newVisited = new Set(visitedRoutes);
-            newVisited.add(currentPath);
-            setVisitedRoutes(newVisited);
-            localStorage.setItem('nexus_visited_routes', JSON.stringify(Array.from(newVisited)));
+        setVisitedRoutes(prev => {
+            const next = new Set(prev);
+            next.add(location.pathname);
+            return next;
+        });
 
-            const mainSystems = [
-                '/', '/about-me', '/skills', '/projects', '/experience', '/beyond-work', '/contact', '/blog',
-                '#skills', '#projects', '#experience', '#contact'
-            ];
-
-            const visitedCount = mainSystems.filter(sys =>
-                Array.from(newVisited).some(v => v.includes(sys))
-            ).length;
-
-            if (visitedCount >= 8) {
+        if (location.pathname === '/' && !location.hash) {
+            if (!unlockedAchievements.includes('explorer')) {
                 unlockAchievement('explorer');
             }
         }
-    }, [location.pathname, location.hash]);
+    }, [location.pathname, location.hash, unlockedAchievements, unlockAchievement]);
+
+    useEffect(() => {
+        if (visitedRoutes.size >= 3) {
+            unlockAchievement('Systems Explorer');
+        }
+    }, [visitedRoutes.size, unlockAchievement]);
+
+    useEffect(() => {
+        if (visitedRoutes.has('/projects') && visitedRoutes.has('/contact') && visitedRoutes.has('/beyond-work')) {
+            unlockAchievement('Hyper-Navigator');
+        }
+    }, [visitedRoutes, unlockAchievement]);
+
+    useEffect(() => {
+        if (unlockedAchievements.length >= 5) {
+            unlockAchievement('Achievement Hunter');
+        }
+    }, [unlockedAchievements.length, unlockAchievement]);
 
     // Combo Breaker Check
     useEffect(() => {
-        const handleClick = () => {
-            setClickCount(c => c + 1);
-
-            // Reset count if no click for 1 second
-            if (window.clickTimeout) clearTimeout(window.clickTimeout);
-            window.clickTimeout = setTimeout(() => setClickCount(0), 1000);
-        };
-
-        window.addEventListener('click', handleClick);
-        return () => window.removeEventListener('click', handleClick);
-    }, []);
-
-    useEffect(() => {
         if (clickCount >= 5) {
             unlockAchievement('combo-breaker');
-            setClickCount(0); // Reset to avoid spamming
+            setClickCount(0);
         }
-    }, [clickCount]);
+        const timer = setTimeout(() => setClickCount(0), 1000);
+        return () => clearTimeout(timer);
+    }, [clickCount, unlockAchievement]);
 
-    // Global Sync Logic
     useEffect(() => {
-        const fetchGlobalStats = async () => {
-            const { data, error } = await supabase
-                .from('pioneers')
-                .select('*')
-                .order('systems_explored', { ascending: false })
-                .limit(5);
-
-            if (!error && data) {
-                setGlobalPioneers(data);
-            }
-        };
-
         fetchGlobalStats();
-        // Set up real-time subscription
         const channel = supabase
             .channel('public:pioneers')
-            .on('postgres_changes' as any, { event: '*', table: 'pioneers' }, fetchGlobalStats)
+            .on('postgres_changes' as never, { event: '*', table: 'pioneers' }, fetchGlobalStats)
             .subscribe();
 
         return () => {
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [fetchGlobalStats]);
 
-    const syncHandle = async (handle: string) => {
-        const { error } = await supabase
-            .from('pioneers')
-            .upsert({
-                handle: handle,
-                systems_explored: visitedRoutes.size,
-                achievements_count: unlocked.length,
-                last_active: new Date().toISOString()
-            }, { onConflict: 'handle' });
-
-        if (error) {
-            toast({
-                title: "Sync Error",
-                description: "Failed to upload your progress to the Nexus.",
-                variant: "destructive"
-            });
-        }
-    };
+    const progress = useMemo(() => (unlockedAchievements.length / ACHIEVEMENTS.length) * 100, [unlockedAchievements.length]);
 
     return (
         <AchievementContext.Provider value={{
-            unlocked,
+            unlockedAchievements,
             unlockAchievement,
-            systemsExplored: visitedRoutes.size,
-            totalSystems,
+            progress,
             globalPioneers,
-            syncHandle,
-            achievements // Expose achievements with hints
+            syncHandle
         }}>
             {children}
         </AchievementContext.Provider>
     );
 };
-
-// Add type for custom timeout on window
-declare global {
-    interface Window {
-        clickTimeout: NodeJS.Timeout;
-    }
-}

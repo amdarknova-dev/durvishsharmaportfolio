@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type ThemeMode = 'default' | 'cyberpunk' | 'matrix' | 'sunset' | 'ocean' | 'cherry' | 'gold';
+export type ThemeMode = 'default' | 'cyberpunk' | 'matrix' | 'sunset' | 'ocean' | 'cherry' | 'gold';
 
-type UserType = 'guest' | 'user' | 'admin';
+export type UserType = 'guest' | 'user' | 'admin';
 
 type HackContextType = {
     gravity: number; // 0.1 to 2.0

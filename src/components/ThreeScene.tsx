@@ -4,10 +4,10 @@ import { Points, PointMaterial, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import * as random from 'maath/random/dist/maath-random.esm';
 
-const Constellation = (props: any) => {
-    const ref = useRef<any>(null);
+const Constellation = (props: React.ComponentPropsWithoutRef<'group'>) => {
+    const ref = useRef<THREE.Points>(null!);
     const isMobile = window.innerWidth < 768;
-    const sphere = useMemo(() => random.inSphere(new Float32Array(isMobile ? 1500 : 5000), { radius: 1.5 }), [isMobile]);
+    const sphere = useMemo(() => random.inSphere(new Float32Array(isMobile ? 1500 : 5000), { radius: 1.5 }) as Float32Array, [isMobile]);
 
     useFrame((state, delta) => {
         if (!ref.current) return;
@@ -21,7 +21,7 @@ const Constellation = (props: any) => {
 
     return (
         <group rotation={[0, 0, Math.PI / 4]}>
-            <Points ref={ref} positions={sphere as any} stride={3} frustumCulled={false} {...props}>
+            <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
                 <PointMaterial
                     transparent
                     color="#22c55e"

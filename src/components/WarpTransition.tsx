@@ -19,7 +19,7 @@ const WarpTransition = () => {
         setIsWarping(true);
         const timer = setTimeout(() => setIsWarping(false), 500); // Reduced from 1000ms to 500ms
         return () => clearTimeout(timer);
-    }, [location.pathname]);
+    }, [location.pathname, hasLoaded]);
 
     useEffect(() => {
         if (!isWarping || !canvasRef.current) return;

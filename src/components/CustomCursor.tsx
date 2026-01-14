@@ -17,7 +17,7 @@ const CustomCursor = () => {
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
     const [isHovering, setIsHovering] = useState(false);
-    const { godMode, infiniteJump } = useHack();
+    const { isOverclocked: godMode } = useHack();
 
     // Smooth spring animation for the main cursor
     const springConfig = { damping: 25, stiffness: 150 };
@@ -89,7 +89,7 @@ const CustomCursor = () => {
     }, [godMode]);
 
     // Spawn particles on mouse move (God Mode)
-    const spawnParticles = (x: number, y: number) => {
+    const spawnParticles = React.useCallback((x: number, y: number) => {
         if (!godMode) return;
 
         for (let i = 0; i < 3; i++) {
@@ -106,16 +106,16 @@ const CustomCursor = () => {
                 hue: 180 + Math.random() * 40, // Cyan to green
             });
         }
-    };
+    }, [godMode]);
 
     // Click ripple effect
-    const createRipple = (x: number, y: number) => {
+    const createRipple = React.useCallback((x: number, y: number) => {
         const id = Date.now() + Math.random();
         setClickRipples((prev) => [...prev, { x, y, id }]);
         setTimeout(() => {
             setClickRipples((prev) => prev.filter((r) => r.id !== id));
         }, 600);
-    };
+    }, []);
 
     useEffect(() => {
         const moveCursor = (e: MouseEvent) => {
@@ -166,7 +166,7 @@ const CustomCursor = () => {
             window.removeEventListener('mousemove', moveCursor);
             window.removeEventListener('click', handleClick);
         };
-    }, [godMode, TRAIL_LENGTH]);
+    }, [godMode, TRAIL_LENGTH, cursorX, cursorY, spawnParticles, createRipple]);
 
     return (
         <div className="fixed inset-0 pointer-events-none z-[9999]">
@@ -232,8 +232,8 @@ const CustomCursor = () => {
                         if (el) trailRefs.current[i] = el;
                     }}
                     className={`absolute top-0 left-0 rounded-full ${godMode
-                            ? 'w-3 h-3 blur-[2px] opacity-80'
-                            : 'w-2 h-2 bg-primary blur-[1px] opacity-40'
+                        ? 'w-3 h-3 blur-[2px] opacity-80'
+                        : 'w-2 h-2 bg-primary blur-[1px] opacity-40'
                         }`}
                     style={{
                         transform: 'translate(-100px, -100px)',
@@ -248,8 +248,8 @@ const CustomCursor = () => {
             {/* Large Glow Follower */}
             <motion.div
                 className={`absolute top-0 left-0 rounded-full blur-3xl ${godMode
-                        ? 'w-96 h-96 bg-primary/30'
-                        : 'w-64 h-64 bg-primary/10 opacity-50'
+                    ? 'w-96 h-96 bg-primary/30'
+                    : 'w-64 h-64 bg-primary/10 opacity-50'
                     }`}
                 style={{
                     x: cursorX,
