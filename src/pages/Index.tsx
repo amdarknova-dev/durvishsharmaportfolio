@@ -72,7 +72,9 @@ const Index = () => {
         </section>
 
         <ExperienceSection />
-        <Leaderboard />
+        <div className="hidden lg:block">
+          <Leaderboard />
+        </div>
         <Testimonials />
         <FAQSection />
         <ContactCTA />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useHack } from '@/context/HackContext';
+import { useAuth } from '@/context/AuthContext';
 import { useSound } from '@/context/SoundContext';
 import {
     User,
@@ -15,12 +15,14 @@ import {
     BookOpen,
     Sparkles,
     ChevronDown,
-    LogIn
+    LogIn,
+    Globe,
+    Settings
 } from 'lucide-react';
 
 const UserMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { userType, username, logout } = useHack();
+    const { user, profile, signOut, isAdmin } = useAuth();
     const { playClick, playHover } = useSound();
     const navigate = useNavigate();
 
@@ -50,9 +52,9 @@ const UserMenu = () => {
         setIsOpen(false);
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         playClick();
-        logout();
+        await signOut();
         setIsOpen(false);
         navigate('/');
     };
@@ -64,10 +66,17 @@ const UserMenu = () => {
     };
 
     const getUserDisplay = () => {
-        if (userType === 'admin') return { name: username || 'Admin', role: '@administrator', icon: Shield, color: 'text-red-500' };
-        if (userType === 'user') return { name: username || 'User', role: '@member', icon: User, color: 'text-primary' };
-        return { name: 'Guest', role: '@portfolio', icon: User, color: 'text-gray-400' };
+        if (!user && !isAdmin) return { name: 'Guest', role: '@portfolio', icon: User, color: 'text-gray-400', image: null };
+
+        return {
+            name: isAdmin ? 'Admin' : (profile?.username || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'),
+            role: isAdmin ? '@root' : '@member',
+            icon: isAdmin ? Shield : User,
+            color: isAdmin ? 'text-red-500' : 'text-primary',
+            image: user?.user_metadata?.avatar_url
+        };
     };
+
 
     const userDisplay = getUserDisplay();
     const Icon = userDisplay.icon;
@@ -82,11 +91,15 @@ const UserMenu = () => {
                 onMouseEnter={() => playHover()}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl glass border border-white/10 hover:border-primary/30 transition-all group"
             >
-                <div className={`w-8 h-8 rounded-full bg-white/5 flex items-center justify-center ${userDisplay.color}`}>
-                    <Icon className="w-4 h-4" />
+                <div className={`w-8 h-8 rounded-full bg-white/5 flex items-center justify-center overflow-hidden border border-white/10 ${userDisplay.color}`}>
+                    {userDisplay.image ? (
+                        <img src={userDisplay.image} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                        <Icon className="w-4 h-4" />
+                    )}
                 </div>
                 <div className="text-left hidden lg:block">
-                    <p className="text-xs font-bold text-white leading-none">{userDisplay.name}</p>
+                    <p className="text-xs font-bold text-white leading-none whitespace-nowrap overflow-hidden text-ellipsis max-w-[100px]">{userDisplay.name}</p>
                     <p className="text-[10px] text-gray-500 leading-none mt-0.5">{userDisplay.role}</p>
                 </div>
                 <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -107,32 +120,36 @@ const UserMenu = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -10, scale: 0.95 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute right-0 top-full mt-2 w-64 glass-dark border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50"
+                            className="absolute right-0 top-full mt-2 w-64 glass-premium border border-white/10 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] z-50 p-2"
                         >
                             {/* User Info Header */}
-                            <div className="p-4 border-b border-white/10 bg-white/5">
+                            <div className="p-4 border-b border-white/5 bg-white/5 rounded-xl mb-2">
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-12 h-12 rounded-full bg-white/10 flex items-center justify-center ${userDisplay.color}`}>
-                                        <Icon className="w-6 h-6" />
+                                    <div className={`w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center overflow-hidden border border-white/10 ${userDisplay.color}`}>
+                                        {userDisplay.image ? (
+                                            <img src={userDisplay.image} alt="Avatar" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <Icon className="w-6 h-6" />
+                                        )}
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-bold text-white">{userDisplay.name}</p>
-                                        <p className="text-xs text-gray-400">{userDisplay.role}</p>
+                                    <div className="overflow-hidden">
+                                        <p className="text-sm font-bold text-white whitespace-nowrap overflow-hidden text-ellipsis">{userDisplay.name}</p>
+                                        <p className="text-[10px] text-gray-400 font-mono tracking-widest">{userDisplay.role}</p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Navigation Items */}
-                            <div className="p-2 max-h-80 overflow-y-auto custom-scrollbar">
-                                <p className="text-[10px] text-gray-500 uppercase tracking-widest px-3 py-2 font-mono">
-                                    Quick Navigation
+                            <div className="space-y-1 max-h-80 overflow-y-auto custom-scrollbar p-1">
+                                <p className="text-[10px] text-gray-600 uppercase tracking-[0.3em] px-3 py-2 font-mono">
+                                    Navigation
                                 </p>
                                 {menuItems.map((item, index) => (
                                     <button
                                         key={index}
                                         onClick={() => handleItemClick(item)}
                                         onMouseEnter={() => playHover()}
-                                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 transition-all group"
+                                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group"
                                     >
                                         <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                                             <item.icon className="w-4 h-4 group-hover:text-primary transition-colors" />
@@ -143,27 +160,44 @@ const UserMenu = () => {
                             </div>
 
                             {/* Actions */}
-                            <div className="p-2 border-t border-white/10 bg-black/20">
-                                {userType !== 'guest' ? (
+                            <div className="p-1 pt-2 mt-2 border-t border-white/5 space-y-1">
+                                {isAdmin && (
+                                    <button
+                                        onClick={() => { playClick(); navigate('/dashboard'); setIsOpen(false); }}
+                                        onMouseEnter={() => playHover()}
+                                        className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all font-bold"
+                                    >
+                                        <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                                            <Settings className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm">Admin Panel</span>
+                                    </button>
+                                )}
+                                {(user || isAdmin) ? (
                                     <button
                                         onClick={handleLogout}
                                         onMouseEnter={() => playHover()}
-                                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
+                                        className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all font-bold"
                                     >
-                                        <LogOut className="w-4 h-4" />
-                                        <span className="text-sm font-medium">Logout</span>
+                                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                                            <LogOut className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm">Disconnect</span>
                                     </button>
                                 ) : (
                                     <button
                                         onClick={handleLogin}
                                         onMouseEnter={() => playHover()}
-                                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-primary hover:text-primary/80 hover:bg-primary/10 transition-all"
+                                        className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-primary hover:text-white hover:bg-primary/20 transition-all font-bold"
                                     >
-                                        <LogIn className="w-4 h-4" />
-                                        <span className="text-sm font-medium">Login</span>
+                                        <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                                            <LogIn className="w-4 h-4" />
+                                        </div>
+                                        <span className="text-sm">Initiate Sync</span>
                                     </button>
                                 )}
                             </div>
+
                         </motion.div>
                     </>
                 )}

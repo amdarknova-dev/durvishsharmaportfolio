@@ -29,7 +29,6 @@ import SmoothScroll from "./components/SmoothScroll";
 import { SoundProvider } from "./context/SoundContext";
 import { AchievementProvider } from "./context/AchievementContext";
 import { HackProvider } from "./context/HackContext";
-import { CommentaryProvider } from "./context/CommentaryContext";
 import { WeatherProvider } from "./context/WeatherContext";
 
 
@@ -45,17 +44,16 @@ const RouteChangeHandler = () => {
 
   return null;
 };
-
-import CommentaryOverlay from "./components/CommentaryOverlay";
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <HashRouter>
-      <WeatherProvider>
-        <SoundProvider>
-          <AchievementProvider>
-            <HackProvider>
-              <CommentaryProvider>
+      <AuthProvider>
+        <WeatherProvider>
+          <SoundProvider>
+            <AchievementProvider>
+              <HackProvider>
                 <SmoothScroll>
                   <RouteChangeHandler />
                   <TooltipProvider>
@@ -69,7 +67,6 @@ const App = () => (
                     <WarpTransition />
                     <AIChatbot />
                     <KeyboardShortcuts />
-                    <CommentaryOverlay />
                     <Toaster />
                     <Sonner />
                     <Routes>
@@ -86,11 +83,11 @@ const App = () => (
                     </Routes>
                   </TooltipProvider>
                 </SmoothScroll>
-              </CommentaryProvider>
-            </HackProvider>
-          </AchievementProvider>
-        </SoundProvider>
-      </WeatherProvider>
+              </HackProvider>
+            </AchievementProvider>
+          </SoundProvider>
+        </WeatherProvider>
+      </AuthProvider>
     </HashRouter>
   </QueryClientProvider>
 );

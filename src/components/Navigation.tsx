@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSound } from '@/context/SoundContext';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Clapperboard } from 'lucide-react';
+import { Menu, Clapperboard, Home, User, Briefcase, Rocket, Star, MessageSquare, BookOpen, LayoutGrid, FlaskConical } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Sheet,
@@ -9,12 +9,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import TrophyCase from './TrophyCase';
-import { useCommentary } from '@/context/CommentaryContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useMobile } from '@/hooks/useMobile';
-import { Github, Linkedin, Twitter, MessageSquare } from 'lucide-react';
 import UserMenu from './UserMenu';
 
 const Navigation = () => {
@@ -25,31 +23,24 @@ const Navigation = () => {
   const isMobile = useMobile();
   const location = useLocation();
   const navigate = useNavigate();
-  const { isCommentaryOpen, toggleCommentary } = useCommentary();
   const [blobPosition, setBlobPosition] = useState({ left: 0, width: 0 });
   const navItemsRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const navItems = React.useMemo(() => [
-    { id: 'home', label: t('nav.home') },
-    { id: 'about', label: t('nav.about') },
-    { id: 'skills', label: t('nav.skills') },
-    { id: 'projects', label: t('nav.projects') },
-    { id: 'experience', label: t('nav.services') },
-    { id: 'leaderboard', label: 'Hall of Fame' },
-    { id: 'beyond-work', label: 'Beyond Work', path: '/beyond-work' },
-    { id: 'blog', label: 'Blog', path: '/blog' },
-    { id: 'contact', label: t('nav.contact'), path: '/contact' },
+    { id: 'home', label: t('nav.home'), icon: Home },
+    { id: 'lab', label: 'The Lab', path: '/lab', icon: FlaskConical },
+    { id: 'beyond-work', label: 'Beyond Work', path: '/beyond-work', icon: LayoutGrid },
+    { id: 'blog', label: 'Blog', path: '/blog', icon: BookOpen },
+    { id: 'contact', label: t('nav.contact'), path: '/contact', icon: MessageSquare },
   ], [t]);
 
   const { playHover, playClick } = useSound();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
 
-      // Only update active section on the home page
       if (location.pathname === '/') {
-        // Find elements and filter out those that don't exist
         const scrollSections = navItems
           .filter(i => !i.path)
           .map(item => ({ id: item.id, element: document.getElementById(item.id) }))
@@ -57,7 +48,6 @@ const Navigation = () => {
 
         const scrollPosition = window.scrollY + 150;
 
-        // Find the current active section based on scroll
         for (let i = scrollSections.length - 1; i >= 0; i--) {
           const section = scrollSections[i].element;
           if (section && section.offsetTop <= scrollPosition) {
@@ -72,11 +62,10 @@ const Navigation = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname, navItems]);
 
-  // Update blob position when active section changes
   useEffect(() => {
     const activeElement = navItemsRef.current[activeSection];
     if (activeElement) {
@@ -89,7 +78,7 @@ const Navigation = () => {
         });
       }
     }
-  }, [activeSection]);
+  }, [activeSection, isMobile]);
 
   const handleNavClick = (item: typeof navItems[0]) => {
     playClick();
@@ -100,7 +89,6 @@ const Navigation = () => {
     }
 
     if (location.pathname !== '/') {
-      // Use window.location.hash to trigger scroll on Index page load
       navigate('/#' + item.id);
     } else {
       const element = document.getElementById(item.id);
@@ -114,153 +102,141 @@ const Navigation = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 hidden md:flex items-center gap-4 ${isScrolled ? 'glass-dark' : 'glass'
-        } rounded-2xl px-6 py-3`}>
-        <div className="flex items-center space-x-1 relative">
-          {/* Liquid Blob Background */}
-          <motion.div
-            className="absolute inset-y-0 bg-gradient-to-r from-primary/30 to-accent/30 rounded-xl -z-10 glow-primary"
-            initial={false}
-            animate={{
-              left: blobPosition.left,
-              width: blobPosition.width
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 350,
-              damping: 30,
-              mass: 0.5
-            }}
-            style={{
-              filter: 'url(#goo)'
-            }}
-          />
+      <motion.div
+        initial={{ y: -100, x: '-50%', opacity: 0 }}
+        animate={{ y: 0, x: '-50%', opacity: 1 }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed top-8 left-1/2 z-50 hidden md:block"
+      >
+        <div className={`flex items-center gap-2 p-1.5 transition-all duration-700 ${isScrolled ? 'bg-black/60 scale-90 md:scale-100' : 'bg-white/5'
+          } backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl`}>
 
-          {/* SVG Filter for Gooey Effect */}
-          <svg width="0" height="0" style={{ position: 'absolute' }}>
-            <defs>
-              <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-                <feColorMatrix
-                  in="blur"
-                  mode="matrix"
-                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
-                  result="goo"
-                />
-                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-              </filter>
-            </defs>
-          </svg>
+          <div className="flex items-center space-x-1 relative px-2">
+            {/* Liquid Blob Background */}
+            <motion.div
+              className="absolute inset-y-1 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full -z-10"
+              initial={false}
+              animate={{
+                left: blobPosition.left,
+                width: blobPosition.width
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 35,
+                mass: 0.8
+              }}
+              style={{ filter: 'url(#goo)' }}
+            />
 
-          {navItems.map((item) => (
-            <Button
-              key={item.id}
-              ref={(el) => { navItemsRef.current[item.id] = el; }}
-              variant="ghost"
-              size="sm"
-              onMouseEnter={() => playHover()}
-              onClick={() => handleNavClick(item)}
-              className={`relative px-4 py-2 rounded-xl transition-all duration-300 ${activeSection === item.id
-                ? 'text-white'
-                : 'text-gray-300 hover:text-white'
-                }`}
-            >
-              {item.label}
-            </Button>
-          ))}
+            <svg width="0" height="0" className="absolute">
+              <defs>
+                <filter id="goo">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+                  <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+                  <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+                </filter>
+              </defs>
+            </svg>
+
+            {navItems.map((item) => (
+              <Button
+                key={item.id}
+                ref={(el) => { navItemsRef.current[item.id] = el; }}
+                variant="ghost"
+                size="sm"
+                onMouseEnter={() => playHover()}
+                onClick={() => handleNavClick(item)}
+                className={`group relative px-4 py-2.5 rounded-full transition-all duration-500 h-10 ${activeSection === item.id ? 'text-white' : 'text-gray-400 hover:text-white'
+                  }`}
+              >
+                <span className="relative z-10 text-[13px] font-medium tracking-wide">
+                  {item.label}
+                </span>
+                {activeSection === item.id && (
+                  <motion.span
+                    layoutId="activeDot"
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"
+                  />
+                )}
+              </Button>
+            ))}
+          </div>
+
+          <div className="w-px h-6 bg-white/10 mx-2" />
+
+          <div className="flex items-center gap-1 pr-2">
+            <LanguageSwitcher />
+            <UserMenu />
+          </div>
         </div>
-
-        {/* Separator */}
-        <div className="h-6 w-px bg-white/10 mx-2" />
-
-        {/* Director's Mode Toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => { playClick(); toggleCommentary(); }}
-          className={`relative text-gray-400 hover:text-white transition-colors ${isCommentaryOpen ? 'text-red-500 hover:text-red-400' : ''}`}
-          title="Director's Mode"
-        >
-          <Clapperboard className="w-5 h-5" />
-          {isCommentaryOpen && (
-            <span className="absolute top-0 right-0 w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          )}
-        </Button>
-
-        {/* Trophy Case */}
-        <TrophyCase />
-
-        {/* Language Switcher */}
-        <LanguageSwitcher />
-
-        {/* User Menu */}
-        <UserMenu />
-
-      </nav>
+      </motion.div>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden fixed top-6 right-6 z-50 flex gap-2 items-center">
+      <div className="md:hidden fixed top-6 right-6 z-50 flex gap-3 items-center">
         <LanguageSwitcher />
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="glass border-white/10 text-white rounded-xl h-12 w-12 active:scale-90 transition-transform" onClick={() => playClick()}>
-              <Menu className="h-6 w-6" />
-            </Button>
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => playClick()}
+              className="w-12 h-12 flex items-center justify-center bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl text-white shadow-xl"
+            >
+              <Menu className="h-5 w-5" />
+            </motion.button>
           </SheetTrigger>
-          <SheetContent side="right" className="glass-dark border-white/10 text-white pt-20 flex flex-col justify-between">
-            <div className="flex flex-col space-y-2">
-              <div className="flex items-center gap-3 mb-8 px-4 py-2 bg-white/5 rounded-2xl border border-white/10">
-                <Clapperboard className="w-8 h-8 text-primary" />
+          <SheetContent side="right" className="bg-black/95 border-l border-white/10 text-white pt-20 flex flex-col p-0">
+            <div className="flex-1 overflow-y-auto px-6">
+              <div className="flex items-center gap-4 mb-12 p-4 bg-white/5 rounded-3xl border border-white/5">
+                <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center">
+                  <Clapperboard className="w-6 h-6 text-primary" />
+                </div>
                 <div>
-                  <h3 className="font-bold text-white leading-none">Cinematic</h3>
-                  <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] mt-1">Portfolio</p>
+                  <h3 className="font-bold text-white text-lg leading-tight uppercase tracking-tighter">Durvish</h3>
+                  <p className="text-[10px] text-primary font-mono uppercase tracking-[0.2em]">{t('hero.sub_role')}</p>
                 </div>
               </div>
 
-              {navItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleNavClick(item)}
-                    className={`w-full justify-start text-xl py-8 rounded-2xl transition-all duration-300 active:bg-primary/30 h-auto ${activeSection === item.id
-                      ? 'text-white bg-primary/20 border border-primary/20'
-                      : 'text-gray-300 hover:text-white hover:bg-white/10'
-                      }`}
+              <nav className="flex flex-col gap-2">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mr-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    {item.label}
-                  </Button>
-                </motion.div>
-              ))}
+                    <button
+                      onClick={() => handleNavClick(item)}
+                      className={`w-full flex items-center justify-between p-5 rounded-2xl transition-all duration-300 ${activeSection === item.id
+                        ? 'bg-primary/10 text-white border border-primary/20'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <item.icon className={`w-5 h-5 ${activeSection === item.id ? 'text-primary' : 'text-gray-500'}`} />
+                        <span className="text-lg font-medium tracking-tight">{item.label}</span>
+                      </div>
+                      {activeSection === item.id && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+                      )}
+                    </button>
+                  </motion.div>
+                ))}
+              </nav>
             </div>
 
-            <div className="pb-8 space-y-6">
-              <div className="flex justify-center gap-6">
-                {[
-                  { icon: <Github />, label: 'Github' },
-                  { icon: <Linkedin />, label: 'LinkedIn' },
-                  { icon: <Twitter />, label: 'Twitter' },
-                  { icon: <MessageSquare />, label: 'Contact' }
-                ].map((social, i) => (
-                  <motion.button
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 + (i * 0.1) }}
-                    className="w-12 h-12 rounded-2xl glass border-white/10 flex items-center justify-center text-gray-400 active:text-primary active:border-primary/50 active:scale-90 transition-all"
-                  >
-                    {React.cloneElement(social.icon as React.ReactElement<{ size: number }>, { size: 20 })}
-                  </motion.button>
-                ))}
+            <div className="p-8 bg-white/5 border-t border-white/5">
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">Connect</span>
+                  <div className="flex gap-4">
+                    <UserMenu />
+                  </div>
+                </div>
+                <p className="text-center text-[10px] text-gray-600 uppercase tracking-widest font-mono">
+                  Data Transmission: Secure
+                </p>
               </div>
-              <p className="text-center text-[10px] text-gray-500 uppercase tracking-widest">
-                Designed & Built with ❤️
-              </p>
             </div>
           </SheetContent>
         </Sheet>

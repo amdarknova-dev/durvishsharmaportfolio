@@ -9,6 +9,8 @@ import { useSound } from '@/context/SoundContext';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { supabase } from '@/lib/supabase';
+import ParticleBackground from '@/components/ParticleBackground';
+import { Card } from '@/components/ui/card';
 
 const Blog = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -21,33 +23,33 @@ const Blog = () => {
     const posts = [
         {
             id: 1,
-            title: "Mastering the Cinematic Web: Three.js & Framer Motion",
-            excerpt: "Explore how to combine high-performance WebGL animations with React-based motion libraries for a truly immersive UX.",
-            date: "Jan 12, 2024",
-            readTime: "8 min read",
-            category: "Tech",
+            title: "Mastering the Cinematic Web",
+            excerpt: "Explore how to combine high-performance WebGL animations with React-based motion libraries for a truly immersive experience.",
+            date: "2024.01.12",
+            readTime: "8 min",
+            category: "Technical",
             image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800",
-            tags: ["Three.js", "WebGL", "UX"]
+            tags: ["Three.js", "WebGL"]
         },
         {
             id: 2,
-            title: "Building Scalable AI Dashboards with Next.js",
-            excerpt: "A deep dive into real-time data streaming and neural network visualization using modern React patterns.",
-            date: "Dec 28, 2023",
-            readTime: "12 min read",
+            title: "Scalable Intelligence Dashboards",
+            excerpt: "A deep dive into real-time data streaming and neural network visualization using modern React architecture patterns.",
+            date: "2023.12.28",
+            readTime: "12 min",
             category: "AI",
             image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
-            tags: ["AI", "React", "Streaming"]
+            tags: ["Next.js", "AI"]
         },
         {
             id: 3,
-            title: "The Future of Minimalist Design in 2024",
-            excerpt: "Why 'less is more' is evolving into 'intentional is everything' in the next era of personal branding.",
-            date: "Dec 15, 2023",
-            readTime: "5 min read",
+            title: "The Future of Digital Intent",
+            excerpt: "Why 'less is more' is evolving into 'intentional is everything' in the next era of professional personal branding.",
+            date: "2023.12.15",
+            readTime: "5 min",
             category: "Design",
             image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800",
-            tags: ["Minimalism", "Design", "Trends"]
+            tags: ["Minimalism", "UX"]
         }
     ];
 
@@ -57,217 +59,196 @@ const Blog = () => {
     );
 
     return (
-        <div className="min-h-screen bg-[#050505] text-white">
+        <div className="relative min-h-screen bg-background overflow-x-hidden pt-32 md:pt-48">
+            <ParticleBackground />
             <Navigation />
 
-            {/* Header Section */}
-            <section className="pt-40 pb-20 px-6">
-                <div className="max-w-7xl mx-auto text-center">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="space-y-6"
-                    >
-                        <span className="text-primary font-mono tracking-[0.5em] uppercase text-xs">Technical Journal</span>
-                        <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
-                            Thoughts <span className="text-gradient">& Insights</span>
-                        </h1>
-                        <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                            Exploring the intersection of cinematic design, artificial intelligence, and high-performance software engineering.
-                        </p>
-                    </motion.div>
+            <main className="relative z-10 max-w-7xl mx-auto px-6 pb-64">
+                {/* Minimal Centered Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-center mb-32"
+                >
+                    <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block">Transmission</span>
+                    <h1 className="text-6xl md:text-[8rem] font-black mb-8 tracking-tighter text-white uppercase leading-none">
+                        Insights <br />
+                        <span className="text-gradient">& Theory</span>
+                    </h1>
+                    <p className="mt-8 text-gray-500 text-lg max-w-xl mx-auto font-light leading-relaxed">
+                        Technical field notes on high-performance engineering and cinematic design.
+                    </p>
 
-                    <div className="mt-12 max-w-xl mx-auto relative group">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors group-focus-within:text-primary" />
+                    <div className="mt-20 max-w-2xl mx-auto relative group">
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600 transition-colors group-focus-within:text-primary" />
                         <Input
-                            placeholder="Search articles, tags, or topics..."
-                            className="pl-12 h-14 bg-white/5 border-white/10 rounded-2xl focus:ring-primary/20 focus:border-primary/50 text-white placeholder:text-gray-600"
+                            placeholder="SEARCH PROTOCOLS..."
+                            className="pl-16 h-20 bg-white/[0.02] border-white/5 rounded-[2rem] focus:ring-primary/20 focus:border-primary/50 text-white placeholder:text-gray-700 font-mono tracking-widest text-xs transition-all duration-500 hover:bg-white/[0.04]"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
-                </div>
-            </section>
+                </motion.div>
 
-            {/* Blog Grid */}
-            <section className="pb-32 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <AnimatePresence mode="popLayout">
-                            {filteredPosts.map((post, index) => (
-                                <motion.div
-                                    key={post.id}
-                                    layout
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden hover:bg-white/[0.04] transition-all duration-500"
-                                >
-                                    <div className="relative aspect-[16/10] overflow-hidden">
+                {/* Article Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-48">
+                    <AnimatePresence mode="popLayout">
+                        {filteredPosts.map((post, index) => (
+                            <motion.div
+                                key={post.id}
+                                layout
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                            >
+                                <Card className="glass-premium flex flex-col h-full border-white/5 rounded-[2.5rem] overflow-hidden group hover:border-primary/20 transition-all duration-700">
+                                    <div className="relative aspect-[16/10] overflow-hidden cursor-pointer">
                                         <img
                                             src={post.image}
                                             alt={post.title}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 saturate-[0.8] group-hover:saturate-100"
                                         />
-                                        <div className="absolute top-4 left-4">
-                                            <Badge className="bg-primary/20 text-primary border-primary/30 backdrop-blur-md">
+                                        <div className="absolute top-6 left-6">
+                                            <Badge className="bg-background/80 text-white border-white/10 backdrop-blur-xl px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-bold">
                                                 {post.category}
                                             </Badge>
                                         </div>
                                     </div>
 
-                                    <div className="p-8 flex flex-col flex-1">
-                                        <div className="flex items-center gap-4 text-xs text-gray-500 font-mono mb-4">
-                                            <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{post.date}</span>
-                                            <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{post.readTime}</span>
+                                    <div className="p-10 flex flex-col flex-1 space-y-6">
+                                        <div className="flex items-center gap-6 text-[10px] font-mono text-gray-600 uppercase tracking-widest">
+                                            <span className="flex items-center gap-2"><Calendar className="w-3.5 h-3.5" />{post.date}</span>
+                                            <span className="flex items-center gap-2"><Clock className="w-3.5 h-3.5" />{post.readTime}</span>
                                         </div>
 
-                                        <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors leading-snug">
+                                        <h3 className="text-2xl font-bold text-white uppercase tracking-tight group-hover:text-primary transition-colors leading-tight">
                                             {post.title}
                                         </h3>
 
-                                        <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
+                                        <p className="text-gray-500 text-base leading-relaxed font-light line-clamp-3">
                                             {post.excerpt}
                                         </p>
 
-                                        <div className="flex items-center justify-between mt-auto">
-                                            <div className="flex gap-2">
+                                        <div className="pt-6 flex items-center justify-between border-t border-white/5 mt-auto">
+                                            <div className="flex gap-4">
                                                 {post.tags.map(tag => (
-                                                    <span key={tag} className="text-[10px] text-gray-600 font-mono">#{tag}</span>
+                                                    <span key={tag} className="text-[10px] text-gray-700 font-mono uppercase tracking-widest font-bold">#{tag}</span>
                                                 ))}
                                             </div>
-                                            <button className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all group/btn">
-                                                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                                            <button className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-500 group/btn">
+                                                <ArrowRight className="w-5 h-5 text-white group-hover/btn:translate-x-1 transition-transform" />
                                             </button>
                                         </div>
                                     </div>
-                                </motion.div>
-                            ))}
-                        </AnimatePresence>
-                    </div>
+                                </Card>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </div>
-            </section>
 
-            {/* Newsletter Section */}
-            <section className="py-24 px-6 border-t border-white/5 bg-gradient-to-b from-transparent to-primary/5">
-                <div className="max-w-4xl mx-auto glass p-12 rounded-[40px] border-white/10 text-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2" />
+                {/* Newsletter Section */}
+                <motion.section
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="py-12"
+                >
+                    <Card className="glass-premium p-16 md:p-24 rounded-[4rem] border-white/5 text-center relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-primary/[0.03] rounded-full blur-[120px] -z-10 -translate-y-1/2 translate-x-1/2" />
 
-                    <div className="relative z-10 space-y-6">
-                        <AnimatePresence mode="wait">
-                            {!isSubscribed ? (
-                                <motion.div
-                                    key="subscribe"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 1.05 }}
-                                    className="space-y-6"
-                                >
-                                    <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-primary/30">
-                                        <Mail className="w-8 h-8 text-primary" />
-                                    </div>
-                                    <h2 className="text-4xl font-bold tracking-tight">Stay in the Loop</h2>
-                                    <p className="text-gray-400 max-w-md mx-auto">
-                                        Get weekly updates on new projects, deep dives into tech, and exclusive insights delivered to your inbox.
-                                    </p>
+                        <div className="relative z-10 max-w-2xl mx-auto space-y-12">
+                            <AnimatePresence mode="wait">
+                                {!isSubscribed ? (
+                                    <motion.div
+                                        key="subscribe"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="space-y-12"
+                                    >
+                                        <div className="space-y-6">
+                                            <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] block">Newsletter</span>
+                                            <h2 className="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none">Stay <br /><span className="text-gradient">Synchronized</span></h2>
+                                            <p className="text-gray-500 text-lg font-light leading-relaxed max-w-md mx-auto">
+                                                Join the transmission loop for technical deep dives and exclusive workflow insights.
+                                            </p>
+                                        </div>
 
-                                    <form
-                                        className="mt-10 flex flex-col md:flex-row gap-4 max-w-md mx-auto"
-                                        onSubmit={async (e) => {
-                                            e.preventDefault();
-                                            if (!email.trim() || !email.includes('@')) return;
-
-                                            setIsLoading(true);
-                                            playClick();
-
-                                            try {
-                                                const { error } = await supabase
-                                                    .from('newsletter_subs')
-                                                    .insert([{ email: email.trim() }]);
-
-                                                if (error) {
-                                                    if (error.code === '23505') { // Unique constraint violation
-                                                        toast({
-                                                            title: "Already Synced!",
-                                                            description: "This email is already in our transmission loop.",
-                                                            variant: "destructive"
-                                                        });
+                                        <form
+                                            className="flex flex-col md:flex-row gap-4"
+                                            onSubmit={async (e) => {
+                                                e.preventDefault();
+                                                if (!email.trim() || !email.includes('@')) return;
+                                                setIsLoading(true);
+                                                playClick();
+                                                try {
+                                                    const { error } = await supabase.from('newsletter_subs').insert([{ email: email.trim() }]);
+                                                    if (error) {
+                                                        if (error.code === '23505') {
+                                                            toast({ title: "ALREADY SYNCED", description: "This address is already in the loop.", variant: "destructive" });
+                                                        } else throw error;
                                                     } else {
-                                                        throw error;
+                                                        playWhoosh();
+                                                        setIsSubscribed(true);
+                                                        toast({ title: "TRANSMISSION ENABLED", description: "Authentication successful. Welcome to the Nexus." });
                                                     }
-                                                } else {
-                                                    playWhoosh();
-                                                    setIsSubscribed(true);
-                                                    toast({
-                                                        title: "Subscription Confirmed! 🚀",
-                                                        description: "Welcome to the Nexus inner circle.",
-                                                    });
-                                                }
-                                            } catch (error) {
-                                                console.error('Subscription Error:', error);
-                                                toast({
-                                                    title: "Sync Failed",
-                                                    description: "Unable to connect to the newsletter uplink.",
-                                                    variant: "destructive"
-                                                });
-                                            } finally {
-                                                setIsLoading(false);
-                                            }
-                                        }}
+                                                } catch (error) {
+                                                    toast({ title: "LINK FAILED", description: "Unable to establish connection to the uplink.", variant: "destructive" });
+                                                } finally { setIsLoading(false); }
+                                            }}
+                                        >
+                                            <Input
+                                                type="email"
+                                                required
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="IDENTITY@DOMAIN.COM"
+                                                className="h-20 bg-white/[0.03] border-white/5 rounded-[2rem] focus:ring-primary/20 text-white font-mono text-xs tracking-widest transition-all"
+                                                disabled={isLoading}
+                                            />
+                                            <Button
+                                                size="lg"
+                                                disabled={isLoading}
+                                                className="h-20 px-12 rounded-[2rem] bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest transition-all duration-500 shrink-0"
+                                            >
+                                                {isLoading ? "SYNCING..." : "SUBSCRIBE"}
+                                            </Button>
+                                        </form>
+                                        <p className="text-[10px] text-gray-700 uppercase tracking-[0.4em] font-bold">Standard Protocol: Zero Spam // Encrypted Loop</p>
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="success"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        className="py-12 space-y-8"
                                     >
-                                        <Input
-                                            type="email"
-                                            required
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Enter your email"
-                                            className="h-14 bg-white/5 border-white/20 rounded-2xl focus:ring-primary/20 text-white"
-                                            disabled={isLoading}
-                                        />
-                                        <Button
-                                            size="lg"
-                                            disabled={isLoading}
-                                            className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold glow-primary"
-                                        >
-                                            {isLoading ? "Syncing..." : "Subscribe"}
-                                        </Button>
-                                    </form>
-                                    <p className="text-[10px] text-gray-600 mt-4 uppercase tracking-widest font-mono">No spam. Only high-performance content.</p>
-                                </motion.div>
-                            ) : (
-                                <motion.div
-                                    key="success"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="py-12 space-y-4"
-                                >
-                                    <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                                        <motion.div
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ type: 'spring', damping: 12 }}
-                                        >
+                                        <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto border border-primary/20">
                                             <ArrowRight className="w-10 h-10 text-primary" />
-                                        </motion.div>
-                                    </div>
-                                    <h2 className="text-3xl font-bold italic">Synchronization Complete</h2>
-                                    <p className="text-gray-400">You are now part of the 1% who stay ahead of the curve.</p>
-                                    <Button
-                                        variant="ghost"
-                                        className="text-primary hover:text-white"
-                                        onClick={() => setIsSubscribed(false)}
-                                    >
-                                        Use another email
-                                    </Button>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                </div>
-            </section>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <h2 className="text-4xl font-black text-white uppercase tracking-tighter">Sync Complete</h2>
+                                            <p className="text-gray-500 text-lg font-light italic">Your identity has been added to the secure transmission loop.</p>
+                                        </div>
+                                        <Button
+                                            variant="ghost"
+                                            className="text-primary hover:text-white uppercase tracking-widest font-bold text-xs"
+                                            onClick={() => setIsSubscribed(false)}
+                                        >
+                                            Update Identity
+                                        </Button>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </Card>
+                </motion.section>
+            </main>
 
             <Footer />
+            <div className="fixed top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(34,197,94,0.05),transparent_50%)] -z-10 pointer-events-none" />
         </div>
     );
 };

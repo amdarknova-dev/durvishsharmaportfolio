@@ -43,19 +43,21 @@ const FAQItem = ({ number, question, answer }: { number: string; question: strin
     const { playHover, playClick } = useSound();
 
     return (
-        <div className="border-b border-white/10 overflow-hidden">
+        <div className={`transition-all duration-700 rounded-[2rem] overflow-hidden ${isOpen ? 'glass-premium border border-primary/20 bg-primary/[0.02]' : 'border-b border-white/5 hover:bg-white/[0.01]'
+            }`}>
             <button
                 onClick={() => { playClick(); setIsOpen(!isOpen); }}
                 onMouseEnter={() => playHover()}
-                className="w-full py-8 flex items-center justify-between text-left group"
+                className="w-full py-10 px-8 flex items-center justify-between text-left group"
             >
-                <div className="flex items-center gap-8">
-                    <span className="text-sm font-mono text-gray-500">{number}</span>
-                    <h3 className="text-xl md:text-2xl font-medium text-white group-hover:text-primary transition-colors">
+                <div className="flex items-center gap-10">
+                    <span className="text-[10px] font-mono text-gray-600 tracking-[0.3em] font-bold">{number}</span>
+                    <h3 className={`text-xl md:text-2xl font-bold tracking-tight uppercase transition-all duration-500 ${isOpen ? 'text-primary' : 'text-white group-hover:text-primary'
+                        }`}>
                         {question}
                     </h3>
                 </div>
-                <div className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center transition-all duration-500 ${isOpen ? 'bg-primary border-primary rotate-45' : 'group-hover:border-primary'
+                <div className={`w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-all duration-700 shrink-0 ${isOpen ? 'bg-primary border-primary rotate-[135deg] shadow-[0_0_20px_rgba(34,197,94,0.4)]' : 'group-hover:border-primary group-hover:bg-primary/5'
                     }`}>
                     <Plus className={`w-5 h-5 transition-colors ${isOpen ? 'text-white' : 'text-gray-400 group-hover:text-primary'}`} />
                 </div>
@@ -66,12 +68,17 @@ const FAQItem = ({ number, question, answer }: { number: string; question: strin
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <div className="pb-8 pl-16 md:pl-20 max-w-2xl">
+                        <div className="pb-10 pl-24 pr-12 max-w-4xl">
                             <p className="text-gray-400 text-lg leading-relaxed font-light">
                                 {answer}
                             </p>
+                            {/* Subtle HUD Detail */}
+                            <div className="mt-8 flex gap-2">
+                                <div className="h-0.5 w-12 bg-primary/30" />
+                                <div className="h-0.5 w-2 bg-primary/30" />
+                            </div>
                         </div>
                     </motion.div>
                 )}
@@ -87,6 +94,7 @@ const Contact = () => {
         countryCode: '+91',
         email: '',
         phone: '',
+        jobTitle: '',
         inquiryType: 'none',
         message: '',
     });
@@ -212,7 +220,7 @@ const Contact = () => {
 
         // Validate all fields before submission
         const emailError = validateEmail(formData.email);
-        const phoneError = formData.phone ? validatePhone(formData.phone) : '';
+        const phoneError = validatePhone(formData.phone);
 
         if (emailError || phoneError) {
             setErrors({
@@ -259,6 +267,7 @@ const Contact = () => {
                 countryCode: '+91',
                 email: '',
                 phone: '',
+                jobTitle: '',
                 inquiryType: 'none',
                 message: '',
             });
@@ -310,7 +319,7 @@ const Contact = () => {
                             Have a project in mind or just want to chat? Fill out the form and I'll get back to you within 24 hours.
                         </p>
 
-                        <div className="space-y-8">
+                        <div className="hidden lg:block space-y-8">
                             <div className="flex items-center gap-6">
                                 <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                                     <Mail className="w-5 h-5 text-primary" />
@@ -337,200 +346,155 @@ const Contact = () => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        <Card className="glass p-8 md:p-12 border-white/10 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -z-10" />
-                            <h2 className="text-3xl font-bold text-white mb-8">Get in Touch</h2>
+                        <Card className="glass p-8 md:p-12 border-white/5 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-3xl -z-10 group-hover:bg-primary/10 transition-colors duration-700" />
+                            <h2 className="text-3xl font-bold text-white mb-12 uppercase tracking-tighter">Initialize Transmission</h2>
 
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <Label className="text-gray-400">First Name</Label>
-                                        <Input
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    {/* First Name */}
+                                    <div className="bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 focus-within:ring-1 focus-within:ring-primary/30 transition-all">
+                                        <label className="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">First name</label>
+                                        <input
                                             name="firstName"
+                                            required
                                             value={formData.firstName}
                                             onChange={handleInputChange}
-                                            placeholder="John"
-                                            className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20"
-                                            required
+                                            className="w-full bg-transparent border-none p-0 text-white focus:outline-none focus:ring-0 text-lg font-light placeholder:text-gray-700"
+                                            placeholder="Thien"
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label className="text-gray-400">Last Name <span className="text-gray-500 text-sm">(Optional)</span></Label>
-                                        <Input
+
+                                    {/* Last Name */}
+                                    <div className="bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 focus-within:ring-1 focus-within:ring-primary/30 transition-all">
+                                        <label className="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Last name</label>
+                                        <input
                                             name="lastName"
                                             value={formData.lastName}
                                             onChange={handleInputChange}
-                                            placeholder="Doe"
-                                            className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20"
+                                            className="w-full bg-transparent border-none p-0 text-white focus:outline-none focus:ring-0 text-lg font-light placeholder:text-gray-700"
+                                            placeholder="Le"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label className="text-gray-400">Email Address</Label>
-                                    <Input
+                                {/* Email Address */}
+                                <div className={`bg-[#1a1a1a] border rounded-2xl p-5 focus-within:ring-1 focus-within:ring-primary/30 transition-all ${errors.email ? 'border-red-500/30' : 'border-white/5'}`}>
+                                    <label className={`block text-[10px] font-mono uppercase tracking-widest mb-1 ${errors.email ? 'text-red-400' : 'text-gray-500'}`}>Email</label>
+                                    <input
                                         name="email"
                                         type="email"
+                                        required
                                         value={formData.email}
                                         onChange={handleInputChange}
-                                        placeholder="john@example.com"
-                                        className={`bg-white/5 text-white h-12 rounded-xl focus:ring-primary/20 ${errors.email
-                                            ? 'border-red-500/50 focus:border-red-500'
-                                            : 'border-white/10 focus:border-primary/50'
-                                            }`}
-                                        required
+                                        className="w-full bg-transparent border-none p-0 text-white focus:outline-none focus:ring-0 text-lg font-light placeholder:text-gray-700"
+                                        placeholder="lethien@tayato.com"
                                     />
-                                    {errors.email && (
-                                        <p className="text-red-400 text-sm flex items-center gap-1">
-                                            <AlertCircle className="w-4 h-4" />
-                                            {errors.email}
-                                        </p>
-                                    )}
+                                    {errors.email && <p className="mt-2 text-[10px] text-red-400 uppercase tracking-tight font-mono">{errors.email}</p>}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label className="text-gray-400">Phone Number <span className="text-gray-500 text-sm">(Optional)</span></Label>
-                                    <div className="flex gap-2">
+                                {/* Project Type Select */}
+                                <div className="bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 focus-within:ring-1 focus-within:ring-primary/30 transition-all">
+                                    <label className="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Project Type *</label>
+                                    <Select
+                                        name="jobTitle"
+                                        value={formData.jobTitle}
+                                        onValueChange={(value) => setFormData(prev => ({ ...prev, jobTitle: value }))}
+                                    >
+                                        <SelectTrigger className="bg-transparent border-none p-0 text-white h-auto rounded-none focus:ring-0 text-lg font-light">
+                                            <SelectValue placeholder="Select project type" />
+                                        </SelectTrigger>
+                                        <SelectContent className="glass-dark border-white/10 text-white">
+                                            <SelectItem value="game">🎮 Game Development</SelectItem>
+                                            <SelectItem value="web">🌐 Web Development</SelectItem>
+                                            <SelectItem value="mobile">📱 Mobile Development</SelectItem>
+                                            <SelectItem value="anime">🎬 Anime Project</SelectItem>
+                                            <SelectItem value="fullstack">⚡ Full Stack</SelectItem>
+                                            <SelectItem value="other">💼 Other</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="grid grid-cols-[120px_1fr] gap-4">
+                                    <div className="bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 focus-within:ring-1 focus-within:ring-primary/30 transition-all">
+                                        <label className="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Code</label>
                                         <Select
                                             name="countryCode"
                                             value={formData.countryCode}
                                             onValueChange={(value) => setFormData(prev => ({ ...prev, countryCode: value }))}
                                         >
-                                            <SelectTrigger className="w-[100px] bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20">
+                                            <SelectTrigger className="bg-transparent border-none p-0 text-white h-auto rounded-none focus:ring-0 text-lg font-light">
                                                 <SelectValue placeholder="+91" />
                                             </SelectTrigger>
-                                            <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl max-h-60">
-                                                <SelectItem value="+91">IN +91</SelectItem>
-                                                <SelectItem value="+1">US +1</SelectItem>
-                                                <SelectItem value="+44">UK +44</SelectItem>
-                                                <SelectItem value="+61">AU +61</SelectItem>
-                                                <SelectItem value="+81">JP +81</SelectItem>
-                                                <SelectItem value="+49">DE +49</SelectItem>
-                                                <SelectItem value="+33">FR +33</SelectItem>
-                                                <SelectItem value="+86">CN +86</SelectItem>
-                                                <SelectItem value="+971">AE +971</SelectItem>
+                                            <SelectContent className="glass-dark border-white/10 text-white max-h-60">
+                                                <SelectItem value="+91">🇮🇳 +91</SelectItem>
+                                                <SelectItem value="+1">🇺🇸 +1</SelectItem>
+                                                <SelectItem value="+44">🇬🇧 +44</SelectItem>
+                                                <SelectItem value="+971">🇦🇪 +971</SelectItem>
                                             </SelectContent>
                                         </Select>
-                                        <Input
+                                    </div>
+                                    <div className={`bg-[#1a1a1a] border rounded-2xl p-5 focus-within:ring-1 focus-within:ring-primary/30 transition-all ${errors.phone ? 'border-red-500/30' : 'border-white/5'}`}>
+                                        <label className={`block text-[10px] font-mono uppercase tracking-widest mb-1 ${errors.phone ? 'text-red-400' : 'text-gray-500'}`}>Phone *</label>
+                                        <input
                                             name="phone"
+                                            type="tel"
+                                            required
                                             value={formData.phone}
                                             onChange={handleInputChange}
-                                            placeholder="00000 00000"
-                                            className={`bg-white/5 text-white h-12 rounded-xl focus:ring-primary/20 flex-1 ${errors.phone
-                                                ? 'border-red-500/50 focus:border-red-500'
-                                                : 'border-white/10 focus:border-primary/50'
-                                                }`}
+                                            className="w-full bg-transparent border-none p-0 text-white focus:outline-none focus:ring-0 text-lg font-light placeholder:text-gray-700"
+                                            placeholder="000000000"
                                         />
+                                        {errors.phone && <p className="mt-2 text-[10px] text-red-400 uppercase tracking-tight font-mono">{errors.phone}</p>}
                                     </div>
-                                    {errors.phone && (
-                                        <p className="text-red-400 text-sm flex items-center gap-1">
-                                            <AlertCircle className="w-4 h-4" />
-                                            {errors.phone}
-                                        </p>
-                                    )}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label className="text-gray-400">Inquiry Type</Label>
-                                    <Select
-                                        name="inquiryType"
-                                        value={formData.inquiryType}
-                                        onValueChange={(value) => setFormData(prev => ({ ...prev, inquiryType: value }))}
+                                {/* Message */}
+                                <div className="bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 focus-within:ring-1 focus-within:ring-primary/30 transition-all">
+                                    <label className="block text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Add a comment</label>
+                                    <textarea
+                                        name="message"
+                                        required
+                                        rows={3}
+                                        value={formData.message}
+                                        onChange={handleInputChange}
+                                        className="w-full bg-transparent border-none p-0 text-white focus:outline-none focus:ring-0 text-lg font-light resize-none placeholder:text-gray-700"
+                                        placeholder="Describe your vision..."
+                                    />
+                                </div>
+
+                                <div className="pt-6 space-y-8">
+                                    <p className="text-[11px] text-gray-500 text-center leading-relaxed font-mono">
+                                        By proceeding you agree to the <span className="text-blue-500 hover:underline cursor-pointer">Business Terms of Service</span> <br className="hidden md:block" /> and <span className="text-blue-500 hover:underline cursor-pointer">our privacy policy</span>
+                                    </p>
+
+                                    {/* reCAPTCHA */}
+                                    <div className="flex justify-center scale-90 md:scale-100">
+                                        <div className="rounded-2xl overflow-hidden border border-white/5">
+                                            <ReCAPTCHA
+                                                ref={recaptchaRef}
+                                                sitekey={captchaSiteKey}
+                                                onChange={(token) => setCaptchaToken(token)}
+                                                theme="dark"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <Button
+                                        type="submit"
+                                        disabled={emailSubmitting || isTransmitting}
+                                        className="w-full h-16 bg-white hover:bg-white/90 text-black rounded-full text-lg font-bold transition-all duration-300 transform active:scale-[0.98] disabled:opacity-50"
                                     >
-                                        <SelectTrigger className="bg-white/5 border-white/10 text-white h-12 rounded-xl focus:ring-primary/20">
-                                            <SelectValue placeholder="Select an option" />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl">
-                                            <SelectItem value="none">General Inquiry (None)</SelectItem>
-                                            <SelectItem value="game">Game Development</SelectItem>
-                                            <SelectItem value="website">Website Development</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <div className="flex justify-between items-end">
-                                        <Label className="text-gray-400">Transmission Content</Label>
-                                        <div className="flex flex-col items-end">
-                                            <span className={`text-[10px] uppercase font-mono tracking-widest ${mana > 60 ? 'text-green-400' : mana > 30 ? 'text-yellow-400' : 'text-red-400'}`}>
-                                                Signal Strength: {mana > 60 ? 'OPTIMAL' : mana > 30 ? 'STABLE' : 'WEAK'}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="relative group">
-                                        <div className={`absolute -inset-0.5 rounded-xl blur opacity-20 transition duration-500 group-hover:opacity-40 ${mana > 60 ? 'bg-green-500' : mana > 30 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
-                                        <Textarea
-                                            name="message"
-                                            value={formData.message}
-                                            onChange={handleInputChange}
-                                            placeholder="Initialize data transmission..."
-                                            className="bg-black/40 border-white/10 text-white min-h-[150px] rounded-xl focus:ring-0 focus:border-white/30 resize-none z-10 relative font-mono text-sm leading-relaxed"
-                                            maxLength={500}
-                                            required
-                                        />
-
-                                        {/* HUD Elements */}
-                                        <div className="absolute top-2 right-2 flex gap-1">
-                                            {[1, 2, 3].map(i => (
-                                                <div key={i} className={`w-1 h-1 rounded-full ${mana > 0 ? 'bg-white/50 animate-pulse' : 'bg-white/10'}`} />
-                                            ))}
-                                        </div>
-
-                                        {/* Mana Bar Indicator */}
-                                        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gray-900/50 rounded-b-xl overflow-hidden flex">
-                                            {/* Segmented Bar */}
-                                            {Array.from({ length: 10 }).map((_, i) => (
-                                                <div key={i} className="flex-1 border-r border-black/20 last:border-0 relative">
-                                                    <div
-                                                        className={`absolute inset-0 transition-all duration-300 ${(mana / 10) > i
-                                                            ? (mana > 60 ? 'bg-green-500' : mana > 30 ? 'bg-yellow-500' : 'bg-red-500')
-                                                            : 'bg-transparent'
-                                                            } ${(mana / 10) > i ? 'opacity-100' : 'opacity-0'}`}
-                                                    />
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-between text-xs text-gray-600 font-mono pt-1">
-                                        <span>BYTES: {formData.message.length}/500</span>
-                                        <span>{(mana).toFixed(0)}% CHARGE</span>
-                                    </div>
-                                </div>
-
-                                {/* reCAPTCHA */}
-                                <div className="flex justify-center pt-2">
-                                    <div className="rounded-xl overflow-hidden border border-white/10 glass p-1">
-                                        <ReCAPTCHA
-                                            ref={recaptchaRef}
-                                            sitekey={captchaSiteKey}
-                                            onChange={(token) => setCaptchaToken(token)}
-                                            theme="dark"
-                                        />
-                                    </div>
-                                </div>
-
-                                <Button
-                                    type="submit"
-                                    disabled={emailSubmitting || isTransmitting}
-                                    onMouseEnter={() => playHover()}
-                                    onClick={() => playClick()}
-                                    className={`w-full h-14 rounded-xl text-lg font-bold transition-all duration-500 relative overflow-hidden group ${emailSubmitting || isTransmitting ? 'bg-primary' : 'bg-white/5 hover:bg-white/10 border border-white/10'
-                                        }`}
-                                >
-                                    <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000`} />
-
-                                    <span className="relative flex items-center justify-center gap-3">
                                         {emailSubmitting || isTransmitting ? (
-                                            <>
-                                                <span className="animate-pulse">TRANSMITTING...</span>
-                                            </>
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                                <span>Transmitting...</span>
+                                            </div>
                                         ) : (
-                                            <>
-                                                INITIATE UPLINK <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                                            </>
+                                            "Send contact request"
                                         )}
-                                    </span>
-                                </Button>
+                                    </Button>
+                                </div>
                             </form>
 
                             <div className="mt-8 text-center">
@@ -544,109 +508,130 @@ const Contact = () => {
                     </motion.div>
                 </div>
 
-                {/* Support Channels */}
-                <div className="grid md:grid-cols-3 gap-8 mb-32">
-                    {supportChannels.map((channel, index) => (
-                        <motion.div
-                            key={channel.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                        >
-                            <Card className="glass p-8 border-white/10 hover:border-primary/30 transition-all duration-300">
-                                <channel.icon className="w-10 h-10 text-primary mb-6" />
-                                <h3 className="text-xl font-bold text-white mb-4">{channel.title}</h3>
-                                <p className="text-gray-400 mb-6 text-sm leading-relaxed">{channel.description}</p>
-                                <a href={`mailto:${channel.email}`} className="text-primary font-medium hover:underline select-text">
-                                    {channel.email}
-                                </a>
-                            </Card>
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Location Section */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="grid lg:grid-cols-2 gap-12 items-center bg-white/5 rounded-[2rem] p-8 md:p-16 border border-white/10 mb-40"
-                >
-                    <div className="aspect-video bg-gray-900 rounded-3xl overflow-hidden relative border border-white/10">
-                        {/* Simple Map Placeholder with aesthetic styling */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                            <Globe className="w-24 h-24 text-white/20 animate-pulse" />
-                        </div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                            <div className="w-6 h-6 bg-primary rounded-full animate-ping" />
-                            <div className="w-6 h-6 bg-primary rounded-full absolute top-0" />
-                        </div>
+                {/* Secondary Sections - Hidden on Mobile */}
+                <div className="hidden lg:block">
+                    {/* Support Channels */}
+                    <div className="grid md:grid-cols-3 gap-8 mb-32">
+                        {supportChannels.map((channel, index) => (
+                            <motion.div
+                                key={channel.title}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                            >
+                                <Card className="glass p-8 border-white/10 hover:border-primary/30 transition-all duration-300">
+                                    <channel.icon className="w-10 h-10 text-primary mb-6" />
+                                    <h3 className="text-xl font-bold text-white mb-4">{channel.title}</h3>
+                                    <p className="text-gray-400 mb-6 text-sm leading-relaxed">{channel.description}</p>
+                                    <a href={`mailto:${channel.email}`} className="text-primary font-medium hover:underline select-text">
+                                        {channel.email}
+                                    </a>
+                                </Card>
+                            </motion.div>
+                        ))}
                     </div>
-                    <div className="space-y-6 lg:pl-12">
-                        <h2 className="text-3xl font-bold text-white uppercase tracking-tighter">Our Headquarters</h2>
-                        <p className="text-gray-400 text-lg font-light leading-relaxed">
-                            Working primarily remotely, but available for meetings in person across Haryana and the Delhi-NCR region.
-                        </p>
-                        <div className="space-y-4">
-                            <div className="flex items-start gap-4">
-                                <MapPin className="w-5 h-5 text-primary mt-1" />
-                                <div>
-                                    <p className="text-white font-medium">Haryana, India</p>
-                                    <p className="text-gray-500 text-sm">Industrial Hub Center, Sector 12</p>
+
+                    {/* Location Section */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        className="grid lg:grid-cols-2 gap-12 items-center bg-white/5 rounded-[2rem] p-8 md:p-16 border border-white/10 mb-40"
+                    >
+                        <div className="aspect-video bg-gray-900 rounded-3xl overflow-hidden relative border border-white/10">
+                            {/* Simple Map Placeholder with aesthetic styling */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                                <Globe className="w-24 h-24 text-white/20 animate-pulse" />
+                            </div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                <div className="w-6 h-6 bg-primary rounded-full animate-ping" />
+                                <div className="w-6 h-6 bg-primary rounded-full absolute top-0" />
+                            </div>
+                        </div>
+                        <div className="space-y-6 lg:pl-12">
+                            <h2 className="text-3xl font-bold text-white uppercase tracking-tighter">Our Headquarters</h2>
+                            <p className="text-gray-400 text-lg font-light leading-relaxed">
+                                Working primarily remotely, but available for meetings in person across Haryana and the Delhi-NCR region.
+                            </p>
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-4">
+                                    <MapPin className="w-5 h-5 text-primary mt-1" />
+                                    <div>
+                                        <p className="text-white font-medium">Haryana, India</p>
+                                        <p className="text-gray-500 text-sm">Industrial Hub Center, Sector 12</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 pt-6">
+                                    <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                        <Instagram className="w-5 h-5" />
+                                    </a>
+                                    <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                        <Twitter className="w-5 h-5" />
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                        <Linkedin className="w-5 h-5" />
+                                    </a>
+                                    <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                        <Github className="w-5 h-5" />
+                                    </a>
                                 </div>
                             </div>
-                            <div className="flex gap-4 pt-6">
-                                <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                    <Instagram className="w-5 h-5" />
-                                </a>
-                                <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                    <Twitter className="w-5 h-5" />
-                                </a>
-                                <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                    <Linkedin className="w-5 h-5" />
-                                </a>
-                                <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                    <Github className="w-5 h-5" />
-                                </a>
+                        </div>
+                    </motion.div>
+
+                    {/* Luxury FAQ Section - Refined Minimal */}
+                    <section className="mb-48">
+                        <div className="grid lg:grid-cols-[1fr_2.5fr] gap-24 lg:gap-32">
+                            {/* Left Column: Title & Intro */}
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 1 }}
+                                className="space-y-10"
+                            >
+                                <div className="space-y-4">
+                                    <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] block">Support</span>
+                                    <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
+                                        Common <br />
+                                        <span className="text-gradient">Logic</span>
+                                    </h2>
+                                </div>
+                                <p className="text-gray-500 text-lg font-light leading-relaxed max-w-sm">
+                                    Explore established transmission protocols and common procedural inquiries.
+                                </p>
+                                <div className="pt-4">
+                                    <Button variant="link" className="text-white hover:text-primary transition-colors p-0 h-auto text-sm uppercase tracking-[0.2em] font-bold group items-center gap-4">
+                                        Contact Support
+                                        <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary group-hover:scale-110 transition-all">
+                                            <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                        </div>
+                                    </Button>
+                                </div>
+                            </motion.div>
+
+                            {/* Right Column: Refined Accordions */}
+                            <div className="space-y-4">
+                                {faqs.map((faq, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.8, delay: index * 0.1 }}
+                                    >
+                                        <FAQItem
+                                            number={String(index + 1).padStart(2, '0')}
+                                            question={faq.question}
+                                            answer={faq.answer}
+                                        />
+                                    </motion.div>
+                                ))}
                             </div>
                         </div>
-                    </div>
-                </motion.div>
-
-                {/* Luxury FAQ Section (Anantara Style) */}
-                <section className="mb-32">
-                    <div className="grid lg:grid-cols-[1fr_2fr] gap-16 lg:gap-32">
-                        {/* Left Column: Title & Intro */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            className="space-y-6"
-                        >
-                            <h2 className="text-5xl md:text-6xl font-serif italic text-white tracking-tight">Questions</h2>
-                            <p className="text-gray-400 text-lg font-light leading-relaxed max-w-sm">
-                                Have more specific queries? Feel free to reach out directly if your question isn't covered here.
-                            </p>
-                            <Button variant="link" className="text-primary p-0 h-auto text-lg group items-center gap-2">
-                                Contact Support
-                                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </Button>
-                        </motion.div>
-
-                        {/* Right Column: Numbered Accordions */}
-                        <div className="space-y-px">
-                            {faqs.map((faq, index) => (
-                                <FAQItem
-                                    key={index}
-                                    number={String(index + 1).padStart(2, '0')}
-                                    question={faq.question}
-                                    answer={faq.answer}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </main>
 
             <Footer />

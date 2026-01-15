@@ -13,20 +13,10 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import SpotlightCard from './ui/SpotlightCard';
 import { useTranslation } from 'react-i18next';
-import { useCommentary } from '@/context/CommentaryContext';
 import { useSound } from '@/context/SoundContext';
 import ShareButtons from './ShareButtons';
-
-const COMMENTARIES: Record<string, string> = {
-  'NexusAI Landing Page': 'NexusAI pushed the boundaries of web performance. The real challenge was achieving buttery-smooth 60FPS animations while running complex SVG morphing and parallax effects. I implemented a custom animation pipeline using requestAnimationFrame and GPU-accelerated transforms to ensure every interaction felt instantaneous, even on mid-range devices.',
-  'Horizon Dashboard': 'Building Horizon taught me that great dashboard design is about information hierarchy, not just aesthetics. The key was creating a scalable design system that could handle dense data without overwhelming users. I focused on progressive disclosure showing critical metrics upfront while keeping detailed analytics just a click away.',
-  'Aura E-commerce': 'Aura was an exercise in restraint. In e-commerce there is always pressure to add more features more CTAs more everything. But true luxury brands understand that less is more. Every element had to justify its existence. The result was a 40 percent increase in time on site and significantly higher conversion rates through focused intentional design.',
-  'Solaris 3D Experience': 'This project became my obsession. Creating a performant 3D solar system in the browser meant diving deep into WebGL optimization texture atlasing LOD systems and custom shaders. The breakthrough came when I implemented instanced rendering for asteroid fields allowing thousands of objects to render at 60FPS on mobile devices.',
-};
-
 const ProjectsSection = () => {
   const { t } = useTranslation();
-  const { playCommentary } = useCommentary();
   const { playHover, playClick } = useSound();
   const [isVisible, setIsVisible] = useState(false);
   interface Project {
@@ -177,36 +167,39 @@ const ProjectsSection = () => {
   };
 
   return (
-    <section id="projects" ref={sectionRef} className="relative py-32 px-6 bg-[#050505] scroll-mt-24 md:scroll-mt-32 overflow-hidden">
+    <section id="projects" ref={sectionRef} className="relative py-48 px-6 bg-[#050505] scroll-mt-24 md:scroll-mt-32 overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        {/* Section header */}
+        {/* Minimal Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-32"
+          className="text-center mb-40"
         >
-          <span className="text-primary font-mono text-sm tracking-[0.3em] uppercase mb-4 block">{t('projects.archive')}</span>
-          <h2 className="text-6xl md:text-8xl font-bold mb-6 tracking-tighter text-white">
-            {t('projects.title_prefix')} <span className="text-gradient">{t('projects.title_suffix')}</span>
+          <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block">Selected Works</span>
+          <h2 className="text-6xl md:text-[8rem] font-black mb-8 tracking-tighter text-white uppercase leading-none">
+            Archived <br />
+            <span className="text-gradient">Projects</span>
           </h2>
-          <div className="w-24 h-[1px] bg-white/20 mx-auto rounded-full" />
+          <p className="text-gray-500 text-lg max-w-xl mx-auto font-light leading-relaxed">
+            A curation of digital experiences, interactive systems, and technical explorations.
+          </p>
         </motion.div>
 
-        {/* Filter Bar */}
+        {/* Filter Bar - Minimal Centered */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="flex flex-wrap justify-center gap-3 mb-24 max-w-4xl mx-auto"
+          className="flex flex-wrap justify-center gap-4 mb-32 max-w-4xl mx-auto"
         >
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
-              className={`px-6 py-2 rounded-full text-xs font-mono tracking-widest transition-all duration-300 border ${activeFilter === cat
-                ? 'bg-primary border-primary text-white shadow-[0_0_20px_rgba(34,197,94,0.3)]'
-                : 'bg-white/5 border-white/10 text-gray-500 hover:text-white hover:border-white/20'
+              className={`px-8 py-3 rounded-full text-[10px] font-mono tracking-[0.2em] transition-all duration-500 border ${activeFilter === cat
+                ? 'bg-primary border-primary text-white shadow-[0_0_25px_rgba(34,197,94,0.4)] scale-105'
+                : 'bg-white/[0.02] border-white/5 text-gray-500 hover:text-white hover:border-white/20'
                 }`}
               onMouseEnter={(e) => handleSpatialInteraction(e, 'hover')}
             >
@@ -215,128 +208,117 @@ const ProjectsSection = () => {
           ))}
         </motion.div>
 
-        {/* Featured Projects */}
-        <div className="space-y-40">
+        {/* Featured Projects - Large & Centered Layout */}
+        <div className="space-y-64">
           <AnimatePresence mode="popLayout">
             {featuredProjects.map((project, index) => (
               <motion.div
                 key={project.title}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-24 items-center`}
+                initial={{ opacity: 0, y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                className="flex flex-col items-center text-center space-y-12"
               >
-                {/* Image Container */}
+                {/* Large Media Link */}
                 <div
                   onMouseEnter={(e) => handleSpatialInteraction(e, 'hover')}
                   onClick={(e) => {
                     handleSpatialInteraction(e, 'click');
                     setSelectedProject(project);
-                    if (COMMENTARIES[project.title]) {
-                      playCommentary(COMMENTARIES[project.title]);
-                    }
                   }}
-                  className="relative lg:w-3/5 aspect-[16/10] overflow-hidden rounded-3xl cursor-pointer group"
+                  className="relative w-full max-w-6xl aspect-[21/9] overflow-hidden rounded-[2rem] cursor-pointer group glass-premium"
                 >
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10" />
+                  <div className="absolute inset-0 bg-[#050505]/30 group-hover:bg-transparent transition-colors duration-1000 z-10" />
                   <motion.img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-[2s] group-hover:scale-105"
                   />
 
-                  {/* Floating Category Badge */}
-                  <div className="absolute top-8 left-8 z-20 overflow-hidden">
-                    <motion.div initial={{ y: "100%" }} whileInView={{ y: 0 }} transition={{ delay: 0.8 }} className="glass px-4 py-2 rounded-full border-white/10 text-xs tracking-widest uppercase text-white">
-                      {project.category}
-                    </motion.div>
+                  {/* Hover Overlay HUD */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20">
+                    <div className="glass-premium px-8 py-4 rounded-full border border-white/20 text-white font-mono text-xs uppercase tracking-widest flex items-center gap-3">
+                      Initialize Sync <Play className="w-3 h-3 fill-white" />
+                    </div>
                   </div>
 
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
-                    <div className="w-16 h-16 rounded-full glass border-white/20 flex items-center justify-center">
-                      <Info className="w-8 h-8 text-white" />
+                  {/* Top Info Bar */}
+                  <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20 pointer-events-none">
+                    <div className="glass-premium px-5 py-2 rounded-full border border-white/10 text-[10px] tracking-[0.3em] uppercase text-white font-bold">
+                      {project.category}
+                    </div>
+                    <div className="text-[10px] font-mono text-gray-400 tracking-[0.2em] uppercase">
+                      Transmission ID: {project.year}._SYS
                     </div>
                   </div>
                 </div>
 
-                {/* Content Container */}
-                <motion.div
-                  className="lg:w-2/5 space-y-6"
-                >
-                  <div className="flex items-center gap-4 text-xs tracking-[0.3em] uppercase text-gray-500 font-mono">
-                    <span>{project.year}</span>
-                    <div className="w-8 h-[1px] bg-gray-800" />
-                    <span className="text-primary">{project.category}</span>
-                  </div>
-
-                  <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+                {/* Content Block */}
+                <div className="max-w-2xl space-y-4">
+                  <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none">
                     {project.title}
                   </h3>
 
-                  <p className="text-xl text-gray-400 font-light leading-relaxed">
+                  <p className="text-gray-400 text-lg font-light leading-relaxed">
                     {project.description}
                   </p>
 
-                  <div className="pt-6 flex flex-wrap gap-4">
+                  <div className="pt-6 flex flex-wrap gap-2 justify-center">
                     {project.tech.map(t => (
-                      <span key={t} className="text-xs font-mono text-gray-600 border border-gray-800 px-3 py-1 rounded-md">
+                      <span key={t} className="text-[10px] font-mono text-gray-600 uppercase tracking-widest border border-white/5 px-4 py-1.5 rounded-full bg-white/[0.01]">
                         {t}
                       </span>
                     ))}
                   </div>
-
-                  <div className="pt-8">
-                    <Button
-                      variant="link"
-                      onClick={() => setSelectedProject(project)}
-                      className="text-white hover:text-primary p-0 h-auto text-lg group items-center gap-2"
-                    >
-                      {t('projects.view_case_study')}
-                      <ArrowDown className="w-4 h-4 -rotate-90 group-hover:translate-x-2 transition-transform" />
-                    </Button>
-                  </div>
-                </motion.div>
+                </div>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
 
-        {/* Other Projects Section */}
-        <div className="mt-60">
-          <motion.h3
+        {/* Other Projects Section - Minimal Grid */}
+        <div className="mt-80">
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="text-2xl font-mono tracking-[0.4em] uppercase text-gray-500 text-center mb-20"
+            className="flex flex-col items-center space-y-4 mb-24"
           >
-            {t('projects.parallel_tracks')}
-          </motion.h3>
+            <div className="w-px h-24 bg-gradient-to-b from-primary/50 to-transparent" />
+            <h3 className="text-xs font-mono tracking-[0.8em] uppercase text-gray-500">
+              Parallel Tracks
+            </h3>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <AnimatePresence mode="popLayout">
               {otherProjects.map((project, index) => (
                 <SpotlightCard key={project.title} className="h-full">
                   <motion.div
                     layout
                     initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: index * 0.1 }}
                     onMouseEnter={(e) => handleSpatialInteraction(e, 'hover')}
                     onClick={(e) => {
                       handleSpatialInteraction(e, 'click');
                       setSelectedProject(project);
                     }}
-                    className="group relative cursor-pointer h-full glass p-6 border border-white/10"
+                    className="group relative cursor-pointer h-full glass-premium p-8 border border-white/5 transition-all duration-700 hover:border-primary/40 hover:shadow-[0_0_40px_rgba(34,197,94,0.15)] hover:-translate-y-3 rounded-[2.5rem]"
                   >
-                    <div className="relative aspect-video overflow-hidden rounded-2xl mb-6">
-                      <img src={project.image} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="" />
-                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors" />
+                    <div className="relative aspect-video overflow-hidden rounded-[1.5rem] mb-8">
+                      <img src={project.image} className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" alt="" />
                     </div>
-                    <div className="space-y-2">
-                      <h4 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{project.title}</h4>
-                      <div className="text-xs font-mono text-gray-500 uppercase tracking-widest">{project.category} / {project.year || '2023'}</div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] font-mono text-primary/60 tracking-widest uppercase">{project.category}</span>
+                        <span className="text-[10px] font-mono text-gray-600 uppercase">{project.year}</span>
+                      </div>
+                      <h4 className="text-2xl font-bold text-white group-hover:text-primary transition-colors tracking-tight uppercase leading-tight">{project.title}</h4>
+                      <p className="text-gray-500 text-sm font-light line-clamp-2 leading-relaxed">{project.description}</p>
                     </div>
                   </motion.div>
                 </SpotlightCard>
@@ -348,126 +330,73 @@ const ProjectsSection = () => {
         {/* Project Detail Dialog */}
         <Dialog open={!!selectedProject} onOpenChange={(open) => {
           if (!open) setSelectedProject(null);
-          if (open && selectedProject && COMMENTARIES[selectedProject.title]) {
-            playCommentary(COMMENTARIES[selectedProject.title]);
-          }
         }}>
-          <DialogContent className="glass border-white/10 max-w-4xl max-h-[90vh] overflow-y-auto text-white p-0">
+          <DialogContent className="glass-premium border-white/5 max-w-5xl max-h-[95vh] overflow-y-auto text-white p-0 rounded-[3rem]">
             {selectedProject && (
               <div className="flex flex-col">
                 {/* Visual Header */}
-                <div className="relative h-80 overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key="media"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="w-full h-full"
-                    >
-                      <img
-                        src={selectedProject.image}
-                        alt={selectedProject.title}
-                        className="w-full h-full object-cover"
-                      />
-                      {/* Simulator Overlay Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-transparent" />
-                      <div className="absolute top-6 left-6 flex gap-2">
-                        <Badge className="bg-primary/20 text-primary border-primary/30 backdrop-blur-md">
-                          {selectedProject.category}
-                        </Badge>
-                        <Badge className="bg-white/5 text-gray-400 border-white/10 backdrop-blur-md">
-                          {selectedProject.year}
-                        </Badge>
-                      </div>
+                <div className="relative h-[50vh] overflow-hidden">
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent" />
 
-                      {/* Simulation HUD */}
-                      <div className="absolute bottom-6 right-6 text-right font-mono pointer-events-none">
-                        <p className="text-[10px] text-primary/60 uppercase tracking-widest mb-1">Status: Operational</p>
-                        <p className="text-[8px] text-gray-600">Sync: 100% | Uplink: Active</p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-
-                <div className="p-8 md:p-12 space-y-10">
-                  <DialogHeader>
-                    <div className="flex items-center justify-between">
-                      <DialogTitle className="text-4xl md:text-5xl font-bold tracking-tighter">
-                        {selectedProject.title}
-                      </DialogTitle>
+                  <div className="absolute top-10 left-10 flex gap-3">
+                    <div className="glass-premium px-6 py-2 rounded-full border border-white/10 text-[10px] uppercase font-bold tracking-widest">
+                      {selectedProject.category}
                     </div>
-                    <DialogDescription className="text-gray-400 text-lg leading-relaxed pt-4 max-w-2xl">
-                      {selectedProject.longDescription || selectedProject.description}
-                    </DialogDescription>
-                    <div className="pt-4">
-                      <ShareButtons
-                        title={selectedProject.title}
-                        description={selectedProject.description}
-                      />
-                    </div>
-                  </DialogHeader>
-
-                  {/* Feature Simulation Grid */}
-                  <div className="grid md:grid-cols-2 gap-12">
-                    <div className="space-y-6">
-                      <h4 className="text-xs font-mono uppercase tracking-[0.3em] text-primary/60 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                        Core Architecture
-                      </h4>
-                      <div className="space-y-4">
-                        {selectedProject.features?.map((feature: string, i: number) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            className="group flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-primary/20 transition-all"
-                          >
-                            <span className="text-xs font-mono text-gray-600 mt-1">0{i + 1}</span>
-                            <span className="text-gray-300 group-hover:text-white transition-colors">{feature}</span>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-6">
-                      <h4 className="text-xs font-mono uppercase tracking-[0.3em] text-primary/60">Molecular Stack</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedProject.tech.map((tech: string) => (
-                          <span
-                            key={tech}
-                            className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-gray-400 hover:text-white hover:border-primary/30 transition-all cursor-default"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Simulated Metric */}
-                      <div className="mt-8 p-6 rounded-3xl bg-primary/5 border border-primary/10">
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-[10px] uppercase font-mono tracking-widest text-gray-500">Node Performance</span>
-                          <span className="text-[10px] font-mono text-primary">60 FPS / 12ms</span>
-                        </div>
-                        <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: "94%" }}
-                            className="h-full bg-primary"
-                          />
-                        </div>
-                      </div>
+                    <div className="glass-premium px-6 py-2 rounded-full border border-white/10 text-[10px] uppercase font-bold tracking-widest text-primary/80">
+                      {selectedProject.year}
                     </div>
                   </div>
+                </div>
 
-                  <div className="flex flex-wrap gap-4 pt-10 border-t border-white/5">
-                    <Button className="h-14 px-8 bg-primary hover:bg-primary/90 text-white rounded-2xl font-bold flex-1 md:flex-none glow-primary">
-                      <Play className="w-4 h-4 mr-2" /> Launch Simulation
-                    </Button>
-                    <Button variant="outline" className="h-14 px-8 border-white/10 text-white hover:bg-white/5 rounded-2xl flex-1 md:flex-none">
-                      <Github className="w-4 h-4 mr-2" /> Source Code
-                    </Button>
+                <div className="p-12 md:p-20 space-y-16">
+                  <DialogHeader className="space-y-6">
+                    <DialogTitle className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none">
+                      {selectedProject.title}
+                    </DialogTitle>
+                    <DialogDescription className="text-gray-400 text-xl font-light leading-relaxed max-w-3xl">
+                      {selectedProject.longDescription || selectedProject.description}
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="grid lg:grid-cols-2 gap-20">
+                    <div className="space-y-8">
+                      <h4 className="text-[10px] font-mono uppercase tracking-[0.5em] text-primary/40">Core Features</h4>
+                      <div className="grid gap-4">
+                        {selectedProject.features?.map((f, i) => (
+                          <div key={i} className="flex items-start gap-4 p-6 glass-premium rounded-[2rem] border border-white/5 hover:border-primary/20 transition-all">
+                            <span className="text-[10px] font-mono text-gray-700 mt-1">0{i + 1}</span>
+                            <p className="text-gray-300 text-sm font-light leading-relaxed">{f}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-12">
+                      <div className="space-y-6">
+                        <h4 className="text-[10px] font-mono uppercase tracking-[0.5em] text-primary/40">Technical Stack</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedProject.tech.map(t => (
+                            <span key={t} className="px-5 py-2 glass-premium rounded-full border border-white/5 text-[11px] text-gray-400 uppercase tracking-widest">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-4 pt-8 border-t border-white/5">
+                        <Button className="w-full h-16 bg-primary hover:bg-primary/95 text-white rounded-full font-bold uppercase tracking-widest glow-primary text-xs">
+                          Launch Application
+                        </Button>
+                        <Button variant="outline" className="w-full h-16 glass-premium border-white/10 text-white hover:bg-white/5 rounded-full font-bold uppercase tracking-widest text-xs">
+                          Explore Source
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -475,9 +404,8 @@ const ProjectsSection = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Background decorations */}
-        <div className="absolute top-1/4 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl -z-10" />
-        <div className="absolute bottom-1/4 right-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl -z-10" />
+        {/* Refined Background Elements */}
+        <div className="absolute top-1/2 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_hsl(var(--primary)/0.03),transparent_70%)] -z-10 pointer-events-none" />
       </div>
     </section>
   );

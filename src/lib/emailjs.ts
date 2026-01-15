@@ -29,6 +29,7 @@ export const useEmailJS = () => {
         email: string;
         phone: string;
         countryCode: string;
+        jobTitle?: string;
         inquiryType: string;
         message: string;
     }) => {
@@ -74,6 +75,7 @@ export const useEmailJS = () => {
                 from_name: `${formData.firstName} ${formData.lastName}`.trim(),
                 from_email: formData.email,
                 phone: formData.phone ? `${formData.countryCode} ${formData.phone}` : 'Not provided',
+                job_title: formData.jobTitle || 'Not provided',
                 inquiry_type: formData.inquiryType === 'none' ? 'General Inquiry' : formData.inquiryType,
                 message: formData.message,
                 to_name: 'Durvish', // Your name

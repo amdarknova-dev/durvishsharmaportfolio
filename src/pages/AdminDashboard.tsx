@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useHack } from '@/context/HackContext';
+import { useAuth } from '@/context/AuthContext';
 import { motion } from 'framer-motion';
-import { Shield, Globe, Activity, Users, Lock, Wifi, AlertTriangle, Monitor, Smartphone, Tablet } from 'lucide-react';
+import { Shield, Globe, Activity, Users, Lock, Wifi, AlertTriangle, Monitor, Smartphone, Tablet, Edit, Power } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getAnalyticsData } from '@/lib/analytics';
@@ -22,7 +22,7 @@ type LogEntry = {
 };
 
 const AdminDashboard = () => {
-    const { isAdmin } = useHack();
+    const { isAdmin, isEditMode, toggleEditMode, setAsAdmin } = useAuth();
     const navigate = useNavigate();
     const [visitor, setVisitor] = useState<VisitorData | null>(null);
     const [logs, setLogs] = useState<LogEntry[]>([]);
@@ -33,6 +33,7 @@ const AdminDashboard = () => {
             navigate('/login');
             return;
         }
+
 
         // Fetch current user's IP (The Admin, or whoever is looking at this page)
         // In a real app, this would fetch from a database of ALL visitors.
@@ -88,10 +89,29 @@ const AdminDashboard = () => {
                             <p className="text-xs text-green-600">SYSTEM_INTEGRITY: 100% // AUTHORIZED_USER: ADMIN</p>
                         </div>
                     </div>
-                    <Button variant="outline" className="border-red-500 text-red-500 hover:bg-red-500/10" onClick={() => navigate('/')}>
-                        EXIT_DASHBOARD
-                    </Button>
+                    <div className="flex items-center gap-3">
+                        <Button
+                            variant="outline"
+                            onClick={toggleEditMode}
+                            className={`border-primary text-primary hover:bg-primary/10 ${isEditMode ? 'bg-primary/20' : ''}`}
+                        >
+                            <Edit className="w-4 h-4 mr-2" />
+                            {isEditMode ? 'EDITING ON' : 'EDIT MODE'}
+                        </Button>
+                        <Button
+                            variant="outline"
+                            className="border-red-500 text-red-500 hover:bg-red-500/10"
+                            onClick={() => {
+                                setAsAdmin(false);
+                                navigate('/');
+                            }}
+                        >
+                            <Power className="w-4 h-4 mr-2" />
+                            LOGOUT
+                        </Button>
+                    </div>
                 </div>
+
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

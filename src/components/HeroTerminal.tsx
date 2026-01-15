@@ -39,7 +39,16 @@ const HeroTerminal = () => {
             case 'help':
                 output = isAdmin
                     ? 'ROOT COMMANDS: dashboard, nuclear_launch, system_reset, exit_root'
-                    : 'Available commands: projects, about, contact, login, clear, sudo, play, whoami';
+                    : 'NAVIGATION: home, projects, about, contact, blog, lab, beyond\nSYSTEM: login, clear, sudo, whoami, date, ls, play';
+                break;
+            case 'home':
+            case 'cd ~':
+            case 'cd /':
+                output = 'Returning to HOME...';
+                playWhoosh();
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 500);
                 break;
             case 'login':
                 output = 'Initiating Secure Login Sequence...';
@@ -52,6 +61,26 @@ const HeroTerminal = () => {
                     const el = document.getElementById('projects');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }, 800);
+                break;
+            case 'blog':
+            case 'cd blog':
+                output = 'Opening BLOG...';
+                playWhoosh();
+                setTimeout(() => navigate('/blog'), 800);
+                break;
+            case 'lab':
+            case 'the lab':
+            case 'cd lab':
+                output = 'Entering THE LAB...';
+                playWhoosh();
+                setTimeout(() => navigate('/lab'), 800);
+                break;
+            case 'beyond':
+            case 'beyond work':
+            case 'cd beyond':
+                output = 'Navigating to BEYOND WORK...';
+                playWhoosh();
+                setTimeout(() => navigate('/beyond-work'), 800);
                 break;
             case 'dashboard':
                 if (isAdmin) {
@@ -97,6 +126,14 @@ const HeroTerminal = () => {
             case 'whoami':
                 output = isAdmin ? 'root@durvish-portfolio: (superuser)' : 'user@guest-session: active';
                 break;
+            case 'date':
+            case 'time':
+                output = new Date().toLocaleString();
+                break;
+            case 'ls':
+            case 'dir':
+                output = 'Available pages:\n  /home\n  /projects\n  /about\n  /contact\n  /blog\n  /lab\n  /beyond-work\n  /dashboard (admin)';
+                break;
             case 'exit_root':
                 if (isAdmin) {
                     setIsAdmin(false);
@@ -114,6 +151,15 @@ const HeroTerminal = () => {
                 break;
             case 'play':
                 output = 'Launching EASTER_EGG_GAME.exe... (Just kidding, try the Konami Code instead!)';
+                break;
+            case 'matrix':
+                output = 'Wake up, Neo... The Matrix has you... 🐇';
+                break;
+            case 'credits':
+                output = 'Built with ❤️ by Durvish Sharma\nStack: React + TypeScript + Three.js + Framer Motion';
+                break;
+            case 'weather':
+                output = `Current condition: ${condition.toUpperCase()}`;
                 break;
             default:
                 output = `Command not found: "${command}". Type "help" for valid commands.`;

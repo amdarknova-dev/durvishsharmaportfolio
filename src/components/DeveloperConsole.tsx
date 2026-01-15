@@ -24,6 +24,18 @@ const DeveloperConsole = () => {
     const { unlockedAchievements, unlockAchievement } = useAchievements();
     const { condition, setCondition, temp, location } = useWeather();
 
+    // Prevent background scrolling when console is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [isOpen]);
+
     // Hardcoded list for display (duplicating context generic list logic for UI simplicity here, normally should export list from context)
     const allAchievements = [
         { id: 'explorer', title: 'Explorer', desc: 'Visit all main pages' },
