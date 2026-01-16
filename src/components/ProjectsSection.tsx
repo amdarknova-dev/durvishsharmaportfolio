@@ -15,6 +15,7 @@ import SpotlightCard from './ui/SpotlightCard';
 import { useTranslation } from 'react-i18next';
 import { useSound } from '@/context/SoundContext';
 import ShareButtons from './ShareButtons';
+import HolographicProjectGallery from './HolographicProjectGallery';
 const ProjectsSection = () => {
   const { t } = useTranslation();
   const { playHover, playClick } = useSound();
@@ -208,74 +209,12 @@ const ProjectsSection = () => {
           ))}
         </motion.div>
 
-        {/* Featured Projects - Large & Centered Layout */}
-        <div className="space-y-64">
-          <AnimatePresence mode="popLayout">
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                layout
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                className="flex flex-col items-center text-center space-y-12"
-              >
-                {/* Large Media Link */}
-                <div
-                  onMouseEnter={(e) => handleSpatialInteraction(e, 'hover')}
-                  onClick={(e) => {
-                    handleSpatialInteraction(e, 'click');
-                    setSelectedProject(project);
-                  }}
-                  className="relative w-full max-w-6xl aspect-[21/9] overflow-hidden rounded-[2rem] cursor-pointer group glass-premium"
-                >
-                  <div className="absolute inset-0 bg-[#050505]/30 group-hover:bg-transparent transition-colors duration-1000 z-10" />
-                  <motion.img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-all duration-[2s] group-hover:scale-105"
-                  />
-
-                  {/* Hover Overlay HUD */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20">
-                    <div className="glass-premium px-8 py-4 rounded-full border border-white/20 text-white font-mono text-xs uppercase tracking-widest flex items-center gap-3">
-                      Initialize Sync <Play className="w-3 h-3 fill-white" />
-                    </div>
-                  </div>
-
-                  {/* Top Info Bar */}
-                  <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20 pointer-events-none">
-                    <div className="glass-premium px-5 py-2 rounded-full border border-white/10 text-[10px] tracking-[0.3em] uppercase text-white font-bold">
-                      {project.category}
-                    </div>
-                    <div className="text-[10px] font-mono text-gray-400 tracking-[0.2em] uppercase">
-                      Transmission ID: {project.year}._SYS
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content Block */}
-                <div className="max-w-2xl space-y-4">
-                  <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none">
-                    {project.title}
-                  </h3>
-
-                  <p className="text-gray-400 text-lg font-light leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  <div className="pt-6 flex flex-wrap gap-2 justify-center">
-                    {project.tech.map(t => (
-                      <span key={t} className="text-[10px] font-mono text-gray-600 uppercase tracking-widest border border-white/5 px-4 py-1.5 rounded-full bg-white/[0.01]">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+        {/* Featured Projects - Holographic Gallery */}
+        <div className="mb-48">
+          <HolographicProjectGallery
+            projects={featuredProjects}
+            onSelectFn={setSelectedProject}
+          />
         </div>
 
         {/* Other Projects Section - Minimal Grid */}

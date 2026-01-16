@@ -1,124 +1,133 @@
-import React, { useMemo, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars, Float, Text, Line } from '@react-three/drei';
-import * as THREE from 'three';
+
+import React, { useEffect, useRef } from 'react';
 
 interface SkillNode {
-    id: string;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
     label: string;
-    position: [number, number, number];
-    color: string;
-    isCenter?: boolean;
+    level: number; // 0-1 opacity/size
 }
 
-const skills: SkillNode[] = [
-    // Core
-    { id: 'js', label: 'JavaScript', position: [0, 0, 0], color: '#F7DF1E', isCenter: true },
-    // Frontend Cluster
-    { id: 'react', label: 'React', position: [2, 1, 0], color: '#61DAFB' },
-    { id: 'ts', label: 'TypeScript', position: [1.5, -1.5, 1], color: '#3178C6' },
-    { id: 'next', label: 'Next.js', position: [3, 0, -1], color: '#FFFFFF' },
-    { id: 'tailwind', label: 'Tailwind', position: [1, 2, -1], color: '#38B2AC' },
-    // Creative Cluster
-    { id: 'three', label: 'Three.js', position: [-2, 1, 1], color: '#607D8B' },
-    { id: 'framer', label: 'Framer', position: [-2.5, -1, 0], color: '#0055FF' },
-    { id: 'gsap', label: 'GSAP', position: [-1.5, 2, -0.5], color: '#88CE02' },
-    // Backend Cluster
-    { id: 'node', label: 'Node.js', position: [0, -3, -1], color: '#339933' },
-    { id: 'sql', label: 'SQL', position: [-1, -3.5, 1], color: '#4479A1' },
-    // Tools
-    { id: 'git', label: 'Git', position: [0, 2.5, 2], color: '#F05032' },
+const skills = [
+    { label: "React", level: 0.9 },
+    { label: "TypeScript", level: 0.85 },
+    { label: "Node.js", level: 0.75 },
+    { label: "Three.js", level: 0.8 },
+    { label: "Next.js", level: 0.85 },
+    { label: "Tailwind", level: 0.95 },
+    { label: "Framer Motion", level: 0.9 },
+    { label: "WebGL", level: 0.6 },
+    { label: "GLSL", level: 0.5 },
+    { label: "UI/UX", level: 0.8 },
+    { label: "System Design", level: 0.7 },
 ];
 
-const connections = [
-    ['js', 'react'], ['js', 'ts'], ['js', 'node'], ['js', 'three'],
-    ['react', 'next'], ['react', 'tailwind'], ['react', 'framer'],
-    ['node', 'sql'],
-    ['three', 'gsap'],
-    ['ts', 'react'], ['ts', 'node']
-];
+const SkillConstellation: React.FC = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-const SkillStar = ({ skill }: { skill: SkillNode }) => {
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        let animationFrameId: number;
+        let nodes: SkillNode[] = [];
+        let width = canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
+        let height = canvas.height = canvas.parentElement?.clientHeight || 500;
+
+        // Initialize nodes
+        skills.forEach(skill => {
+            nodes.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                label: skill.label,
+                level: skill.level
+            });
+        });
+
+        const draw = () => {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, width, height);
+
+            // Update positions
+            nodes.forEach(node => {
+                node.x += node.vx;
+                node.y += node.vy;
+
+                // Bounce off walls
+                if (node.x <= 0 || node.x >= width) node.vx *= -1;
+                if (node.y <= 0 || node.y >= height) node.vy *= -1;
+            });
+
+            // Draw connections
+            nodes.forEach((nodeA, i) => {
+                nodes.forEach((nodeB, j) => {
+                    if (i <= j) return; // distinct pairs
+                    const dx = nodeA.x - nodeB.x;
+                    const dy = nodeA.y - nodeB.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const maxDist = 200;
+
+                    if (dist < maxDist) {
+                        const opacity = (1 - dist / maxDist) * 0.5 * Math.min(nodeA.level, nodeB.level);
+                        ctx.strokeStyle = `rgba(34, 197, 94, ${opacity})`; // Primary color (greenish)
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(nodeA.x, nodeA.y);
+                        ctx.lineTo(nodeB.x, nodeB.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            // Draw nodes
+            nodes.forEach(node => {
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 3 * node.level, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Glow
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'rgba(34, 197, 94, 0.8)';
+
+                // Label
+                ctx.font = '10px monospace';
+                ctx.fillStyle = `rgba(255, 255, 255, ${node.level})`;
+                ctx.textAlign = 'center';
+                ctx.shadowBlur = 0;
+                ctx.fillText(node.label.toUpperCase(), node.x, node.y + 15);
+            });
+
+            animationFrameId = requestAnimationFrame(draw);
+        };
+
+        const handleResize = () => {
+            width = canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
+            height = canvas.height = canvas.parentElement?.clientHeight || 500;
+        };
+
+        window.addEventListener('resize', handleResize);
+        draw();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, []);
+
     return (
-        <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-            <group position={skill.position}>
-                {/* Glow */}
-                <mesh>
-                    <sphereGeometry args={[skill.isCenter ? 0.4 : 0.2, 32, 32]} />
-                    <meshStandardMaterial
-                        color={skill.color}
-                        emissive={skill.color}
-                        emissiveIntensity={2}
-                        toneMapped={false}
-                    />
-                </mesh>
-                {/* Text Label */}
-                <Text
-                    position={[0, skill.isCenter ? 0.6 : 0.4, 0]}
-                    fontSize={skill.isCenter ? 0.4 : 0.25}
-                    color="white"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    {skill.label}
-                </Text>
-            </group>
-        </Float>
-    );
-};
-
-const ConstellationLines = () => {
-    const points = connections.map(([startId, endId]) => {
-        const start = skills.find(s => s.id === startId)?.position;
-        const end = skills.find(s => s.id === endId)?.position;
-        if (start && end) return [new THREE.Vector3(...start), new THREE.Vector3(...end)];
-        return null;
-    }).filter(Boolean) as [THREE.Vector3, THREE.Vector3][];
-
-    return (
-        <group>
-            {points.map((pair, i) => (
-                <Line
-                    key={i}
-                    points={pair}
-                    color="rgba(255,255,255,0.1)"
-                    lineWidth={1}
-                    transparent
-                    opacity={0.2}
-                />
-            ))}
-        </group>
-    );
-};
-
-const SkillConstellation = () => {
-    return (
-        <div className="w-full h-[500px] bg-[#050505] relative rounded-3xl overflow-hidden border border-white/10">
+        <div className="w-full h-[500px] relative rounded-[2rem] overflow-hidden border border-white/5 bg-black/20 backdrop-blur-sm">
             <div className="absolute top-4 left-6 z-10">
-                <h3 className="text-2xl font-bold text-white flex items-center gap-2">
-                    <span className="text-primary">✦</span> Skill Constellation
-                </h3>
-                <p className="text-sm text-gray-500">Interactive Knowledge Graph</p>
+                <h3 className="text-white text-sm font-mono uppercase tracking-widest text-primary">Skill Network</h3>
+                <p className="text-[10px] text-gray-500 uppercase tracking-widest">Live Node Visualization</p>
             </div>
-
-            <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
-                <color attach="background" args={['#050505']} />
-                <fog attach="fog" args={['#050505', 5, 20]} />
-
-                <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} intensity={1} />
-
-                <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-
-                <group rotation={[0, -Math.PI / 6, 0]}>
-                    {skills.map(skill => (
-                        <SkillStar key={skill.id} skill={skill} />
-                    ))}
-                    <ConstellationLines />
-                </group>
-
-                <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-            </Canvas>
+            <canvas ref={canvasRef} className="w-full h-full block" />
         </div>
     );
 };

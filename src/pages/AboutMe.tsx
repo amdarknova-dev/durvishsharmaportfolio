@@ -5,46 +5,21 @@ import ParticleBackground from '@/components/ParticleBackground';
 import { Card } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import {
-    Code2,
-    Layers,
-    Zap,
-    Box,
     Target,
-    ShieldCheck,
     Users,
     RefreshCw,
     Rocket,
     Lightbulb,
-    MousePointer2
+    Cpu
 } from 'lucide-react';
+import SkillConstellation from '@/components/SkillConstellation';
+import MissionLog from '@/components/MissionLog';
+import MindsetRadar from '@/components/MindsetRadar';
 
 const AboutMe = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
-    const whatIDo = [
-        {
-            title: "Responsive Interfaces",
-            description: "Developing accessible and responsive web interfaces that provide a seamless experience across all device types and screen sizes.",
-            icon: MousePointer2
-        },
-        {
-            title: "Scalable Architecture",
-            description: "Transforming complex design systems into clean, modular, and maintainable codebases using modern frontend frameworks.",
-            icon: Layers
-        },
-        {
-            title: "Interaction Design",
-            description: "Integrating purposeful motion and micro-interactions to enhance user engagement and provide intuitive feedback.",
-            icon: Zap
-        },
-        {
-            title: "Immersive Visuals",
-            description: "Experimenting with 3D elements and modern CSS techniques to create visually striking and memorable digital experiences.",
-            icon: Box
-        }
-    ];
 
     const howIWork = [
         {
@@ -91,62 +66,64 @@ const AboutMe = () => {
                     </p>
                 </motion.div>
 
-                {/* What I Do Section */}
+                {/* Interactive Skills Section - Constellation */}
                 <section className="mb-32">
                     <div className="flex items-center gap-4 mb-12">
                         <div className="h-px flex-1 bg-white/10" />
-                        <h2 className="text-3xl font-bold text-white uppercase tracking-widest text-sm">What I Do</h2>
+                        <h2 className="text-3xl font-bold text-white uppercase tracking-widest text-sm">Neural Network</h2>
                         <div className="h-px flex-1 bg-white/10" />
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {whatIDo.map((item, index) => (
-                            <motion.div
-                                key={item.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                            >
-                                <Card className="glass p-8 border-white/10 hover:border-primary/30 transition-all duration-500 h-full">
-                                    <item.icon className="w-8 h-8 text-primary mb-6" />
-                                    <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
-                                    <p className="text-gray-400 leading-relaxed">{item.description}</p>
-                                </Card>
-                            </motion.div>
-                        ))}
+                    <SkillConstellation />
+                </section>
+
+                {/* Methodology & Mindset Section */}
+                <section className="mb-32">
+                    <div className="flex items-center gap-4 mb-12">
+                        <div className="h-px flex-1 bg-white/10" />
+                        <h2 className="text-3xl font-bold text-white uppercase tracking-widest text-sm">Operative Mindset</h2>
+                        <div className="h-px flex-1 bg-white/10" />
+                    </div>
+
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <div className="order-2 lg:order-1">
+                            <MindsetRadar />
+                        </div>
+
+                        <div className="order-1 lg:order-2 space-y-8">
+                            <div className="glass p-8 border-white/10 rounded-2xl relative overflow-hidden">
+                                <div className="absolute top-0 right-0 p-4 opacity-10">
+                                    <Cpu className="w-24 h-24 text-primary" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                                    <Target className="w-6 h-6 text-primary" />
+                                    Precision Engineering
+                                </h3>
+                                <p className="text-gray-400 leading-relaxed text-sm">
+                                    I approach development with a structured, data-driven mindset. Every pixel is calculated, every animation curve is refined. I believe that chaotic creativity needs a solid logical foundation to truly shine.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                {howIWork.map((item, index) => (
+                                    <div key={item.title} className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                        <item.icon className="w-5 h-5 text-gray-500 mb-2" />
+                                        <h4 className="text-white font-bold text-sm">{item.title}</h4>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                {/* How I Work Section */}
+                {/* Mission Log - History */}
                 <section className="mb-32">
-                    <div className="flex items-center gap-4 mb-12">
+                    <div className="flex items-center gap-4 mb-20">
                         <div className="h-px flex-1 bg-white/10" />
-                        <h2 className="text-3xl font-bold text-white uppercase tracking-widest text-sm">How I Work</h2>
+                        <h2 className="text-3xl font-bold text-white uppercase tracking-widest text-sm">Mission Log</h2>
                         <div className="h-px flex-1 bg-white/10" />
                     </div>
-
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {howIWork.map((item, index) => (
-                            <motion.div
-                                key={item.title}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                            >
-                                <div className="flex gap-6 p-4">
-                                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                                        <item.icon className="w-6 h-6 text-accent" />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                                        <p className="text-gray-400 leading-relaxed text-sm">{item.description}</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
+                    <MissionLog />
                 </section>
 
                 {/* Current Focus Section */}

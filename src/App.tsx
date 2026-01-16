@@ -14,11 +14,12 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Blog from "./pages/Blog";
 import CustomCursor from "./components/CustomCursor";
 import DeveloperConsole from "./components/DeveloperConsole";
-import AudioVisualizer from "./components/AudioVisualizer";
 import KonamiCode from "./components/KonamiCode";
 import WarpTransition from "./components/WarpTransition";
 import AIChatbot from "./components/AIChatbot";
-import LoadingScreen from "./components/LoadingScreen";
+import TheArsenal from "./pages/TheArsenal";
+import MissionBrief from "./pages/MissionBrief";
+import TheHub from "./pages/TheHub";
 import WeatherEffects from "./components/WeatherEffects";
 import CommandCenter from "./components/CommandCenter";
 import KeyboardShortcuts from "./components/KeyboardShortcuts";
@@ -57,12 +58,10 @@ const App = () => (
                 <SmoothScroll>
                   <RouteChangeHandler />
                   <TooltipProvider>
-                    <LoadingScreen />
                     <WeatherEffects />
                     <CommandCenter />
                     <CustomCursor />
                     <DeveloperConsole />
-                    <AudioVisualizer />
                     <KonamiCode />
                     <WarpTransition />
                     <AIChatbot />
@@ -78,6 +77,9 @@ const App = () => (
                       <Route path="/login" element={<LoginPage />} />
                       <Route path="/dashboard" element={<AdminDashboard />} />
                       <Route path="/blog" element={<Blog />} />
+                      <Route path="/arsenal" element={<TheArsenal />} />
+                      <Route path="/mission" element={<MissionBrief />} />
+                      <Route path="/hub" element={<TheHub />} />
                       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>

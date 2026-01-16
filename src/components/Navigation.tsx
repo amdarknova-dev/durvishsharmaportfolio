@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSound } from '@/context/SoundContext';
 import { Button } from '@/components/ui/button';
-import { Menu, Clapperboard, Home, User, Briefcase, Rocket, Star, MessageSquare, BookOpen, LayoutGrid, FlaskConical } from 'lucide-react';
+import { Menu, Clapperboard, Home, User, Briefcase, Rocket, Star, MessageSquare, BookOpen, LayoutGrid, FlaskConical, Cpu, Database, Globe } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Sheet,
@@ -30,6 +30,9 @@ const Navigation = () => {
     { id: 'home', label: t('nav.home'), icon: Home },
     { id: 'lab', label: 'The Lab', path: '/lab', icon: FlaskConical },
     { id: 'beyond-work', label: 'Beyond Work', path: '/beyond-work', icon: LayoutGrid },
+    { id: 'arsenal', label: 'Arsenal', path: '/arsenal', icon: Cpu },
+
+    { id: 'hub', label: 'The Hub', path: '/hub', icon: Database },
     { id: 'blog', label: 'Blog', path: '/blog', icon: BookOpen },
     { id: 'contact', label: t('nav.contact'), path: '/contact', icon: MessageSquare },
   ], [t]);

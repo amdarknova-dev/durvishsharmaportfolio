@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navigation from '@/components/Navigation';
+
 import Footer from '@/components/Footer';
-import ParticleBackground from '@/components/ParticleBackground';
+import ThemedBackground from '@/components/ThemedBackground'; // New import
 import { Card } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import {
@@ -18,8 +19,7 @@ import {
     Globe,
     Terminal,
     FileText,
-    Share2,
-    Cpu
+    Share2
 } from 'lucide-react';
 import {
     Dialog,
@@ -47,6 +47,7 @@ const BeyondWork = () => {
     const [isGameOpen, setIsGameOpen] = useState(false);
     const [isWebOpen, setIsWebOpen] = useState(false);
     const [isAnimeOpen, setIsAnimeOpen] = useState(false);
+    const [theme, setTheme] = useState<'default' | 'embers' | 'sakura' | 'matrix'>('default'); // Theme state
     const { playHover, playClick } = useSound();
     const navigate = useNavigate();
 
@@ -157,7 +158,7 @@ We are drowning in noise. Notifications, popups, vibrant gradients fighting for 
 
     return (
         <div className="relative min-h-screen bg-background overflow-x-hidden pt-32 md:pt-48">
-            <ParticleBackground />
+            <ThemedBackground theme={theme} />
             <Navigation />
 
             <main className="relative z-10 max-w-6xl mx-auto px-6 pb-64">
@@ -235,7 +236,7 @@ We are drowning in noise. Notifications, popups, vibrant gradients fighting for 
                 <div className="grid lg:grid-cols-3 gap-8 mb-48">
                     <Card
                         className="glass-premium p-12 border-white/5 relative overflow-hidden group cursor-pointer rounded-[3rem] hover:border-primary/30 transition-all duration-700"
-                        onClick={() => { playClick(); setIsGameOpen(true); }}
+                        onClick={() => { playClick(); setIsGameOpen(true); setTheme('embers'); }} // Trigger Embers
                         onMouseEnter={() => playHover()}
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -258,7 +259,7 @@ We are drowning in noise. Notifications, popups, vibrant gradients fighting for 
 
                     <Card
                         className="glass-premium p-12 border-white/5 relative overflow-hidden group cursor-pointer rounded-[3rem] hover:border-purple-500/30 transition-all duration-700"
-                        onClick={() => { playClick(); setIsAnimeOpen(true); }}
+                        onClick={() => { playClick(); setIsAnimeOpen(true); setTheme('sakura'); }} // Trigger Sakura
                         onMouseEnter={() => playHover()}
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -283,7 +284,7 @@ We are drowning in noise. Notifications, popups, vibrant gradients fighting for 
 
                     <Card
                         className="glass-premium p-12 border-white/5 relative overflow-hidden group cursor-pointer rounded-[3rem] hover:border-accent/30 transition-all duration-700"
-                        onClick={() => { playClick(); setIsWebOpen(true); }}
+                        onClick={() => { playClick(); setIsWebOpen(true); setTheme('matrix'); }} // Trigger Matrix
                         onMouseEnter={() => playHover()}
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -391,7 +392,10 @@ We are drowning in noise. Notifications, popups, vibrant gradients fighting for 
             </main>
 
             {/* Eclipse Game Dialog */}
-            <Dialog open={isGameOpen} onOpenChange={setIsGameOpen}>
+            <Dialog open={isGameOpen} onOpenChange={(open) => {
+                setIsGameOpen(open);
+                if (!open) setTheme('default'); // Reset theme
+            }}>
                 <DialogContent className="glass-premium border-primary/20 max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0 text-white bg-background rounded-[3rem]">
                     {/* Header */}
                     <div className="bg-gradient-to-r from-primary/10 via-transparent to-yellow-500/10 border-b border-white/10 p-8 flex items-center justify-between shrink-0 relative overflow-hidden">
@@ -583,7 +587,10 @@ We are drowning in noise. Notifications, popups, vibrant gradients fighting for 
             </Dialog>
 
 
-            <Dialog open={isWebOpen} onOpenChange={setIsWebOpen}>
+            <Dialog open={isWebOpen} onOpenChange={(open) => {
+                setIsWebOpen(open);
+                if (!open) setTheme('default');
+            }}>
                 <DialogContent className="glass-premium border-white/10 max-w-2xl text-white rounded-[3rem] p-12">
                     <DialogHeader className="space-y-8">
                         <div className="flex items-center gap-6">
@@ -665,7 +672,10 @@ We are drowning in noise. Notifications, popups, vibrant gradients fighting for 
             </Dialog>
 
             {/* Eclipse Anime Dialog */}
-            <Dialog open={isAnimeOpen} onOpenChange={setIsAnimeOpen}>
+            <Dialog open={isAnimeOpen} onOpenChange={(open) => {
+                setIsAnimeOpen(open);
+                if (!open) setTheme('default');
+            }}>
                 <DialogContent className="glass-premium border-purple-500/20 max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0 text-white bg-background rounded-[3rem]">
                     {/* Header with lightning effect */}
                     <div className="bg-gradient-to-r from-purple-500/10 via-transparent to-yellow-500/10 border-b border-white/10 p-8 flex items-center justify-between shrink-0 relative overflow-hidden">
