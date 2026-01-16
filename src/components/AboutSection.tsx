@@ -61,7 +61,7 @@ const AboutSection = () => {
           >
             <div className="aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 glass-premium group">
               <img
-                src="/images/samurai-zenitsu.png"
+                src="/images/durvish-profile.jpg"
                 alt="Durvish Sharma"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
