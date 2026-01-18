@@ -5,6 +5,7 @@ import { Badge } from './ui/badge';
 import { useNavigate } from 'react-router-dom';
 
 import { supabase } from '@/lib/supabase';
+import Magnetic from '@/components/Magnetic';
 
 interface SystemStatus {
     is_available: boolean;
@@ -109,22 +110,24 @@ const StatusBadge = () => {
                 </div>
             </div>
 
-            <button
-                onClick={() => {
-                    if (status.isAvailable) {
-                        navigate('/contact');
-                    } else {
-                        window.open('https://calendly.com/durvishsharma01', '_blank');
-                    }
-                }}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-tighter transition-all active:scale-95 whitespace-nowrap ${status.isAvailable
-                    ? 'bg-primary text-black hover:bg-white'
-                    : 'bg-white/5 text-gray-400 hover:text-white border border-white/10'
-                    }`}
-            >
-                <Calendar size={12} />
-                {status.isAvailable ? 'Contact' : 'Check Schedule'}
-            </button>
+            <Magnetic intensity={0.3}>
+                <button
+                    onClick={() => {
+                        if (status.isAvailable) {
+                            navigate('/contact');
+                        } else {
+                            window.open('https://calendly.com/durvishsharma01', '_blank');
+                        }
+                    }}
+                    className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-tighter transition-all active:scale-95 whitespace-nowrap ${status.isAvailable
+                        ? 'bg-primary text-black hover:bg-white'
+                        : 'bg-white/5 text-gray-400 hover:text-white border border-white/10'
+                        }`}
+                >
+                    <Calendar size={12} />
+                    {status.isAvailable ? 'Contact' : 'Check Schedule'}
+                </button>
+            </Magnetic>
         </motion.div>
     );
 };

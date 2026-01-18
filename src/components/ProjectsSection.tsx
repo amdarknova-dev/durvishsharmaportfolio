@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,10 +17,12 @@ import { useTranslation } from 'react-i18next';
 import { useSound } from '@/context/SoundContext';
 import ShareButtons from './ShareButtons';
 import HolographicProjectGallery from './HolographicProjectGallery';
+import Magnetic from '@/components/Magnetic';
 const ProjectsSection = () => {
   const { t } = useTranslation();
   const { playHover, playClick } = useSound();
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
   interface Project {
     title: string;
     description: string;
@@ -30,6 +33,7 @@ const ProjectsSection = () => {
     category: string;
     featured: boolean;
     year: string;
+    caseStudyId?: string;
   }
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeFilter, setActiveFilter] = useState('All');
@@ -56,81 +60,84 @@ const ProjectsSection = () => {
 
   const projects = [
     {
-      title: 'NexusAI Landing Page',
-      description: 'A high-conversion landing page for an artificial intelligence startup featuring dark mode aesthetics.',
-      longDescription: 'NexuxAI is a cutting-edge landing page designed to capture leads for AI startups. It features complex reveal animations, a dynamic pricing system, and parralax effects that provide a premium, futuristic feel.',
+      title: 'Eclipse: Thunderfall',
+      description: 'A third-person anime-style action RPG prototype focused on fast lightning-based combat and boss fights.',
+      longDescription: 'Eclipse: Thunderfall is an anime-inspired action RPG prototype featuring fast-paced lightning-based combat, cinematic camera work, and challenging boss fights. Built in Unreal Engine 5 with a focus on AAA-feel gameplay at indie scale.',
       features: [
-        'Interactive hero section with reveal animations',
-        'Dynamic pricing toggle and feature comparison grid',
-        'Smooth scroll navigation and scroll-triggered reveals'
+        'Lightning-based combat system with combo chains',
+        'Cinematic camera work and slow-motion impact frames',
+        'Enemy AI using Behavior Trees for challenging encounters'
       ],
-      image: 'https://images.unsplash.com/photo-1633436245198-44bc17f86b89?w=800&auto=format&fit=crop&q=80',
-      tech: ['Next.js', 'TypeScript', 'Framer Motion', 'Tailwind CSS'],
-      category: 'Landing Page',
+      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80',
+      tech: ['Unreal Engine 5', 'Blueprints', 'Blender', 'Niagara VFX', 'FMOD'],
+      category: 'Game Prototype',
       featured: true,
-      year: '2024'
+      year: '2024',
+      caseStudyId: 'eclipse-thunderfall'
     },
     {
-      title: 'Horizon Dashboard',
-      description: 'A comprehensive admin panel for data visualization and resource management.',
-      longDescription: 'A robust administrative interface built for scalability. It provides real-time data monitoring through simulated API hooks and beautiful data visualizations using Recharts.',
+      title: 'Eclipse: Fallen Sky',
+      description: 'A Demon Slayer–inspired anime cinematic short with stylized combat and emotional storytelling.',
+      longDescription: 'A cinematic short film rendered entirely in Unreal Engine 5, combining anime-style visuals with 3D environments. Features stylized combat sequences, emotional character moments, and Demon Slayer–inspired aesthetics.',
       features: [
-        'Real-time data updates via simulated API hooks',
-        'Interactive charts and customizable data tables',
-        'Role-based view simulation and sidebar navigation'
+        'Hybrid 3D + anime visual workflow',
+        'Stylized lightning and aura VFX',
+        'Emotional storytelling through camera and timing'
       ],
-      image: 'https://images.unsplash.com/photo-1510519138101-570d1dca3d66?w=800&auto=format&fit=crop&q=80',
-      tech: ['React', 'Recharts', 'shadcn/ui', 'Tailwind CSS'],
-      category: 'Dashboard',
+      image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80',
+      tech: ['Unreal Engine 5', 'Sequencer', 'Blender', 'Clip Studio Paint', 'DaVinci Resolve'],
+      category: 'Anime Cinematic',
       featured: true,
-      year: '2023'
+      year: '2024',
+      caseStudyId: 'eclipse-fallen-sky'
     },
     {
-      title: 'Aura E-commerce',
-      description: 'A minimalist lifestyle brand storefront with a focus on high-quality typography.',
-      longDescription: 'Aura is a proof-of-concept e-commerce store that emphasizes brand identity through minimalist design. It features a fully functional shopping cart and product filtering system.',
+      title: 'NeoCity Interactive World',
+      description: 'A Cyberpunk-inspired open-world urban environment prototype focusing on lighting and atmosphere.',
+      longDescription: 'NeoCity is a small open-world urban environment prototype inspired by Cyberpunk aesthetics. Built to showcase Lumen global illumination, Nanite geometry, and atmospheric exploration.',
       features: [
-        'Product filtering and category management',
-        'Persistent shopping cart using browser storage',
-        'Multi-step checkout flow simulation'
+        'Lumen-powered global illumination',
+        'Nanite-enabled high-detail geometry',
+        'Atmospheric exploration with day/night cycle'
       ],
-      image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
-      tech: ['React', 'Context API', 'Tailwind CSS', 'Vite'],
-      category: 'E-commerce',
-      featured: false,
-      year: '2023'
-    },
-    {
-      title: 'Solaris 3D Experience',
-      description: 'An interactive 3D solar system explorer built for educational purposes.',
-      longDescription: 'Solaris brings the solar system to the browser using WebGL. Users can navigate between planets, view detailed 3D models, and learn astronomical facts in an immersive environment.',
-      features: [
-        'Controllable 3D camera and planet orbits',
-        'Texture mapping and dynamic lighting effects',
-        'Informational overlays for each celestial body'
-      ],
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80',
-      tech: ['React Three Fiber', 'Three.js', 'GSAP'],
-      category: '3D Web Experience',
+      image: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&auto=format&fit=crop&q=80',
+      tech: ['Unreal Engine 5', 'Lumen', 'Nanite', 'Blender', 'Substance Painter'],
+      category: '3D Environment',
       featured: false,
       year: '2024'
     },
     {
-      title: 'Vanguard SaaS Website',
-      description: 'A marketing site for a project management tool with interactive feature walkthroughs.',
-      longDescription: 'Vanguard showcases complex SaaS features through interactive SVG animations and smooth transitions, designed to convert visitors into users.',
+      title: 'Creator Portfolio Platform',
+      description: 'A full-stack portfolio website showcasing game demos, cinematics, and technical projects.',
+      longDescription: 'A high-performance portfolio platform built with modern web technologies. Features cinematic UI design, smooth animations, 3D elements, and a complete backend for content management.',
       features: [
-        'Animated SVG illustrations and process diagrams',
-        'Customer testimonial carousel and FAQ section',
-        'Responsive lead generation forms'
+        'Cinematic preloader and page transitions',
+        '3D WebGL scenes with Three.js',
+        'Full-stack architecture with Next.js and MongoDB'
       ],
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80',
-      tech: ['Next.js', 'Framer Motion', 'Tailwind CSS'],
-      category: 'SaaS Marketing',
+      tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'MongoDB'],
+      category: 'Web Platform',
       featured: false,
-      year: '2023'
+      year: '2024'
+    },
+    {
+      title: 'Combat System Sandbox',
+      description: 'A modular combat testing environment for experimenting with AI, animations, and skill systems.',
+      longDescription: 'A sandbox environment used to prototype and test combat mechanics, enemy AI behavior trees, animation blueprints, and skill-based attack systems. Designed for rapid iteration and modular expansion.',
+      features: [
+        'Modular combat framework with hot-swappable skills',
+        'Enemy AI behavior trees for varied encounters',
+        'Animation blueprint integration for fluid combat'
+      ],
+      image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&auto=format&fit=crop&q=80',
+      tech: ['Unreal Engine 5', 'Behavior Trees', 'Animation Blueprints', 'C++'],
+      category: 'Game Systems',
+      featured: false,
+      year: '2024'
     }
   ];
+
 
   const categories = ['All', ...Array.from(new Set(projects.flatMap(p => p.tech)))].slice(0, 8);
 
@@ -195,17 +202,18 @@ const ProjectsSection = () => {
           className="flex flex-wrap justify-center gap-4 mb-32 max-w-4xl mx-auto"
         >
           {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveFilter(cat)}
-              className={`px-8 py-3 rounded-full text-[10px] font-mono tracking-[0.2em] transition-all duration-500 border ${activeFilter === cat
-                ? 'bg-primary border-primary text-white shadow-[0_0_25px_rgba(34,197,94,0.4)] scale-105'
-                : 'bg-white/[0.02] border-white/5 text-gray-500 hover:text-white hover:border-white/20'
-                }`}
-              onMouseEnter={(e) => handleSpatialInteraction(e, 'hover')}
-            >
-              {cat.toUpperCase()}
-            </button>
+            <Magnetic key={cat} intensity={0.2}>
+              <button
+                onClick={() => setActiveFilter(cat)}
+                className={`px-8 py-3 rounded-full text-[10px] font-mono tracking-[0.2em] transition-all duration-500 border ${activeFilter === cat
+                  ? 'bg-primary border-primary text-white shadow-[0_0_25px_rgba(34,197,94,0.4)] scale-105'
+                  : 'bg-white/[0.02] border-white/5 text-gray-500 hover:text-white hover:border-white/20'
+                  }`}
+                onMouseEnter={(e) => handleSpatialInteraction(e, 'hover')}
+              >
+                {cat.toUpperCase()}
+              </button>
+            </Magnetic>
           ))}
         </motion.div>
 
@@ -328,12 +336,30 @@ const ProjectsSection = () => {
                       </div>
 
                       <div className="space-y-4 pt-8 border-t border-white/5">
-                        <Button className="w-full h-16 bg-primary hover:bg-primary/95 text-white rounded-full font-bold uppercase tracking-widest glow-primary text-xs">
-                          Launch Application
-                        </Button>
-                        <Button variant="outline" className="w-full h-16 glass-premium border-white/10 text-white hover:bg-white/5 rounded-full font-bold uppercase tracking-widest text-xs">
-                          Explore Source
-                        </Button>
+                        <Magnetic intensity={0.4}>
+                          <Button className="w-full h-16 bg-primary hover:bg-primary/95 text-white rounded-full font-bold uppercase tracking-widest glow-primary text-xs">
+                            Launch Application
+                          </Button>
+                        </Magnetic>
+                        {selectedProject.caseStudyId && (
+                          <Magnetic intensity={0.4}>
+                            <Button
+                              variant="outline"
+                              className="w-full h-16 glass-premium border-primary/30 text-primary hover:bg-primary/10 rounded-full font-bold uppercase tracking-widest text-xs"
+                              onClick={() => {
+                                setSelectedProject(null);
+                                navigate(`/case-study/${selectedProject.caseStudyId}`);
+                              }}
+                            >
+                              View Case Study
+                            </Button>
+                          </Magnetic>
+                        )}
+                        <Magnetic intensity={0.4}>
+                          <Button variant="outline" className="w-full h-16 glass-premium border-white/10 text-white hover:bg-white/5 rounded-full font-bold uppercase tracking-widest text-xs">
+                            Explore Source
+                          </Button>
+                        </Magnetic>
                       </div>
                     </div>
                   </div>

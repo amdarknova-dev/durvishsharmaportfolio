@@ -13,6 +13,7 @@ interface AuthContextType {
     refreshProfile: () => Promise<void>;
     toggleEditMode: () => void;
     setAsAdmin: (val: boolean) => void;
+    loginWithMock: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -65,6 +66,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setUser(session?.user ?? null);
             if (session?.user) fetchProfile(session.user.id);
             setLoading(false);
+        }).catch(err => {
+            console.error("Supabase auth error:", err);
+            setLoading(false);
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -89,8 +93,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsEditMode(false);
     };
 
+    const loginWithMock = async (email: string) => {
+        const fakeUser: User = {
+            id: 'mock-user-id-' + Math.random().toString(36).substr(2, 9),
+            app_metadata: { provider: 'email' },
+            user_metadata: { full_name: email.split('@')[0] },
+            aud: 'authenticated',
+            created_at: new Date().toISOString(),
+            email: email,
+            phone: '',
+            role: 'authenticated',
+            updated_at: new Date().toISOString()
+        } as User;
+
+        setUser(fakeUser);
+        setSession({
+            access_token: 'mock-token',
+            refresh_token: 'mock-refresh',
+            expires_in: 3600,
+            token_type: 'bearer',
+            user: fakeUser
+        });
+        setProfile({ username: email.split('@')[0], role: 'user' });
+        setLoading(false);
+    };
+
     return (
-        <AuthContext.Provider value={{ user, session, profile, loading, isAdmin, isEditMode, signOut, refreshProfile, toggleEditMode, setAsAdmin }}>
+        <AuthContext.Provider value={{ user, session, profile, loading, isAdmin, isEditMode, signOut, refreshProfile, toggleEditMode, setAsAdmin, loginWithMock }}>
             {children}
         </AuthContext.Provider>
     );

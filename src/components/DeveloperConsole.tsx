@@ -59,6 +59,7 @@ const DeveloperConsole = () => {
                     onMouseEnter={() => playHover()}
                     className="w-12 h-12 rounded-full glass border-white/10 hover:border-primary/50 text-gray-400 hover:text-primary shadow-lg shadow-black/50"
                     title="Open Developer Console"
+                    aria-label="Open Developer Console"
                 >
                     <Terminal className="w-5 h-5" />
                 </Button>
@@ -94,7 +95,7 @@ const DeveloperConsole = () => {
                                         <p className="text-xs text-gray-500 font-mono">v2.0.4.beta // ROOT_ACCESS</p>
                                     </div>
                                 </div>
-                                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
+                                <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white" aria-label="Close Developer Console">
                                     <X className="w-5 h-5" />
                                 </Button>
                             </div>

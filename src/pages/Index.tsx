@@ -16,6 +16,7 @@ import GithubStats from "@/components/GithubStats";
 import Leaderboard from "@/components/Leaderboard";
 
 import { useLocation } from 'react-router-dom';
+import FadeIn from '@/components/FadeIn';
 
 const Index = () => {
   const { hash } = useLocation();
@@ -56,28 +57,53 @@ const Index = () => {
       {/* Main Content */}
       <main className="relative z-10">
         <HeroSection />
-        <AboutSection />
-        <SkillsSection />
-        <ProjectsSection />
+
+        <FadeIn delay={0.2}>
+          <AboutSection />
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <SkillsSection />
+        </FadeIn>
+
+        <FadeIn>
+          <ProjectsSection />
+        </FadeIn>
 
         {/* Global Impact Section */}
         <section className="py-24 px-6">
-          <div className="max-w-7xl mx-auto">
+          <FadeIn className="max-w-7xl mx-auto">
             <ProjectGlobe />
-          </div>
+          </FadeIn>
         </section>
 
         <section className="scroll-mt-32">
-          <GithubStats />
+          <FadeIn>
+            <GithubStats />
+          </FadeIn>
         </section>
 
-        <ExperienceSection />
+        <FadeIn>
+          <ExperienceSection />
+        </FadeIn>
+
         <div className="hidden lg:block">
-          <Leaderboard />
+          <FadeIn>
+            <Leaderboard />
+          </FadeIn>
         </div>
-        <Testimonials />
-        <FAQSection />
-        <ContactCTA />
+
+        <FadeIn>
+          <Testimonials />
+        </FadeIn>
+
+        <FadeIn>
+          <FAQSection />
+        </FadeIn>
+
+        <FadeIn>
+          <ContactCTA />
+        </FadeIn>
       </main>
 
       {/* Footer */}

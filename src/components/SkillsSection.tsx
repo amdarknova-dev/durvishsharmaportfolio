@@ -7,18 +7,34 @@ import { Badge } from './ui/badge';
 import { motion } from 'framer-motion';
 
 const skillsList = [
-    { name: 'JavaScript', category: 'Frontend', color: '#F7DF1E' },
-    { name: 'TypeScript', category: 'Frontend', color: '#3178C6' },
+    // Game Development
+    { name: 'Unreal Engine 5', category: 'Game Dev', color: '#0050B5' },
+    { name: 'Blueprints', category: 'Game Dev', color: '#0050B5' },
+    { name: 'Niagara VFX', category: 'VFX', color: '#FF6B35' },
+    { name: 'Behavior Trees', category: 'Game Dev', color: '#0050B5' },
+    { name: 'Sequencer', category: 'Cinematic', color: '#E040FB' },
+    // 3D & Animation
+    { name: 'Blender', category: '3D', color: '#F5792A' },
+    { name: 'Substance Painter', category: '3D', color: '#FF6B35' },
+    { name: 'Rigging', category: '3D', color: '#F5792A' },
+    // Anime Production
+    { name: 'Clip Studio Paint', category: 'Anime', color: '#FFD93D' },
+    { name: 'Storyboarding', category: 'Anime', color: '#FFD93D' },
+    // Audio
+    { name: 'FMOD', category: 'Audio', color: '#88CE02' },
+    { name: 'FL Studio', category: 'Audio', color: '#FF5722' },
+    // Full-Stack Development
     { name: 'React', category: 'Frontend', color: '#61DAFB' },
     { name: 'Next.js', category: 'Frontend', color: '#FFFFFF' },
-    { name: 'Three.js', category: 'Creative', color: '#FFFFFF' },
-    { name: 'GSAP', category: 'Creative', color: '#88CE02' },
-    { name: 'Framer Motion', category: 'Creative', color: '#0055FF' },
+    { name: 'TypeScript', category: 'Frontend', color: '#3178C6' },
     { name: 'Tailwind CSS', category: 'Frontend', color: '#38B2AC' },
     { name: 'Node.js', category: 'Backend', color: '#339933' },
-    { name: 'SQL', category: 'Backend', color: '#4479A1' },
-    { name: 'Git', category: 'Tools', color: '#F05032' },
-    { name: 'Figma', category: 'Tools', color: '#F24E1E' },
+    { name: 'MongoDB', category: 'Backend', color: '#47A248' },
+    { name: 'PostgreSQL', category: 'Backend', color: '#4479A1' },
+    { name: 'Docker', category: 'DevOps', color: '#2496ED' },
+    // AI
+    { name: 'Python', category: 'AI', color: '#FFD43B' },
+    { name: 'OpenAI APIs', category: 'AI', color: '#10A37F' },
 ];
 
 const SkillsSection = () => {

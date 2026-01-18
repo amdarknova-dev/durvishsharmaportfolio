@@ -1,56 +1,46 @@
-/**
- * AI SERVICE: Neural Brain Integration
- * This module handles communication with Google Gemini to provide 
- * context-aware answers about the portfolio and its creator.
- */
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+// Initialize the API
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(apiKey || 'INVALID_KEY');
 
-// System Prompt: Gives the AI your "Personality" and "Knowledge"
 const SYSTEM_PROMPT = `
-You are the "Neural Brain" of Durvish Sharma's cinematic portfolio. 
-Your goal is to answer questions about Durvish, his projects, and his skills in a professional, slightly futuristic, and helpful tone.
+You are Nexus, the AI assistant for Durvish Sharma's portfolio website. 
+Your goal is to be helpful, professional, and slightly futuristic/cinematic in tone.
+Keep answers concise (under 3 sentences usually).
 
-KNOWLEDGE BASE:
-- NAME: Durvish Sharma
-- ROLE: Full Stack Developer / Creative Technologist / UI/UX Designer
-- LOCATION: Haryana, India
-- TOP PROJECTS:
-    1. Interactive 3D Project Globe (Three.js/React)
-    2. Neural Management System (Next.js/Supabase)
-    3. Cinematic Landing Pages (Framer Motion/GSAP)
-- SKILLS: React, Three.js, TypeScript, Next.js, Framer Motion, GSAP, WebGL, Node.js, Python.
-- CORE PHILOSOPHY: Building "Cinematic Web Experiences" that combine high performance with stunning visuals.
-- CONTACT: Through the site's "Contact" page or Discord.
+Here is the context about Durvish:
+- **Role**: Full Stack Web Developer & Game Developer.
+- **Skills**: React, TypeScript, Tailwind CSS, Three.js, Framer Motion, Node.js, Supabase, Unity, C#.
+- **Projects**: NexusAI (Landing Page), Horizon (Dashboard), Aura (E-commerce), Solaris (3D Experience).
+- **Contact**: Email: durvishsharma01@gmail.com, LinkedIn: linkedin.com/in/durvish-sharma, GitHub: github.com/durvishsharma.
+- **Location**: Haryana, India (Open to remote/relocation).
+- **Tone**: Innovative, tech-savvy, polite, enthusiastic about 3D web and game dev.
 
-INSTRUCTIONS:
-1. Be concise. Keep answers under 3 sentences.
-2. Use "we" or "I" when referring to the portfolio/Durvish.
-3. If asked about something not in your knowledge base, politely direct them to the contact section.
-4. Do not mention that you are an AI unless explicitly asked.
+If someone asks about something unrelated to Durvish or web/game development, politely steer them back to Durvish's work.
 `;
 
-export const askNeuralBrain = async (userQuery: string) => {
-    if (!GEMINI_API_KEY) {
-        return "System Brain Offline: No API Key detected. Please configure VITE_GEMINI_API_KEY.";
+export const chatWithGemini = async (userMessage: string) => {
+    if (!apiKey) {
+        return "I'm offline right now (Missing API Key). Please tell Durvish to check his configuration!";
     }
 
     try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: `${SYSTEM_PROMPT}\n\nUSER QUESTION: ${userQuery}` }]
-                }]
-            })
-        });
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-        const data = await response.json();
-        return data.candidates[0].content.parts[0].text;
+        // We send the system prompt + user message combined for specific context in this single-turn helper.
+        // For distinct system instructions, newer models support systemInstruction, but this prompt engineering works for basic "gemini-pro".
+        const prompt = `${SYSTEM_PROMPT}\n\nUser: ${userMessage}\nNexus:`;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+
+        return text;
     } catch (error) {
-        console.error("Neural Sync Error:", error);
-        return "Communications Interrupted: Unable to connect to the Neural Brain at this time.";
+        console.error("Gemini API Error:", error);
+        return "I seem to be having trouble processing that request via the quantum network. Please try again later.";
     }
 };
+
+export const askNeuralBrain = chatWithGemini;

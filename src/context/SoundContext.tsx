@@ -9,6 +9,7 @@ interface SoundContextType {
     playWhoosh: () => void;
     playSuccess: () => void;
     playSpatial: (freq: number, dur: number, x: number) => void;
+    playType: (x?: number) => void;
 }
 
 const SoundContext = createContext<SoundContextType | undefined>(undefined);
@@ -244,6 +245,10 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         chime.stop(ctx.currentTime + 1.0);
     }, [isPlaying, initAudio]);
 
+    const playType = useCallback((x: number = 0) => {
+        playSpatial(800, 0.03, x);
+    }, [playSpatial]);
+
     const contextValue = useMemo(() => ({
         isPlaying,
         toggleSound,
@@ -251,8 +256,9 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         playClick,
         playWhoosh,
         playSuccess,
-        playSpatial
-    }), [isPlaying, toggleSound, playHover, playClick, playWhoosh, playSuccess, playSpatial]);
+        playSpatial,
+        playType
+    }), [isPlaying, toggleSound, playHover, playClick, playWhoosh, playSuccess, playSpatial, playType]);
 
     return (
         <SoundContext.Provider value={contextValue}>

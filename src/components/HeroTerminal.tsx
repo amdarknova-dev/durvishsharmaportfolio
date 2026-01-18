@@ -15,7 +15,7 @@ const HeroTerminal = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
     const { toast } = useToast();
-    const { playClick, playWhoosh } = useSound();
+    const { playClick, playWhoosh, playType } = useSound();
     const { condition } = useWeather();
 
     const handleCommand = (cmd: string) => {
@@ -216,7 +216,10 @@ const HeroTerminal = () => {
                     ref={inputRef}
                     type="text"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={(e) => {
+                        setInput(e.target.value);
+                        playType();
+                    }}
                     onKeyDown={handleKeyDown}
                     className="bg-transparent border-none outline-none flex-1 text-white placeholder-gray-600 font-mono"
                     placeholder={isAdmin ? "Awaiting root command..." : "Type 'help'..."}

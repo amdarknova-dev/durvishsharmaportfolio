@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useMobile } from '@/hooks/useMobile';
 import UserMenu from './UserMenu';
+import Magnetic from './Magnetic';
+import RollingText from './RollingText';
 
 const Navigation = () => {
   const { t } = useTranslation();
@@ -27,15 +29,13 @@ const Navigation = () => {
   const navItemsRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const navItems = React.useMemo(() => [
-    { id: 'home', label: t('nav.home'), icon: Home },
-    { id: 'lab', label: 'The Lab', path: '/lab', icon: FlaskConical },
-    { id: 'beyond-work', label: 'Beyond Work', path: '/beyond-work', icon: LayoutGrid },
-    { id: 'arsenal', label: 'Arsenal', path: '/arsenal', icon: Cpu },
-
-    { id: 'hub', label: 'The Hub', path: '/hub', icon: Database },
-    { id: 'blog', label: 'Blog', path: '/blog', icon: BookOpen },
-    { id: 'contact', label: t('nav.contact'), path: '/contact', icon: MessageSquare },
-  ], [t]);
+    { id: 'home', label: 'Home', icon: Home, path: undefined },
+    { id: 'about', label: 'About', icon: User, path: undefined },
+    { id: 'skills', label: 'Skills', icon: Cpu, path: undefined },
+    { id: 'projects', label: 'Projects', icon: Briefcase, path: undefined },
+    { id: 'experience', label: 'Experience', icon: Star, path: undefined },
+    { id: 'contact', label: 'Contact', icon: MessageSquare, path: '/contact' },
+  ], []);
 
   const { playHover, playClick } = useSound();
 
@@ -111,8 +111,10 @@ const Navigation = () => {
         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         className="fixed top-8 left-1/2 z-50 hidden md:block"
       >
-        <div className={`flex items-center gap-2 p-1.5 transition-all duration-700 ${isScrolled ? 'bg-black/60 scale-90 md:scale-100' : 'bg-white/5'
-          } backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl`}>
+        <div className={`flex items-center gap-2 p-1.5 transition-all duration-700 ${isScrolled
+          ? 'bg-black/90 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.8)]'
+          : 'bg-white/5 backdrop-blur-2xl'
+          } rounded-full border border-white/10`}>
 
           <div className="flex items-center space-x-1 relative px-2">
             {/* Liquid Blob Background */}
@@ -143,26 +145,27 @@ const Navigation = () => {
             </svg>
 
             {navItems.map((item) => (
-              <Button
-                key={item.id}
-                ref={(el) => { navItemsRef.current[item.id] = el; }}
-                variant="ghost"
-                size="sm"
-                onMouseEnter={() => playHover()}
-                onClick={() => handleNavClick(item)}
-                className={`group relative px-4 py-2.5 rounded-full transition-all duration-500 h-10 ${activeSection === item.id ? 'text-white' : 'text-gray-400 hover:text-white'
-                  }`}
-              >
-                <span className="relative z-10 text-[13px] font-medium tracking-wide">
-                  {item.label}
-                </span>
-                {activeSection === item.id && (
-                  <motion.span
-                    layoutId="activeDot"
-                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"
-                  />
-                )}
-              </Button>
+              <Magnetic key={item.id} intensity={0.3}>
+                <Button
+                  ref={(el) => { navItemsRef.current[item.id] = el; }}
+                  variant="ghost"
+                  size="sm"
+                  onMouseEnter={() => playHover()}
+                  onClick={() => handleNavClick(item)}
+                  className={`group relative px-4 py-2.5 rounded-full transition-all duration-500 h-10 ${activeSection === item.id ? 'text-white' : 'text-gray-400 hover:text-white'
+                    }`}
+                >
+                  <span className="relative z-10 text-[13px] font-medium tracking-wide">
+                    <RollingText text={item.label} />
+                  </span>
+                  {activeSection === item.id && (
+                    <motion.span
+                      layoutId="activeDot"
+                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"
+                    />
+                  )}
+                </Button>
+              </Magnetic>
             ))}
           </div>
 

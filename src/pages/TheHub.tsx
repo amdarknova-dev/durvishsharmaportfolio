@@ -50,13 +50,18 @@ const resources = [
 
 const TheHub = () => {
     const [search, setSearch] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("All");
     const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
     const flatResources = resources.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.category })));
-    const filtered = flatResources.filter(r =>
-        r.title.toLowerCase().includes(search.toLowerCase()) ||
-        r.tags.some(t => t.toLowerCase().includes(search.toLowerCase()))
-    );
+    const filtered = flatResources.filter(r => {
+        const matchesSearch = r.title.toLowerCase().includes(search.toLowerCase()) ||
+            r.tags.some(t => t.toLowerCase().includes(search.toLowerCase()));
+
+        const matchesCategory = selectedCategory === "All" || r.category === selectedCategory;
+
+        return matchesSearch && matchesCategory;
+    });
 
     return (
         <div className="relative min-h-screen bg-background pt-32 pb-32">
@@ -90,8 +95,29 @@ const TheHub = () => {
                     </div>
                 </header>
 
+                {/* Filter Pills */}
+                <div className="flex flex-wrap justify-center gap-3 mb-12">
+                    <Button
+                        variant={selectedCategory === "All" ? "default" : "outline"}
+                        onClick={() => setSelectedCategory("All")}
+                        className={`rounded-full px-6 uppercase tracking-wider text-xs ${selectedCategory === "All" ? "bg-primary text-black" : "border-white/10 text-gray-400 hover:text-white bg-black/20"}`}
+                    >
+                        All Systems
+                    </Button>
+                    {resources.map((cat, i) => (
+                        <Button
+                            key={i}
+                            variant={selectedCategory === cat.category ? "default" : "outline"}
+                            onClick={() => setSelectedCategory(cat.category)}
+                            className={`rounded-full px-6 uppercase tracking-wider text-xs ${selectedCategory === cat.category ? "bg-primary text-black" : "border-white/10 text-gray-400 hover:text-white bg-black/20"}`}
+                        >
+                            {cat.category}
+                        </Button>
+                    ))}
+                </div>
+
                 {/* Funding Directive Section */}
-                {!search && (
+                {!search && selectedCategory === "All" && (
                     <motion.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -171,8 +197,8 @@ const TheHub = () => {
 
                 {/* Categories Grid */}
                 <div className="grid gap-16">
-                    {/* Render grouped if searching is empty, else render flat list */}
-                    {search ? (
+                    {/* Render grouped if searching is empty AND no specific category selected, else render flat list */}
+                    {search || selectedCategory !== "All" ? (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filtered.map((item, i) => (
                                 <ResourceCard key={i} item={item} />

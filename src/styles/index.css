@@ -7,141 +7,166 @@
 
 @layer base {
   :root {
-    /* Pure Dark Space Theme */
-    --background: 220 20% 5%;
-    /* Very dark navy/black */
-    --foreground: 0 0% 98%;
+    /* Apple Dark Mode (Default) */
+    --background: 0 0% 0%;
+    /* #000000 */
+    --foreground: 240 1% 96%;
+    /* #f5f5f7 */
 
-    --card: 220 20% 7%;
-    --card-foreground: 0 0% 95%;
+    --card: 240 2% 11%;
+    /* #1c1c1e */
+    --card-foreground: 240 1% 96%;
 
-    --popover: 220 20% 6%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 240 2% 11%;
+    --popover-foreground: 240 1% 96%;
 
-    /* Neon Green Accent (Matching Image) */
-    --primary: 142 76% 50%;
-    /* Vibrant Neon Green */
-    --primary-foreground: 0 0% 5%;
-    --primary-glow: 142 76% 70%;
+    --primary: 211 100% 50%;
+    /* Lighter blue for dark mode */
+    --primary-foreground: 0 0% 100%;
 
-    /* Subtle grays for secondary elements */
-    --secondary: 220 10% 15%;
-    --secondary-foreground: 0 0% 85%;
+    --secondary: 240 2% 18%;
+    /* #2c2c2e */
+    --secondary-foreground: 240 2% 63%;
+    /* #a1a1a6 */
 
-    --muted: 220 10% 10%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 240 2% 18%;
+    --muted-foreground: 240 2% 63%;
 
-    --accent: 142 76% 40%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 211 100% 50%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 15%;
-    /* Subtle borders */
-    --input: 0 0% 8%;
-    --ring: 220 100% 60%;
+    --border: 240 2% 18%;
+    --input: 240 2% 18%;
+    --ring: 211 100% 50%;
 
-    --radius: 0.75rem;
-    /* More rounded for modern look */
-
-    /* Custom cinematic variables */
-    --space-blue: 220 100% 60%;
-    --space-purple: 260 100% 65%;
-    --space-cyan: 180 100% 60%;
-    --glass-bg: 0 0% 5% / 0.1;
-    /* Glassmorphism background */
-    --glass-border: 0 0% 100% / 0.1;
-    /* Glassmorphism border */
-
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-space: linear-gradient(135deg, hsl(0 0% 3%), hsl(220 30% 8%));
-    --gradient-glow: radial-gradient(circle at center, hsl(var(--primary) / 0.3), transparent 70%);
-
-    /* Shadows */
-    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.3);
-    --shadow-elegant: 0 20px 40px -10px hsl(0 0% 0% / 0.5);
-
-    /* Animations */
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --radius: 18px;
   }
-}
 
-@layer base {
+  .light {
+    /* Apple Light Mode (Optional) */
+    --background: 0 0% 100%;
+    --foreground: 220 3% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 3% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 3% 11%;
+
+    --primary: 211 100% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 220 3% 11%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 2% 43%;
+
+    --accent: 211 100% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --border: 240 5% 83%;
+    --input: 240 5% 83%;
+    --ring: 211 100% 45%;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Apple System Font Stack */
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     overflow-x: hidden;
-    user-select: none;
-    /* Disable text selection globally */
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    position: relative;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("https://grainy-gradients.vercel.app/noise.svg");
-    opacity: 0.05;
-    pointer-events: none;
-    z-index: 9999;
-    filter: contrast(120%) brightness(120%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
   }
 
   html {
     scroll-behavior: smooth;
   }
+
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 2.6rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: hsl(var(--foreground));
+  }
+
+  /* Apple Code Style */
+  code,
+  pre {
+    font-family: "SF Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+  }
+
+  .secondary {
+    color: hsl(var(--muted-foreground));
+    font-size: 1.05rem;
+    font-weight: 400;
+  }
 }
 
 @layer components {
 
-  /* Glassmorphism utilities */
+  /* Apple Glassmorphism */
   .glass {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
   }
 
-  .glass-dark {
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+  .dark .glass {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .glass-premium {
-    background: rgba(255, 255, 255, 0.01);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   }
 
-  /* Glow effects */
-  .glow-primary {
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+  .dark .glass-premium {
+    background: rgba(30, 30, 30, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
   }
 
-  .glow-accent {
-    box-shadow: 0 0 30px hsl(var(--accent) / 0.3);
+  /* Apple Button Style */
+  .btn-apple {
+    @apply px-6 py-3 rounded-full bg-primary text-white font-medium transition-all duration-300 hover:brightness-110 active:scale-95;
   }
 
   /* Text gradients */
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    background: linear-gradient(135deg, hsl(var(--primary)), #00c6fb);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

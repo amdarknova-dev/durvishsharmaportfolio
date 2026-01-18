@@ -1,17 +1,11 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 
-declare global {
-    interface Window {
-        lenis: Lenis;
-    }
-}
-
 const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4baq
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
@@ -25,9 +19,6 @@ const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
         }
 
         requestAnimationFrame(raf);
-
-        // Provide lenis instance to global window for external access (like GSAP ScrollTrigger)
-        window.lenis = lenis;
 
         return () => {
             lenis.destroy();

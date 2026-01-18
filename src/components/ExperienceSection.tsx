@@ -14,48 +14,48 @@ const ExperienceSection = () => {
 
   const experiences = [
     {
-      title: 'Frontend Developer',
-      company: 'Freelance & Independent Projects',
+      title: 'Anime Game & Cinematic Developer',
+      company: 'Independent Creator',
+      period: '2024 - PRESENT',
+      location: 'HARYANA, IN',
+      status: 'ACTIVE',
+      bullets: [
+        'Designed and built anime-inspired action RPG prototypes using Unreal Engine 5, focusing on combat systems, VFX, and cinematics.',
+        'Created Demon Slayer–style cinematic shorts using a hybrid 3D + anime workflow with Unreal Engine and Blender.',
+        'Developed reusable combat frameworks, enemy AI behavior trees, and cinematic camera systems.',
+        'Produced playable vertical slices demonstrating AAA-feel gameplay at indie scale.'
+      ],
+      tech: ['Unreal Engine 5', 'Blender', 'Niagara VFX', 'FMOD', 'Behavior Trees'],
+      color: 'from-primary to-accent'
+    },
+    {
+      title: 'Full-Stack Developer',
+      company: 'Portfolio & Web Projects',
       period: '2024 - PRESENT',
       location: 'REMOTE',
       status: 'ACTIVE',
       bullets: [
-        'Developed high-performance landing pages and web applications using React, Next.js, and Tailwind CSS.',
-        'Implemented advanced motion design and interface transitions with Framer Motion.',
-        'Optimized site performance for core web vitals, achieving 90+ Lighthouse scores.',
-        'Collaborated with clients to translate brand requirements into mobile-first solutions.'
+        'Built and deployed a full-stack portfolio platform to showcase interactive demos and cinematic content.',
+        'Developed high-performance web applications using React, Next.js, and Tailwind CSS.',
+        'Implemented advanced motion design and 3D web experiences with Three.js and Framer Motion.',
+        'Maintained clean GitHub repositories and modular project structures.'
       ],
-      tech: ['React', 'Next.js', 'Framer Motion', 'Tailwind', 'Three.js'],
-      color: 'from-primary to-accent'
+      tech: ['React', 'Next.js', 'TypeScript', 'Node.js', 'MongoDB', 'Three.js'],
+      color: 'from-blue-500 to-indigo-500'
     },
     {
-      title: 'Creative Technologist',
+      title: 'VFX & Anime Artist',
       company: 'Personal Development',
       period: '2023 - 2024',
       location: 'HARYANA, IN',
       status: 'COMPLETED',
       bullets: [
-        'Built immersive 3D web experiences using Three.js and React Three Fiber.',
-        'Architected narrative-driven scroll animations using GSAP and ScrollTrigger.',
-        'Designed a library of reusable, themeable UI components.',
-        'Leveraged Supabase for real-time data handling and backend logic.'
+        'Integrated Niagara VFX for lightning, aura, and anime impact effects.',
+        'Combined game assets and cinematic workflows to optimize production time.',
+        'Learned anime timing, impact frames, and camera language for cinematic storytelling.',
+        'Managed complete production pipelines solo: concept → development → polish → presentation.'
       ],
-      tech: ['GSAP', 'WebGL', 'Supabase', 'R3F', 'Figma'],
-      color: 'from-blue-500 to-indigo-500'
-    },
-    {
-      title: 'UI Engineer (Intern)',
-      company: 'Tech Ecosystem Collaboration',
-      period: '2023 - 2023',
-      location: 'DELHI-NCR, IN',
-      status: 'ARCHIVED',
-      bullets: [
-        'Collaborated on responsive layouts and cross-browser compatible features.',
-        'Refactored legacy CSS into modern Tailwind-based utility styles.',
-        'Participated in unit testing and accessibility audits.',
-        'Translated Figma designs into pixel-perfect React components.'
-      ],
-      tech: ['React', 'CSS Modules', 'TypeScript', 'Git', 'Redux'],
+      tech: ['Niagara', 'Blender', 'Clip Studio Paint', 'DaVinci Resolve', 'After Effects'],
       color: 'from-purple-500 to-pink-500'
     }
   ];

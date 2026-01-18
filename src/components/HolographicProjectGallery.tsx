@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSound } from '@/context/SoundContext';
+import Magnetic from '@/components/Magnetic';
 
 interface Project {
     title: string;
@@ -198,9 +199,11 @@ const GalleryCard = ({ project, index, activeIndex, total, onClick, isActive }: 
                         </p>
 
                         <div className="flex gap-4">
-                            <Button size="sm" className="bg-white text-black hover:bg-white/90 rounded-full font-bold uppercase tracking-widest text-[10px]">
-                                Initialize
-                            </Button>
+                            <Magnetic intensity={0.3}>
+                                <Button size="sm" className="bg-white text-black hover:bg-white/90 rounded-full font-bold uppercase tracking-widest text-[10px]">
+                                    Initialize
+                                </Button>
+                            </Magnetic>
                         </div>
                     </motion.div>
                 </div>

@@ -21,8 +21,7 @@ import {
     Linkedin,
     Github,
     Plus,
-    ArrowUpRight,
-    AlertCircle
+    ArrowUpRight
 } from 'lucide-react';
 import {
     Select,
@@ -36,7 +35,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 import { useSound } from '@/context/SoundContext';
 import { useEmailJS } from '@/lib/emailjs';
-import ReCAPTCHA from "react-google-recaptcha";
+import Magnetic from '@/components/Magnetic';
 
 const FAQItem = ({ number, question, answer }: { number: string; question: string; answer: string }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -106,12 +105,10 @@ const Contact = () => {
     const [mana, setMana] = useState(0); // For gamified input
     const [isTransmitting, setIsTransmitting] = useState(false);
     const { toast } = useToast();
-    const { playHover, playClick, playSuccess } = useSound();
+    const { playHover, playClick, playSuccess, playType } = useSound();
     const { sendEmail, isSubmitting: emailSubmitting } = useEmailJS();
-    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-    const recaptchaRef = React.useRef<ReCAPTCHA>(null);
+    const [captchaToken, setCaptchaToken] = useState<string | null>("skipped"); // Skipped
 
-    const captchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"; // Default is Google Test Key
 
     const faqs = [
         {
@@ -198,6 +195,7 @@ const Contact = () => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        playType();
 
         // Real-time validation
         if (name === 'email') {
@@ -236,14 +234,7 @@ const Contact = () => {
             return;
         }
 
-        if (!captchaToken) {
-            toast({
-                title: "Security Check Required",
-                description: "Please complete the reCAPTCHA to verify you're human.",
-                variant: "destructive"
-            });
-            return;
-        }
+
 
         playSuccess(); // Play Warp Sound
         setIsTransmitting(true); // Trigger visual warp
@@ -274,7 +265,6 @@ const Contact = () => {
             setErrors({ email: '', phone: '' });
             setMana(0);
             setCaptchaToken(null);
-            recaptchaRef.current?.reset();
         }
     };
 
@@ -468,32 +458,24 @@ const Contact = () => {
                                         By proceeding you agree to the <span className="text-blue-500 hover:underline cursor-pointer">Business Terms of Service</span> <br className="hidden md:block" /> and <span className="text-blue-500 hover:underline cursor-pointer">our privacy policy</span>
                                     </p>
 
-                                    {/* reCAPTCHA */}
-                                    <div className="flex justify-center scale-90 md:scale-100">
-                                        <div className="rounded-2xl overflow-hidden border border-white/5">
-                                            <ReCAPTCHA
-                                                ref={recaptchaRef}
-                                                sitekey={captchaSiteKey}
-                                                onChange={(token) => setCaptchaToken(token)}
-                                                theme="dark"
-                                            />
-                                        </div>
-                                    </div>
 
-                                    <Button
-                                        type="submit"
-                                        disabled={emailSubmitting || isTransmitting}
-                                        className="w-full h-16 bg-white hover:bg-white/90 text-black rounded-full text-lg font-bold transition-all duration-300 transform active:scale-[0.98] disabled:opacity-50"
-                                    >
-                                        {emailSubmitting || isTransmitting ? (
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                                                <span>Transmitting...</span>
-                                            </div>
-                                        ) : (
-                                            "Send contact request"
-                                        )}
-                                    </Button>
+
+                                    <Magnetic intensity={0.5}>
+                                        <Button
+                                            type="submit"
+                                            disabled={emailSubmitting || isTransmitting}
+                                            className="w-full h-16 bg-white hover:bg-white/90 text-black rounded-full text-lg font-bold transition-all duration-300 transform active:scale-[0.98] disabled:opacity-50"
+                                        >
+                                            {emailSubmitting || isTransmitting ? (
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                                    <span>Transmitting...</span>
+                                                </div>
+                                            ) : (
+                                                "Send contact request"
+                                            )}
+                                        </Button>
+                                    </Magnetic>
                                 </div>
                             </form>
 
@@ -562,19 +544,28 @@ const Contact = () => {
                                         <p className="text-gray-500 text-sm">Industrial Hub Center, Sector 12</p>
                                     </div>
                                 </div>
+
                                 <div className="flex gap-4 pt-6">
-                                    <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                        <Instagram className="w-5 h-5" />
-                                    </a>
-                                    <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                        <Twitter className="w-5 h-5" />
-                                    </a>
-                                    <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                        <Linkedin className="w-5 h-5" />
-                                    </a>
-                                    <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                        <Github className="w-5 h-5" />
-                                    </a>
+                                    <Magnetic intensity={0.3}>
+                                        <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                            <Instagram className="w-5 h-5" />
+                                        </a>
+                                    </Magnetic>
+                                    <Magnetic intensity={0.3}>
+                                        <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                            <Twitter className="w-5 h-5" />
+                                        </a>
+                                    </Magnetic>
+                                    <Magnetic intensity={0.3}>
+                                        <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                            <Linkedin className="w-5 h-5" />
+                                        </a>
+                                    </Magnetic>
+                                    <Magnetic intensity={0.3}>
+                                        <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                            <Github className="w-5 h-5" />
+                                        </a>
+                                    </Magnetic>
                                 </div>
                             </div>
                         </div>

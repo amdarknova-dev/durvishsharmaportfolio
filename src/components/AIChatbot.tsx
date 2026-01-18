@@ -48,66 +48,15 @@ const AIChatbot = () => {
         };
 
         setMessages(prev => [...prev, newMessage]);
-        const userInput = inputValue.toLowerCase();
         setInputValue('');
         setIsTyping(true);
 
-        // Intelligent response system
-        setTimeout(() => {
-            let responseText = '';
+        // Real Gemini Integration
+        try {
+            // Import dynamically to avoid top-level failures if lib doesn't exist yet
+            const { chatWithGemini } = await import('@/lib/gemini');
 
-            // Greetings
-            if (/^(hi|hello|hey|greetings|good morning|good afternoon|good evening)/.test(userInput)) {
-                const greetings = [
-                    "Hello! I'm Nexus, Durvish's AI assistant. How can I help you explore this portfolio today?",
-                    "Greetings! Welcome to Durvish's digital realm. What would you like to know?",
-                    "Hey there! I'm here to help you navigate through Durvish's work. What interests you?",
-                ];
-                responseText = greetings[Math.floor(Math.random() * greetings.length)];
-            }
-            // Farewells
-            else if (/^(bye|goodbye|see you|later|farewell)/.test(userInput)) {
-                const farewells = [
-                    "Goodbye! Feel free to return anytime you want to explore more.",
-                    "See you later! Don't forget to check out the projects section!",
-                    "Farewell! Hope you enjoyed your visit to Durvish's portfolio.",
-                ];
-                responseText = farewells[Math.floor(Math.random() * farewells.length)];
-            }
-            // Help
-            else if (/help|assist|guide|how/.test(userInput)) {
-                responseText = "I can help you with:\n• Information about Durvish\n• His skills and technologies\n• Project details\n• Contact information\n• Navigation tips\n\nJust ask me anything!";
-            }
-            // About Durvish
-            else if (/about|who is|tell me/.test(userInput)) {
-                responseText = "Durvish Sharma is a Full Stack Web Developer and Game Developer passionate about creating high-performance, beautiful, and interactive digital experiences. He specializes in React, Three.js, and modern web technologies with a focus on cinematic design.";
-            }
-            // Skills
-            else if (/skill|technology|tech stack|what.*know/.test(userInput)) {
-                responseText = "Durvish's tech stack includes:\n• Frontend: React, TypeScript, Tailwind CSS\n• 3D/Animation: Three.js, Framer Motion, GSAP\n• Backend: Node.js, Supabase\n• Game Dev: Unity, C#\n• Tools: Vite, Git, VS Code\n\nCheck out the Skills section for more details!";
-            }
-            // Contact
-            else if (/contact|email|reach|hire|work/.test(userInput)) {
-                responseText = "You can reach Durvish at:\n📧 Email: durvishsharma01@gmail.com\n💼 LinkedIn: linkedin.com/in/durvish-sharma\n🐙 GitHub: github.com/durvishsharma\n\nOr use the Contact form on this site!";
-            }
-            // Projects
-            else if (/project|work|portfolio|built/.test(userInput)) {
-                responseText = "Durvish has built amazing projects including:\n• NexusAI Landing Page\n• Horizon Dashboard\n• Aura E-commerce\n• Solaris 3D Experience\n\nScroll down to the Projects section to see them all!";
-            }
-            // Thanks
-            else if (/thank|thanks|appreciate/.test(userInput)) {
-                responseText = "You're welcome! Happy to help. Feel free to ask anything else!";
-            }
-            // Default responses
-            else {
-                const defaults = [
-                    "That's an interesting question! For specific details, you might want to explore the portfolio or contact Durvish directly.",
-                    "I'm still learning about that topic. Try asking about Durvish's skills, projects, or how to contact him!",
-                    "Hmm, I'm not sure about that. Would you like to know about Durvish's projects or skills instead?",
-                    "I've logged your query. For detailed information, feel free to navigate through the portfolio sections!",
-                ];
-                responseText = defaults[Math.floor(Math.random() * defaults.length)];
-            }
+            const responseText = await chatWithGemini(newMessage.text);
 
             const aiMessage: Message = {
                 id: (Date.now() + 1).toString(),
@@ -118,8 +67,18 @@ const AIChatbot = () => {
             };
 
             setMessages(prev => [...prev, aiMessage]);
+        } catch (err) {
+            const errorMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                text: "My connection to the neural network is unstable. Please try again.",
+                sender: 'ai',
+                senderName: 'Nexus AI',
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
             setIsTyping(false);
-        }, 1500);
+        }
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -156,6 +115,7 @@ const AIChatbot = () => {
                                     size="icon"
                                     onClick={() => { playClick(); setIsOpen(false); }}
                                     className="hover:bg-white/10 text-gray-400 hover:text-white rounded-full"
+                                    aria-label="Close chat"
                                 >
                                     <X className="w-5 h-5" />
                                 </Button>
@@ -217,10 +177,10 @@ const AIChatbot = () => {
                             {/* Custom Input Bar */}
                             <div className="p-4 bg-white/[0.02] border-t border-white/5">
                                 <div className="flex items-center gap-2 bg-white/[0.03] p-1.5 rounded-[28px] border border-white/5 focus-within:border-primary/50 transition-colors">
-                                    <button className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+                                    <button className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors" aria-label="Attach file">
                                         <Paperclip className="w-5 h-5" />
                                     </button>
-                                    <button className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors">
+                                    <button className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors" aria-label="Voice input">
                                         <Mic className="w-5 h-5" />
                                     </button>
                                     <input
@@ -233,6 +193,7 @@ const AIChatbot = () => {
                                     <button
                                         onClick={handleSend}
                                         disabled={!inputValue.trim()}
+                                        aria-label="Send message"
                                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${inputValue.trim()
                                             ? 'bg-primary text-white scale-100 shadow-[0_0_15px_rgba(34,197,94,0.4)]'
                                             : 'bg-white/5 text-gray-600 scale-95'
@@ -255,6 +216,7 @@ const AIChatbot = () => {
                     whileHover={{ scale: 1.1, y: -5 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => { playClick(); setIsOpen(true); }}
+                    aria-label="Open AI chat assistant"
                     className="fixed bottom-6 right-6 md:right-6 w-12 h-12 md:w-16 md:h-16 rounded-[20px] md:rounded-[24px] bg-primary shadow-[0_15px_30px_rgba(34,197,94,0.4)] flex items-center justify-center z-[55] group transition-all"
                 >
                     <div className="absolute inset-0 rounded-[24px] bg-white/20 animate-ping group-hover:scale-110" />

@@ -24,30 +24,43 @@ const Testimonials = () => {
     const testimonials: Testimonial[] = [
         {
             id: '1',
-            name: 'Sarah Chen',
-            role: 'Product Manager',
-            company: 'TechCorp Inc.',
-            image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80',
-            text: "Durvish's attention to detail and ability to translate complex requirements into beautiful, functional interfaces is exceptional. The dashboard he built for us exceeded all expectations.",
-            linkedin: 'https://linkedin.com'
+            name: 'Rohan Mehta',
+            role: 'Game Playtester',
+            company: 'Playtester',
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+            text: "The combat feels fast and impactful, especially the lightning effects. It genuinely feels like an anime fight you can play."
         },
         {
             id: '2',
-            name: 'Michael Rodriguez',
-            role: 'CTO',
-            company: 'StartupXYZ',
-            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
-            text: "Working with Durvish was a game-changer for our project. His expertise in React and Three.js brought our vision to life with stunning 3D visualizations.",
-            linkedin: 'https://linkedin.com'
+            name: 'Ankit Verma',
+            role: 'Indie Game Creator',
+            company: 'Collaborator',
+            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80',
+            text: "Reusing game assets for cinematic scenes was a smart production choice. The visuals feel far beyond a typical indie prototype."
         },
         {
             id: '3',
-            name: 'Emily Thompson',
-            role: 'Design Lead',
-            company: 'Creative Studios',
+            name: 'Sneha Kulkarni',
+            role: 'Community Member',
+            company: 'Discord Community',
             image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop&q=80',
-            text: "Durvish has an incredible eye for design and the technical skills to execute it perfectly. The e-commerce platform he developed is not only beautiful but also performs flawlessly.",
-            linkedin: 'https://linkedin.com'
+            text: "The atmosphere, lighting, and music already feel polished. It's impressive how much emotion comes through in early builds."
+        },
+        {
+            id: '4',
+            name: 'Rahul Sharma',
+            role: 'Game Dev Mentor',
+            company: 'Online Mentor',
+            image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=80',
+            text: "Strong self-learning ability and technical curiosity. The project shows clear improvement in design, structure, and execution."
+        },
+        {
+            id: '5',
+            name: 'Arjun Patel',
+            role: 'Demo Player',
+            company: 'Demo Tester',
+            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
+            text: "Even as a short demo, the world feels immersive. The camera work during combat is especially cinematic."
         }
     ];
 
