@@ -29,12 +29,12 @@ const Navigation = () => {
   const navItemsRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const navItems = React.useMemo(() => [
-    { id: 'home', label: 'Home', icon: Home, path: undefined },
-    { id: 'about', label: 'About', icon: User, path: undefined },
-    { id: 'skills', label: 'Skills', icon: Cpu, path: undefined },
-    { id: 'projects', label: 'Projects', icon: Briefcase, path: undefined },
-    { id: 'experience', label: 'Experience', icon: Star, path: undefined },
-    { id: 'contact', label: 'Contact', icon: MessageSquare, path: '/contact' },
+    { id: 'home', labelKey: 'nav.home', icon: Home, path: undefined },
+    { id: 'about', labelKey: 'nav.about', icon: User, path: undefined },
+    { id: 'skills', labelKey: 'nav.skills', icon: Cpu, path: undefined },
+    { id: 'projects', labelKey: 'nav.projects', icon: Briefcase, path: undefined },
+    { id: 'experience', labelKey: 'nav.experience', icon: Star, path: undefined },
+    { id: 'contact', labelKey: 'nav.contact', icon: MessageSquare, path: '/contact' },
   ], []);
 
   const { playHover, playClick } = useSound();
@@ -156,7 +156,7 @@ const Navigation = () => {
                     }`}
                 >
                   <span className="relative z-10 text-[13px] font-medium tracking-wide">
-                    <RollingText text={item.label} />
+                    <RollingText text={t(item.labelKey)} />
                   </span>
                   {activeSection === item.id && (
                     <motion.span
@@ -220,7 +220,7 @@ const Navigation = () => {
                     >
                       <div className="flex items-center gap-4">
                         <item.icon className={`w-5 h-5 ${activeSection === item.id ? 'text-primary' : 'text-gray-500'}`} />
-                        <span className="text-lg font-medium tracking-tight">{item.label}</span>
+                        <span className="text-lg font-medium tracking-tight">{t(item.labelKey)}</span>
                       </div>
                       {activeSection === item.id && (
                         <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_rgba(34,197,94,0.5)]" />

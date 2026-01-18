@@ -10,6 +10,7 @@ import { parse } from '@babel/parser';
 import _traverse from '@babel/traverse';
 import _generate from '@babel/generator';
 import * as t from '@babel/types';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 
 
 // CJS/ESM interop for Babel libs
@@ -211,8 +212,11 @@ export default defineConfig(({ mode }) => {
       host: "::",
       port: 8080,
     },
+
+
     plugins: [
       react(),
+      basicSsl(), // Enables HTTPS 🔒
       mode === 'development' &&
       componentTagger(),
       cdnPrefixImages(),

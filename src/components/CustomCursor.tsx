@@ -169,7 +169,7 @@ const CustomCursor = () => {
     }, [godMode, TRAIL_LENGTH, cursorX, cursorY, spawnParticles, createRipple]);
 
     return (
-        <div className="fixed inset-0 pointer-events-none z-[9999]">
+        <div className="fixed inset-0 pointer-events-none z-[9999] hidden lg:block 2xl:hidden">
             {/* God Mode Particle Canvas */}
             {godMode && (
                 <canvas

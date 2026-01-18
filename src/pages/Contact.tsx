@@ -453,13 +453,7 @@ const Contact = () => {
                                     />
                                 </div>
 
-                                <div className="pt-6 space-y-8">
-                                    <p className="text-[11px] text-gray-500 text-center leading-relaxed font-mono">
-                                        By proceeding you agree to the <span className="text-blue-500 hover:underline cursor-pointer">Business Terms of Service</span> <br className="hidden md:block" /> and <span className="text-blue-500 hover:underline cursor-pointer">our privacy policy</span>
-                                    </p>
-
-
-
+                                <div className="pt-6">
                                     <Magnetic intensity={0.5}>
                                         <Button
                                             type="submit"

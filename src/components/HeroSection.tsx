@@ -63,7 +63,7 @@ const HeroSection = () => {
             {/* Secondary Role Description */}
             <motion.div variants={itemVariants}>
               <p className="text-xl md:text-2xl text-muted-foreground font-normal max-w-2xl mx-auto leading-relaxed">
-                Software Developer focused on performance, design, and clarity.
+                {t('hero.description')}
               </p>
             </motion.div>
 
@@ -77,7 +77,7 @@ const HeroSection = () => {
                   document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                View Work
+                {t('hero.cta_projects')}
               </Button>
               <Button
                 variant="outline"
@@ -88,7 +88,7 @@ const HeroSection = () => {
                   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                Contact Me
+                {t('hero.cta_contact')}
               </Button>
             </motion.div>
 

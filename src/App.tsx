@@ -33,6 +33,7 @@ import CinematicOverlay from "./components/CinematicOverlay";
 import Preloader from "./components/Preloader";
 import TransitionWrapper from "./components/TransitionWrapper";
 import AmbientSound from "./components/AmbientSound";
+import Nova from "./components/Nova";
 
 import { SoundProvider } from "./context/SoundContext";
 import { AchievementProvider } from "./context/AchievementContext";
@@ -105,6 +106,7 @@ const App = () => {
                       <KonamiCode />
                       <WarpTransition />
                       <AIChatbot />
+                      <Nova />
                       <KeyboardShortcuts />
                       <Toaster />
                       <Sonner />

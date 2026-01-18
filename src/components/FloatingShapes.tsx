@@ -17,7 +17,7 @@ interface Shape {
 const FloatingShapes = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const shapesRef = useRef<Shape[]>([]);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
   const { gravity, glowIntensity, themeMode } = useHack();
 
   useEffect(() => {
@@ -114,7 +114,7 @@ const FloatingShapes = () => {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 pointer-events-none z-10 overflow-hidden"
+      className="fixed inset-0 pointer-events-none z-10 overflow-hidden hidden md:block 2xl:hidden"
     />
   );
 };

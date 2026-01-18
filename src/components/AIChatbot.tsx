@@ -177,12 +177,7 @@ const AIChatbot = () => {
                             {/* Custom Input Bar */}
                             <div className="p-4 bg-white/[0.02] border-t border-white/5">
                                 <div className="flex items-center gap-2 bg-white/[0.03] p-1.5 rounded-[28px] border border-white/5 focus-within:border-primary/50 transition-colors">
-                                    <button className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors" aria-label="Attach file">
-                                        <Paperclip className="w-5 h-5" />
-                                    </button>
-                                    <button className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors" aria-label="Voice input">
-                                        <Mic className="w-5 h-5" />
-                                    </button>
+
                                     <input
                                         value={inputValue}
                                         onChange={(e) => setInputValue(e.target.value)}
