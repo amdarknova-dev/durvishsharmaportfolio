@@ -213,6 +213,10 @@ export default defineConfig(({ mode }) => {
       host: "::",
       port: 8080,
     },
+    build: {
+      outDir: 'build',
+      emptyOutDir: true,
+    },
 
 
     plugins: [
@@ -223,6 +227,11 @@ export default defineConfig(({ mode }) => {
       cdnPrefixImages(),
       VitePWA({
         registerType: 'autoUpdate',
+        injectRegister: 'auto',
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg}'],
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        },
         manifest: {
           name: 'Durvish Sharma | Cinematic Portfolio',
           short_name: 'Durvish Portfolio',
