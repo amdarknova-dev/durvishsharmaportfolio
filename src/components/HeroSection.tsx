@@ -1,11 +1,10 @@
 import CinematicText from '@/components/CinematicText';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
 import { useSound } from '@/context/SoundContext';
 import { useTranslation } from 'react-i18next';
-const ThreeScene = React.lazy(() => import('@/components/ThreeScene'));
 import HeroTerminal from './HeroTerminal';
 import Magnetic from '@/components/Magnetic';
 import { useMobile } from '@/hooks/useMobile';
@@ -92,16 +91,12 @@ const HeroSection = () => {
               </Button>
             </motion.div>
 
-            {/* Hero Terminal or Abstract Visual */}
-            <motion.div variants={itemVariants} className="mt-16 relative w-full aspect-video max-w-4xl mx-auto rounded-[32px] overflow-hidden shadow-2xl border border-white/20 bg-black/5 dark:bg-white/5 backdrop-blur-3xl">
-              {/* Placeholder for the 3D Animation/Video - using ThreeScene for now but cleaned up */}
-              <div className="absolute inset-0">
-                <Suspense fallback={null}>
-                  <ThreeScene />
-                </Suspense>
-              </div>
-              {/* Overlay content if needed, otherwise clean */}
+            {/* Hero Terminal */}
+            <motion.div variants={itemVariants} className="w-full flex justify-center mt-8">
+              <HeroTerminal />
             </motion.div>
+
+
           </motion.div>
         </div>
       </section>

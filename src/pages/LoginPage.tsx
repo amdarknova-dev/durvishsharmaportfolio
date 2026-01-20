@@ -27,6 +27,8 @@ const LoginPage = () => {
     const [newUsername, setNewUsername] = useState('');
     const [step, setStep] = useState<'login' | 'otp' | 'username' | 'admin'>('login');
     const [isLoading, setIsLoading] = useState(false);
+    const [showForgotModal, setShowForgotModal] = useState(false);
+    const [showSignupModal, setShowSignupModal] = useState(false);
     const [terminalOpen, setTerminalOpen] = useState(false);
     const [terminalInput, setTerminalInput] = useState('');
     const [terminalLines, setTerminalLines] = useState<string[]>(['PORTFOLIO OS v2.0.4', 'Type help for commands...']);
@@ -215,19 +217,22 @@ const LoginPage = () => {
         setIsLoading(true);
 
         try {
-            // This handles both signup and login via Magic Link as per user request for "send code"
-            const { error } = await supabase.auth.signInWithOtp({
-                email,
-                options: { emailRedirectTo: window.location.origin }
+            console.log("OTP button clicked, sending to:", email);
+
+            // This handles both signup and login
+            const { data, error } = await supabase.auth.signInWithOtp({
+                email
             });
+
+            console.log("OTP response:", data, error);
 
             if (error) {
                 console.warn("Auth error, falling back to demo mode:", error);
-                toast({ title: "DEMO MODE ENABLED", description: "Auth service unreachable. Proceeding with simulation." });
+                toast({ title: "DEMO MODE ENABLED", description: "Auth error. Proceeding with simulation." });
                 setStep('otp');
                 setIsLoading(false);
             } else {
-                toast({ title: "VERIFICATION SENT", description: "Check your email for the access code." });
+                toast({ title: "VERIFICATION SENT", description: "Check your email for the code." });
                 setStep('otp');
                 setIsLoading(false);
             }
@@ -250,16 +255,21 @@ const LoginPage = () => {
             return;
         }
 
-        const { error } = await supabase.auth.verifyOtp({
+        console.log("Verifying OTP:", otp);
+
+        const { data, error } = await supabase.auth.verifyOtp({
             email,
             token: otp,
-            type: 'magiclink'
+            type: 'email'
         });
+
+        console.log("Verify response:", data, error);
 
         if (error) {
             toast({ variant: "destructive", title: "INVALID CODE", description: error.message });
             setIsLoading(false);
         } else {
+            console.log("Login successful!", data);
             playSuccess();
             // If new user, step moves to 'username' via useEffect
         }
@@ -384,7 +394,7 @@ const LoginPage = () => {
 
                                 <div className="text-right">
                                     <button
-                                        onClick={() => toast({ title: "NO PASSWORD NEEDED", description: "Just enter your email and hit Login. We'll send you a magic link!" })}
+                                        onClick={() => setShowForgotModal(true)}
                                         className="text-sm text-[#777] hover:text-[#333] transition-colors"
                                     >
                                         Forgot password?
@@ -421,17 +431,12 @@ const LoginPage = () => {
                                         </div>
 
                                         <div className="text-center pt-10 space-y-2">
-                                            <p className="text-sm text-[#777] uppercase font-bold">Or Sign Up Using</p>
+                                            <p className="text-sm text-[#777] uppercase font-bold">New User?</p>
                                             <button
-                                                onClick={() => {
-                                                    document.querySelector('input[type="email"]')?.parentElement?.classList.add('ring-2', 'ring-primary');
-                                                    setTimeout(() => document.querySelector('input[type="email"]')?.parentElement?.classList.remove('ring-2', 'ring-primary'), 1000);
-                                                    document.querySelector('input[type="email"]')?.focus();
-                                                    toast({ title: "JOIN US", description: "Enter your email above to create a new account automatically." });
-                                                }}
+                                                onClick={() => setShowSignupModal(true)}
                                                 className="text-sm text-[#333] font-black uppercase tracking-widest hover:text-[#0072ff]"
                                             >
-                                                Sign Up
+                                                Create Account
                                             </button>
                                         </div>
                                     </>
@@ -575,6 +580,80 @@ const LoginPage = () => {
                     <TerminalIcon className="w-5 h-5" />
                 </button>
             </div>
+            {/* Forgot Password Modal */}
+            <AnimatePresence>
+                {showForgotModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                        onClick={() => setShowForgotModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center space-y-4"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto text-blue-500">
+                                <Shield className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900">No Password Needed!</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                We use secure <strong>OTP Login</strong>. You don't need to remember any passwords here.
+                                Just enter your email, and we'll send you a one-time access code.
+                            </p>
+                            <Button
+                                onClick={() => setShowForgotModal(false)}
+                                className="w-full rounded-full bg-gray-900 text-white"
+                            >
+                                Got it
+                            </Button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Signup Modal */}
+            <AnimatePresence>
+                {showSignupModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                        onClick={() => setShowSignupModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center space-y-4"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto text-green-500">
+                                <User className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900">Join the Community</h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                Creating an account is easy! Just enter your email in the login box.
+                                If it's your first time, we'll automatically create an account for you.
+                            </p>
+                            <Button
+                                onClick={() => {
+                                    setShowSignupModal(false);
+                                    document.querySelector('input[type="email"]')?.focus();
+                                }}
+                                className="w-full rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+                            >
+                                Start Now
+                            </Button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

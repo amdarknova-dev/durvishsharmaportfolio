@@ -19,6 +19,9 @@ import TheArsenal from "./pages/TheArsenal";
 import MissionBrief from "./pages/MissionBrief";
 import TheHub from "./pages/TheHub";
 import CaseStudy from "./pages/CaseStudy";
+import Changelog from "./pages/Changelog";
+import Guestbook from "./pages/Guestbook";
+import HallOfFame from "./pages/HallOfFame";
 
 import CustomCursor from "./components/CustomCursor";
 import DeveloperConsole from "./components/DeveloperConsole";
@@ -34,6 +37,9 @@ import Preloader from "./components/Preloader";
 import TransitionWrapper from "./components/TransitionWrapper";
 import AmbientSound from "./components/AmbientSound";
 import Nova from "./components/Nova";
+import SystemControlPanel from "./components/SystemControlPanel";
+import MusicPlayer from "./components/MusicPlayer";
+import GlobalBackground from "./components/GlobalBackground";
 
 import { SoundProvider } from "./context/SoundContext";
 import { AchievementProvider } from "./context/AchievementContext";
@@ -72,6 +78,9 @@ const AnimatedRoutes = () => {
         <Route path="/mission" element={<TransitionWrapper><MissionBrief /></TransitionWrapper>} />
         <Route path="/hub" element={<TransitionWrapper><TheHub /></TransitionWrapper>} />
         <Route path="/case-study/:id" element={<TransitionWrapper><CaseStudy /></TransitionWrapper>} />
+        <Route path="/changelog" element={<TransitionWrapper><Changelog /></TransitionWrapper>} />
+        <Route path="/guestbook" element={<TransitionWrapper><Guestbook /></TransitionWrapper>} />
+        <Route path="/leaderboard" element={<TransitionWrapper><HallOfFame /></TransitionWrapper>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<TransitionWrapper><NotFound /></TransitionWrapper>} />
       </Routes>
@@ -99,6 +108,7 @@ const App = () => {
                     <RouteChangeHandler />
                     <TooltipProvider>
                       <WeatherEffects />
+                      <GlobalBackground />
                       <CinematicOverlay />
                       <CommandCenter />
                       <CustomCursor />
@@ -110,6 +120,8 @@ const App = () => {
                       <KeyboardShortcuts />
                       <Toaster />
                       <Sonner />
+                      <SystemControlPanel />
+                      <MusicPlayer />
 
                       <AnimatedRoutes />
 

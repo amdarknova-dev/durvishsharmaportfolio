@@ -11,6 +11,7 @@ import Footer from '@/components/Footer';
 import { supabase } from '@/lib/supabase';
 import ParticleBackground from '@/components/ParticleBackground';
 import { Card } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 const Blog = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -19,6 +20,7 @@ const Blog = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
     const { playClick, playWhoosh, playHover } = useSound();
+    const { t } = useTranslation();
 
     const posts = [
         {
@@ -76,12 +78,12 @@ const Blog = () => {
                 >
                     <div className="flex items-center justify-center gap-4 mb-6">
                         <div className="h-[1px] w-12 bg-primary/50"></div>
-                        <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] glow-text">Secure Archives</span>
+                        <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] glow-text">{t('blog.secure_archives')}</span>
                         <div className="h-[1px] w-12 bg-primary/50"></div>
                     </div>
                     <h1 className="text-6xl md:text-[8rem] font-black mb-8 tracking-tighter text-white uppercase leading-none">
-                        Data <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">Logs</span>
+                        {t('blog.title')} <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">{t('blog.subtitle')}</span>
                     </h1>
 
                     {/* Terminal Search */}
@@ -90,7 +92,7 @@ const Blog = () => {
                         <div className="relative flex items-center bg-black/50 border border-white/10 group-focus-within:border-primary/50 rounded-full transition-all duration-300">
                             <span className="pl-6 text-primary font-mono select-none">{'>'}</span>
                             <Input
-                                placeholder="QUERY_DATABASE..."
+                                placeholder={t('blog.search_placeholder')}
                                 className="pl-4 h-16 bg-transparent border-none focus:ring-0 text-primary font-mono tracking-widest text-sm placeholder:text-gray-700 uppercase"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -113,7 +115,7 @@ const Blog = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                                onMouseEnter={playHover}
+                                onMouseEnter={() => playHover()}
                             >
                                 <div className="group relative h-full cursor-pointer perspective-1000">
                                     {/* Holographic Border */}
@@ -146,7 +148,7 @@ const Blog = () => {
                                                     <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                                                     {post.date}
                                                 </div>
-                                                <div>TS: {post.readTime}</div>
+                                                <div>{t('blog.read_time')}: {post.readTime}</div>
                                             </div>
 
                                             <h3 className="text-xl font-bold text-white uppercase tracking-tight mb-4 group-hover:text-primary transition-colors leading-tight">
@@ -167,7 +169,7 @@ const Blog = () => {
                                                 </div>
 
                                                 <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-primary opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300">
-                                                    <span>DECRYPT</span>
+                                                    <span>{t('blog.decrypt')}</span>
                                                     <ArrowRight className="w-3 h-3" />
                                                 </div>
                                             </div>
@@ -194,11 +196,11 @@ const Blog = () => {
                                 <div className="space-y-4">
                                     <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em]">System Alert</span>
                                     <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter leading-none">
-                                        Initialize <br /><span className="text-gray-500">Uplink</span>
+                                        {t('blog.subscribe_title')}
                                     </h2>
                                 </div>
                                 <p className="text-gray-400 text-sm font-light leading-relaxed max-w-md">
-                                    Subscribe to the neural feed. Receive prioritized packets regarding technical architectures and design protocols.
+                                    {t('blog.subscribe_desc')}
                                 </p>
                             </div>
 
@@ -221,7 +223,7 @@ const Blog = () => {
                                 }}
                             >
                                 <div className="flex items-center border-b border-white/20 hover:border-primary/50 transition-colors pb-2">
-                                    <span className="text-primary font-mono mr-4 text-xs">INPUT:</span>
+                                    <span className="text-primary font-mono mr-4 text-xs">{t('blog.input_label')}</span>
                                     <input
                                         type="email"
                                         required
@@ -236,7 +238,7 @@ const Blog = () => {
                                         disabled={isLoading}
                                         className="text-primary hover:text-white transition-colors disabled:opacity-50 font-mono text-xs uppercase"
                                     >
-                                        [ENTER]
+                                        {t('blog.enter')}
                                     </button>
                                 </div>
                             </form>

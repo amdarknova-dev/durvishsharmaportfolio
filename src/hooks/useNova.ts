@@ -62,6 +62,41 @@ export const useNova = () => {
             navigate('/contact');
             return "Opening Communication Channels.";
         }
+        if (lowerCmd.includes('faq') || lowerCmd.includes('question')) {
+            navigateTo('faq', '/#faq', "Knowledge Base");
+        }
+        if (lowerCmd.includes('game') || lowerCmd.includes('play') || lowerCmd.includes('arcade')) {
+            navigate('/lab');
+            return "Launching Game Interface.";
+        }
+        if (lowerCmd.includes('blog') || lowerCmd.includes('news')) {
+            navigate('/blog');
+            return "Opening News Feed.";
+        }
+        if (lowerCmd.includes('guestbook')) {
+            navigate('/guestbook');
+            return "Opening Guestbook.";
+        }
+        if (lowerCmd.includes('leaderboard') || lowerCmd.includes('rank') || lowerCmd.includes('fame')) {
+            navigate('/leaderboard');
+            return "Accessing Hall of Fame.";
+        }
+        if (lowerCmd.includes('log') || lowerCmd.includes('change')) {
+            navigate('/changelog');
+            return "Accessing System Logs.";
+        }
+        if (lowerCmd.includes('settings') || lowerCmd.includes('control') || lowerCmd.includes('panel')) {
+            window.dispatchEvent(new CustomEvent('open-system-panel'));
+            return "Opening Control Panel.";
+        }
+        if (lowerCmd.includes('music') || lowerCmd.includes('play') || lowerCmd.includes('song')) {
+            window.dispatchEvent(new CustomEvent('open-music-player'));
+            return "Accessing Audio Interface.";
+        }
+        if (lowerCmd.includes('nexus') || lowerCmd.includes('brain') || lowerCmd.includes('search')) {
+            window.dispatchEvent(new CustomEvent('open-command-center'));
+            return "Opening Neural Interface.";
+        }
 
         // Theme Commands
         if (lowerCmd.includes('dark')) {

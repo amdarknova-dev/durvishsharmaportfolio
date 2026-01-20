@@ -38,7 +38,7 @@ const CommandCenter = () => {
         { id: '7', title: 'The Lab', description: 'Experiments', icon: Code2, path: '/lab', keywords: ['experiments', 'r&d', 'testing'] },
         { id: '8', title: 'Three.js Projects', description: 'Immersive WebGL work', icon: Globe, section: 'projects', keywords: ['three', '3d', 'webgl'] },
         { id: '9', title: 'Login', description: 'Access admin or user area', icon: Command, path: '/login', keywords: ['signin', 'auth', 'authenticate', 'admin', 'user'] },
-        { id: '10', title: 'Hall of Fame', description: 'Join the legendary visitors', icon: Target, section: 'leaderboard', keywords: ['fame', 'visitors', 'community', 'join', 'pioneers', 'leaderboard'] },
+        { id: '10', title: 'Hall of Fame', description: 'Join the legendary visitors', icon: Target, path: '/leaderboard', keywords: ['fame', 'visitors', 'community', 'join', 'pioneers', 'leaderboard'] },
     ], []);
 
     const filteredCommands = useMemo(() => {
@@ -52,6 +52,9 @@ const CommandCenter = () => {
     }, [query, commands]);
 
     useEffect(() => {
+        const handleOpen = () => setIsOpen(true);
+        window.addEventListener('open-command-center', handleOpen);
+
         const handleKeyDown = (e: KeyboardEvent) => {
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
@@ -60,7 +63,10 @@ const CommandCenter = () => {
             if (e.key === 'Escape') setIsOpen(false);
         };
         window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('open-command-center', handleOpen);
+        }
     }, []);
 
     useEffect(() => {
@@ -126,7 +132,7 @@ const CommandCenter = () => {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className={`fixed top-[15%] left-1/2 -translate-x-1/2 w-full max-w-2xl glass-dark border rounded-[32px] overflow-hidden z-[9001] shadow-[0_0_100px_rgba(34,197,94,0.1)] transition-all duration-500 ${isAiMode ? 'border-primary/50 shadow-[0_0_120px_rgba(34,197,94,0.2)]' : 'border-white/20'
+                        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl glass-dark border rounded-[32px] overflow-hidden z-[9001] shadow-[0_0_100px_rgba(34,197,94,0.1)] transition-all duration-500 ${isAiMode ? 'border-primary/50 shadow-[0_0_120px_rgba(34,197,94,0.2)]' : 'border-white/20'
                             }`}
                     >
                         {/* Header & Search */}

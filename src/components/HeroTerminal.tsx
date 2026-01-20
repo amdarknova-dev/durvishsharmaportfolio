@@ -39,7 +39,7 @@ const HeroTerminal = () => {
             case 'help':
                 output = isAdmin
                     ? 'ROOT COMMANDS: dashboard, nuclear_launch, system_reset, exit_root'
-                    : 'NAVIGATION: home, projects, about, contact, blog, lab, beyond\nSYSTEM: login, clear, sudo, whoami, date, ls, play';
+                    : 'NAV: home, projects, about, contact, blog, lab, beyond, guestbook, changelog, leaderboard\nAPPS: system, music, ai\nSYS: login, clear, sudo, whoami, date, shortcuts';
                 break;
             case 'home':
             case 'cd ~':
@@ -126,13 +126,52 @@ const HeroTerminal = () => {
             case 'whoami':
                 output = isAdmin ? 'root@durvish-portfolio: (superuser)' : 'user@guest-session: active';
                 break;
+            case 'system':
+            case 'settings':
+            case 'config':
+                output = 'Opening System Control Panel...';
+                window.dispatchEvent(new CustomEvent('open-system-panel'));
+                break;
+            case 'music':
+            case 'player':
+            case 'spotify':
+                output = 'Launching Audio Interface...';
+                window.dispatchEvent(new CustomEvent('open-music-player'));
+                break;
+            case 'ai':
+            case 'nexus':
+            case 'brain':
+            case 'ask':
+                output = 'Connecting to Neural Brain...';
+                window.dispatchEvent(new CustomEvent('open-command-center'));
+                break;
+            case 'guestbook':
+            case 'sign':
+                output = 'Opening Global Guestbook...';
+                setTimeout(() => navigate('/guestbook'), 800);
+                break;
+            case 'changelog':
+            case 'history':
+                output = 'Accessing System Logs...';
+                setTimeout(() => navigate('/changelog'), 800);
+                break;
+            case 'leaderboard':
+            case 'rank':
+            case 'hall':
+                output = 'Fetching Hall of Fame data...';
+                setTimeout(() => navigate('/leaderboard'), 800);
+                break;
+            case 'shortcuts':
+            case 'keys':
+                output = 'Available Shortcuts:\n  CMD+K: Command Center\n  CMD+I: System Panel\n  ESC: Close Modals';
+                break;
             case 'date':
             case 'time':
                 output = new Date().toLocaleString();
                 break;
             case 'ls':
             case 'dir':
-                output = 'Available pages:\n  /home\n  /projects\n  /about\n  /contact\n  /blog\n  /lab\n  /beyond-work\n  /dashboard (admin)';
+                output = 'Available pages:\n  /home\n  /projects\n  /about\n  /contact\n  /blog\n  /lab\n  /beyond-work\n  /guestbook\n  /changelog\n  /leaderboard\n  /dashboard (admin)';
                 break;
             case 'exit_root':
                 if (isAdmin) {
@@ -149,20 +188,37 @@ const HeroTerminal = () => {
                     output = 'Permission denied.';
                 }
                 break;
+            case 'skills':
+            case 'stack':
+            case 'tech':
+                output = 'Analyzing Technical Skills...';
+                playWhoosh();
+                setTimeout(() => {
+                    const el = document.getElementById('skills');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    else navigate('/#skills');
+                }, 800);
+                break;
+            case 'faq':
+            case 'help': // Overlap handled by first case but good alias
+            case 'questions':
+                output = 'Opening Knowledge Base...';
+                playWhoosh();
+                setTimeout(() => {
+                    const el = document.getElementById('faq');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    else navigate('/#faq');
+                }, 800);
+                break;
+            case 'games':
             case 'play':
-                output = 'Launching EASTER_EGG_GAME.exe... (Just kidding, try the Konami Code instead!)';
-                break;
-            case 'matrix':
-                output = 'Wake up, Neo... The Matrix has you... 🐇';
-                break;
-            case 'credits':
-                output = 'Built with ❤️ by Durvish Sharma\nStack: React + TypeScript + Three.js + Framer Motion';
-                break;
-            case 'weather':
-                output = `Current condition: ${condition.toUpperCase()}`;
+            case 'arcade':
+                output = 'Initializing Game Engine...';
+                setTimeout(() => navigate('/lab'), 800);
                 break;
             default:
                 output = `Command not found: "${command}". Type "help" for valid commands.`;
+                break;
         }
 
         setHistory(prev => [...prev, `> ${cmd}`, output]);

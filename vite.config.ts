@@ -1,5 +1,6 @@
 // vite.config.ts
 import { defineConfig, type Plugin } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react-swc';
 import fs from 'node:fs/promises';
 import nodePath from 'node:path';
@@ -220,6 +221,29 @@ export default defineConfig(({ mode }) => {
       mode === 'development' &&
       componentTagger(),
       cdnPrefixImages(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        manifest: {
+          name: 'Durvish Sharma | Cinematic Portfolio',
+          short_name: 'Durvish Portfolio',
+          description: 'Immersive Cinematic Portfolio of Durvish Sharma - Full Stack Web & Game Developer',
+          theme_color: '#000000',
+          background_color: '#000000',
+          display: 'standalone',
+          icons: [
+            {
+              src: '/favicon.jpg',
+              sizes: '192x192',
+              type: 'image/jpeg'
+            },
+            {
+              src: '/favicon.jpg',
+              sizes: '512x512',
+              type: 'image/jpeg'
+            }
+          ]
+        }
+      })
     ].filter(Boolean) as Plugin[],
     resolve: {
       alias: {

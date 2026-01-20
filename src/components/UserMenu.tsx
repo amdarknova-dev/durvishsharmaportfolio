@@ -16,25 +16,29 @@ import {
     Sparkles,
     ChevronDown,
     LogIn,
-    Globe,
-    Settings
+    Settings,
+    Globe
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const UserMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { t } = useTranslation();
     const { user, profile, signOut, isAdmin } = useAuth();
     const { playClick, playHover } = useSound();
     const navigate = useNavigate();
 
     const menuItems = [
-        { icon: Home, label: 'Home', path: '/', section: 'home' },
-        { icon: User, label: 'About', path: '/', section: 'about' },
-        { icon: Code2, label: 'Skills', path: '/', section: 'skills' },
-        { icon: Briefcase, label: 'Projects', path: '/', section: 'projects' },
-        { icon: Sparkles, label: 'Experience', path: '/', section: 'experience' },
-        { icon: Trophy, label: 'Hall of Fame', path: '/', section: 'leaderboard' },
-        { icon: BookOpen, label: 'Blog', path: '/blog' },
-        { icon: Mail, label: 'Contact', path: '/contact' },
+        { icon: Home, label: t('nav.home'), path: '/', section: 'home' },
+        { icon: User, label: t('nav.about'), path: '/', section: 'about' },
+        { icon: Code2, label: t('nav.skills'), path: '/', section: 'skills' },
+        { icon: Briefcase, label: t('nav.projects'), path: '/', section: 'projects' },
+        { icon: Sparkles, label: t('nav.experience'), path: '/', section: 'experience' },
+        { icon: Trophy, label: t('nav.hall_of_fame'), path: '/', section: 'leaderboard' },
+        { icon: BookOpen, label: t('nav.blog'), path: '/blog' },
+        { icon: Globe, label: t('nav.guestbook'), path: '/guestbook' },
+        { icon: Code2, label: t('nav.changelog'), path: '/changelog' },
+        { icon: Mail, label: t('nav.contact'), path: '/contact' },
     ];
 
     const handleItemClick = (item: typeof menuItems[0]) => {
@@ -142,7 +146,7 @@ const UserMenu = () => {
                             {/* Navigation Items */}
                             <div className="space-y-1 max-h-80 overflow-y-auto custom-scrollbar p-1">
                                 <p className="text-[10px] text-gray-600 uppercase tracking-[0.3em] px-3 py-2 font-mono">
-                                    Navigation
+                                    {t('menu.navigation')}
                                 </p>
                                 {menuItems.map((item, index) => (
                                     <button
@@ -161,6 +165,22 @@ const UserMenu = () => {
 
                             {/* Actions */}
                             <div className="p-1 pt-2 mt-2 border-t border-white/5 space-y-1">
+                                {/* System Settings Button */}
+                                <button
+                                    onClick={() => {
+                                        playClick();
+                                        window.dispatchEvent(new CustomEvent('open-system-panel')); // Dispatch directly
+                                        setIsOpen(false);
+                                    }}
+                                    onMouseEnter={() => playHover()}
+                                    className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all font-bold"
+                                >
+                                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                                        <Settings className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-sm">{t('menu.settings')}</span>
+                                </button>
+
                                 {isAdmin && (
                                     <button
                                         onClick={() => { playClick(); navigate('/dashboard'); setIsOpen(false); }}
@@ -170,7 +190,7 @@ const UserMenu = () => {
                                         <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
                                             <Settings className="w-4 h-4" />
                                         </div>
-                                        <span className="text-sm">Admin Panel</span>
+                                        <span className="text-sm">{t('menu.admin')}</span>
                                     </button>
                                 )}
                                 {(user || isAdmin) ? (
@@ -182,7 +202,7 @@ const UserMenu = () => {
                                         <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
                                             <LogOut className="w-4 h-4" />
                                         </div>
-                                        <span className="text-sm">Disconnect</span>
+                                        <span className="text-sm">{t('menu.disconnect')}</span>
                                     </button>
                                 ) : (
                                     <button
@@ -193,7 +213,7 @@ const UserMenu = () => {
                                         <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
                                             <LogIn className="w-4 h-4" />
                                         </div>
-                                        <span className="text-sm">Initiate Sync</span>
+                                        <span className="text-sm">{t('menu.login')}</span>
                                     </button>
                                 )}
                             </div>

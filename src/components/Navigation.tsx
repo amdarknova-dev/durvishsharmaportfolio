@@ -164,6 +164,12 @@ const Navigation = () => {
                       className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"
                     />
                   )}
+                  {item.id === 'contact' && activeSection !== 'contact' && (
+                    <span className="absolute top-3 right-2 flex h-1.5 w-1.5 pointer-events-none">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                    </span>
+                  )}
                 </Button>
               </Magnetic>
             ))}
