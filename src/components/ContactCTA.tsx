@@ -1,57 +1,122 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { ArrowUpRight, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { useSound } from '@/context/SoundContext';
 
 const ContactCTA = () => {
-    const navigate = useNavigate();
-    const { playHover, playClick } = useSound();
+  const ref      = useRef<HTMLDivElement>(null);
+  const inView   = useInView(ref, { once: true, amount: 0.3 });
+  const navigate = useNavigate();
+  const { playClick } = useSound();
+  const [btnHover, setBtnHover] = useState(false);
 
-    return (
-        <section className="relative py-32 px-6 overflow-hidden">
-            {/* Content */}
-            <div className="max-w-4xl mx-auto text-center relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
-                        <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                        <span className="text-sm text-gray-300">Open for Opportunities</span>
-                    </div>
+  const handleContact = () => {
+    playClick();
+    navigate('/contact');
+  };
 
-                    <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter">
-                        Ready to build <br />
-                        <span className="text-gradient">something extraordinary?</span>
-                    </h2>
-                    <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-                        I'm currently available for freelance projects and open to full-time opportunities.
-                        Let's discuss how we can bring your vision to life.
-                    </p>
-                    <Button
-                        size="lg"
-                        onClick={() => {
-                            playClick();
-                            window.scrollTo(0, 0);
-                            navigate('/contact');
-                        }}
-                        onMouseEnter={() => playHover()}
-                        className="h-16 px-12 text-lg rounded-full bg-white text-black hover:bg-gray-200 transition-all duration-300 hover:scale-105 group font-bold"
-                    >
-                        Start a Project
-                        <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                </motion.div>
-            </div>
+  return (
+    <section
+      id="contact"
+      ref={ref}
+      className="relative py-32 md:py-48 overflow-hidden"
+      style={{ background: '#0b080c' }}
+    >
+      {/* Glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full pointer-events-none -z-10"
+        style={{ background: 'radial-gradient(ellipse, rgba(194,164,255,0.08) 0%, transparent 65%)' }}
+      />
 
-            {/* Background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/20 rounded-full blur-[120px] -z-10 opacity-50" />
-        </section>
-    );
+      <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
+        {/* Label */}
+        <motion.span
+          className="section-label"
+          initial={{ opacity: 0, y: 10 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+        >
+          Get In Touch
+        </motion.span>
+
+        {/* Giant CTA Headline */}
+        <motion.h2
+          initial={{ opacity: 0, y: 50 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="heading-xl mx-auto mb-8"
+          style={{ color: '#eae5ec', maxWidth: '900px' }}
+        >
+          LET'S WORK<br />
+          <span style={{ color: 'transparent', WebkitTextStroke: '1px rgba(234,229,236,0.2)' }}>
+            TOGETHER
+          </span>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className="text-lg font-light max-w-lg mx-auto mb-12 leading-relaxed"
+          style={{ color: 'rgba(234,229,236,0.45)' }}
+        >
+          Available for freelance projects, full-time roles, and collaborations.
+          Let's build something great.
+        </motion.p>
+
+        {/* Magnetic email CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex flex-wrap items-center justify-center gap-4"
+        >
+          {/* Primary button */}
+          <button
+            onClick={handleContact}
+            onMouseEnter={() => setBtnHover(true)}
+            onMouseLeave={() => setBtnHover(false)}
+            className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-all duration-500"
+            style={{
+              background: btnHover ? '#c2a4ff' : 'rgba(194,164,255,0.1)',
+              color: btnHover ? '#0b080c' : '#c2a4ff',
+              border: '1px solid rgba(194,164,255,0.4)',
+              boxShadow: btnHover ? '0 0 40px rgba(194,164,255,0.4)' : 'none',
+              transform: btnHover ? 'translateY(-3px)' : 'translateY(0)',
+            }}
+          >
+            <Mail className="w-4 h-4" />
+            Start a Conversation
+            <ArrowUpRight
+              className="w-4 h-4 transition-transform duration-300"
+              style={{ transform: btnHover ? 'translate(2px, -2px)' : 'translate(0,0)' }}
+            />
+          </button>
+
+          {/* Direct email link */}
+          <a
+            href="mailto:durvishsharma01@gmail.com"
+            className="font-mono text-xs uppercase tracking-widest transition-colors duration-300 px-6 py-4"
+            style={{ color: 'rgba(234,229,236,0.35)' }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#c2a4ff')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(234,229,236,0.35)')}
+          >
+            durvishsharma01@gmail.com
+          </a>
+        </motion.div>
+
+        {/* Divider line */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-20 h-px origin-center"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(194,164,255,0.3), transparent)' }}
+        />
+      </div>
+    </section>
+  );
 };
 
 export default ContactCTA;

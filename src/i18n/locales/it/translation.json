@@ -1,43 +1,47 @@
 {
     "nav": {
         "home": "Home",
-        "about": "Chi Sono",
+        "about": "Su di me",
         "skills": "Competenze",
         "projects": "Progetti",
         "experience": "Esperienza",
         "services": "Servizi",
-        "beyond_work": "Oltre il Lavoro",
-        "contact": "Contatti"
+        "beyond_work": "Oltre il lavoro",
+        "contact": "Contatti",
+        "blog": "Blog",
+        "guestbook": "Libro degli ospiti",
+        "changelog": "Registro modifiche",
+        "hall_of_fame": "Classifica"
     },
     "hero": {
         "greeting": "Ciao, sono",
         "role": "Sviluppatore Frontend Creativo",
-        "sub_role": "Sviluppatore Web Full Stack e Sviluppatore di Giochi",
-        "description": "Progettazione e sviluppo di esperienze digitali web ad alte prestazioni, belle e interattive. Focalizzato sulle prestazioni e sui sistemi di design moderni.",
+        "sub_role": "Sviluppatore Web Full Stack e Game Developer",
+        "description": "Progettazione e sviluppo di esperienze digitali web ad alte prestazioni, belle e interattive. Focalizzato sulle performance e sui moderni sistemi di design.",
         "mission_title": "MISSIONE:",
         "mission_desc": "Sblocca Temi Segreti e Obiettivi",
-        "cta_projects": "Visualizza Progetti",
+        "cta_projects": "Vedi Progetti",
         "cta_contact": "Contattami"
     },
     "about": {
-        "title": "Chi Sono",
+        "title": "Su di me",
         "description": "Sono uno sviluppatore appassionato che ama creare esperienze utente belle e funzionali."
     },
     "skills": {
         "title_prefix": "Arsenale",
         "title_suffix": "Tecnico",
-        "description": "Una galassia in continua espansione di strumenti e tecnologie che uso per dare vita alle idee."
+        "description": "Una galassia in costante espansione di strumenti e tecnologie che uso per dare vita alle idee."
     },
     "projects": {
         "archive": "Archivio",
         "title_prefix": "Progetti",
         "title_suffix": "Selezionati",
-        "view_case_study": "Visualizza Caso Studio",
-        "parallel_tracks": "Tracce Parallele",
-        "key_features": "Caratteristiche Principali",
+        "view_case_study": "Vedi Case Study",
+        "parallel_tracks": "Percorsi Paralleli",
+        "key_features": "Caratteristiche Chiave",
         "tech_used": "Tecnologie Utilizzate",
-        "live_demo": "Demo dal Vivo",
-        "view_code": "Visualizza Codice"
+        "live_demo": "Live Demo",
+        "view_code": "Vedi Codice"
     },
     "experience": {
         "title_prefix": "Esperienza e",
@@ -45,15 +49,64 @@
         "technical_proficiency": "Competenza Tecnica",
         "professional_experience": "Esperienza Professionale",
         "contribution_title": "Contributi Chiave",
-        "workflow_title": "Flusso di Lavoro Associato"
+        "workflow_title": "Workflow Associato"
     },
     "globe": {
-        "title": "Impronta Globale",
-        "subtitle": "Fornendo soluzioni cinematografiche in tutto il mondo",
+        "title": "Presenza Globale",
+        "subtitle": "Fornitura di soluzioni cinematografiche in tutto il mondo",
         "project": "Progetto",
         "client": "Cliente",
-        "view_case_study": "Visualizza Caso Studio",
+        "view_case_study": "Vedi Case Study",
         "status_completed": "COMPLETATO",
         "status_progress": "IN_CORSO"
+    },
+    "guestbook": {
+        "title": "Libro degli ospiti",
+        "subtitle": "Hub della Comunità",
+        "description": "Lascia il tuo segno sulla frontiera digitale. Firma il registro.",
+        "sign_registry": "Firma il Registro",
+        "identify": "Identificati",
+        "transmission": "Trasmissione",
+        "upload": "Carica Firma",
+        "transmitting": "Trasmissione in corso...",
+        "no_signals": "Nessun segnale rilevato ancora. Sii il primo.",
+        "placeholder_name": "Nome visualizzato",
+        "placeholder_msg": "Scrivi il tuo messaggio..."
+    },
+    "changelog": {
+        "title": "Registro modifiche",
+        "subtitle": "Log di Sistema",
+        "description": "Monitoraggio dell'evoluzione dell'architettura di Cinematic OS.",
+        "version": "VERSIONE",
+        "date": "DATA"
+    },
+    "blog": {
+        "title": "Dati",
+        "subtitle": "Log",
+        "secure_archives": "Archivi Sicuri",
+        "search_placeholder": "INTERROGA_DATABASE...",
+        "read_time": "Tempo di Lettura",
+        "decrypt": "DECRIPTA",
+        "subscribe_title": "Inizializza Uplink",
+        "subscribe_desc": "Iscriviti al feed neurale. Ricevi pacchetti prioritari relativi alle architetture tecniche e ai protocolli di progettazione.",
+        "input_label": "INPUT:",
+        "enter": "[INVIO]"
+    },
+    "system": {
+        "title": "Sistema",
+        "audio": "Audio",
+        "display": "Schermo",
+        "general": "Generale",
+        "localization": "Localizzazione",
+        "theme": "Tema Interfaccia",
+        "reboot": "Riavvia Sistema",
+        "overclock": "Modalità Overclock"
+    },
+    "menu": {
+        "settings": "Impostazioni di Sistema",
+        "admin": "Pannello Amministratore",
+        "disconnect": "Disconnetti",
+        "login": "Inizia Sincronizzazione",
+        "navigation": "Navigazione"
     }
 }

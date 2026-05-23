@@ -101,7 +101,13 @@ export const WeatherProvider: React.FC<{ children: React.ReactNode }> = ({ child
 export const useWeather = () => {
     const context = useContext(WeatherContext);
     if (context === undefined) {
-        throw new Error('useWeather must be used within a WeatherProvider');
+        return {
+            condition: 'clear' as WeatherCondition,
+            temp: null,
+            location: null,
+            isNight: false,
+            setCondition: () => { }
+        };
     }
     return context;
 };

@@ -33,7 +33,15 @@ const AchievementContext = createContext<AchievementContextType | undefined>(und
 export const useAchievements = () => {
     const context = useContext(AchievementContext);
     if (!context) {
-        throw new Error('useAchievements must be used within an AchievementProvider');
+        return {
+            unlockedAchievements: [],
+            unlockAchievement: () => { },
+            progress: 0,
+            globalPioneers: [],
+            syncHandle: async () => { },
+            systemsExplored: 0,
+            totalSystems: TOTAL_SYSTEM_ROUTES
+        };
     }
     return context;
 };

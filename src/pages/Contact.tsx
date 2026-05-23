@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import ParticleBackground from '@/components/ParticleBackground';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -291,7 +290,6 @@ const Contact = () => {
 
     return (
         <div className="relative min-h-screen bg-background overflow-x-hidden pt-24 md:pt-32 lg:pt-40">
-            <ParticleBackground />
             <Navigation />
 
             <main className="relative z-10 max-w-7xl mx-auto px-6 pb-32">
@@ -395,10 +393,8 @@ const Contact = () => {
                                             <SelectValue placeholder="Select project type" />
                                         </SelectTrigger>
                                         <SelectContent className="glass-dark border-white/10 text-white">
-                                            <SelectItem value="game">🎮 Game Development</SelectItem>
                                             <SelectItem value="web">🌐 Web Development</SelectItem>
                                             <SelectItem value="mobile">📱 Mobile Development</SelectItem>
-                                            <SelectItem value="anime">🎬 Anime Project</SelectItem>
                                             <SelectItem value="fullstack">⚡ Full Stack</SelectItem>
                                             <SelectItem value="other">💼 Other</SelectItem>
                                         </SelectContent>
@@ -473,19 +469,13 @@ const Contact = () => {
                                 </div>
                             </form>
 
-                            <div className="mt-8 text-center">
-                                <Link to="/beyond-work" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group">
-                                    Interested in my creative side projects?
-                                    <span className="text-primary underline-offset-4 group-hover:underline">Visit Beyond Work</span>
-                                    <ArrowUpRight className="w-4 h-4" />
-                                </Link>
-                            </div>
+
                         </Card>
                     </motion.div>
                 </div>
 
-                {/* Secondary Sections - Hidden on Mobile */}
-                <div className="hidden lg:block">
+                {/* Secondary Sections - Now visible on all devices */}
+                <div className="block mt-24 lg:mt-0">
                     {/* Support Channels */}
                     <div className="grid md:grid-cols-3 gap-8 mb-32">
                         {supportChannels.map((channel, index) => (

@@ -27,7 +27,23 @@ const HackContext = createContext<HackContextType | undefined>(undefined);
 export const useHack = () => {
     const context = useContext(HackContext);
     if (!context) {
-        throw new Error('useHack must be used within a HackProvider');
+        return {
+            gravity: 1,
+            setGravity: () => { },
+            glowIntensity: 1,
+            setGlowIntensity: () => { },
+            themeMode: 'default' as ThemeMode,
+            setThemeMode: () => { },
+            isAdmin: false,
+            setIsAdmin: () => { },
+            isOverclocked: false,
+            toggleOverclock: () => { },
+            userType: 'guest' as UserType,
+            setUserType: () => { },
+            username: '',
+            setUsername: () => { },
+            logout: () => { },
+        };
     }
     return context;
 };

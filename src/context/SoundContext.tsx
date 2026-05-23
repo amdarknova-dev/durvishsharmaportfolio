@@ -17,7 +17,16 @@ const SoundContext = createContext<SoundContextType | undefined>(undefined);
 export const useSound = () => {
     const context = useContext(SoundContext);
     if (!context) {
-        throw new Error('useSound must be used within a SoundProvider');
+        return {
+            isPlaying: false,
+            toggleSound: () => { },
+            playHover: () => { },
+            playClick: () => { },
+            playWhoosh: () => { },
+            playSuccess: () => { },
+            playSpatial: () => { },
+            playType: () => { },
+        };
     }
     return context;
 };
@@ -30,12 +39,11 @@ declare global {
 }
 
 export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    // Sound priority: default to true
-    const [isPlaying, setIsPlaying] = useState(true);
+    // Sound priority: default to false for a clean portfolio experience
+    const [isPlaying, setIsPlaying] = useState(false);
     const audioContextRef = useRef<AudioContext | null>(null);
     const droneOscillatorRef = useRef<AudioBufferSourceNode | OscillatorNode | null>(null);
     const droneGainRef = useRef<GainNode | null>(null);
-    const hasStartedRef = useRef(false);
 
     // Initialize Audio Context on user interaction (browser policy)
     const initAudio = useCallback(() => {
@@ -48,88 +56,21 @@ export const SoundProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }, []);
 
     const startDrone = useCallback(() => {
-        if (!audioContextRef.current) initAudio();
-        if (droneOscillatorRef.current) return;
-
-        const ctx = audioContextRef.current!;
-
-        // Create Brown Noise for "Space Rumble"
-        const bufferSize = 2 * ctx.sampleRate;
-        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        let lastOut = 0;
-        for (let i = 0; i < bufferSize; i++) {
-            const white = Math.random() * 2 - 1;
-            output[i] = (lastOut + (0.02 * white)) / 1.02;
-            lastOut = output[i];
-            output[i] *= 3.5; // (roughly) compensate for gain
-        }
-
-        const noise = ctx.createBufferSource();
-        noise.buffer = noiseBuffer;
-        noise.loop = true;
-
-        // Lowpass filter to make it a deep drone
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 120; // Deep rumble
-
-        const gain = ctx.createGain();
-        gain.gain.value = 0.15; // Increased volume
-
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-
-        noise.start();
-        droneGainRef.current = gain;
-        droneOscillatorRef.current = noise;
-    }, [initAudio]);
+        // Drone disabled for a standard portfolio experience
+    }, []);
 
     const stopDrone = useCallback(() => {
-        if (droneGainRef.current) {
-            const ctx = audioContextRef.current;
-            if (ctx) {
-                droneGainRef.current.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
-                setTimeout(() => {
-                    if (droneOscillatorRef.current) {
-                        droneOscillatorRef.current.stop();
-                        droneOscillatorRef.current = null;
-                    }
-                }, 500);
-            }
-        }
+        // Drone disabled
     }, []);
 
     const toggleSound = useCallback(() => {
         if (isPlaying) {
-            stopDrone();
             setIsPlaying(false);
         } else {
             initAudio();
-            startDrone();
             setIsPlaying(true);
         }
-    }, [isPlaying, stopDrone, initAudio, startDrone]);
-
-    // Auto-start audio on first interaction if playing is true
-    useEffect(() => {
-        const handleInteraction = () => {
-            if (isPlaying && !hasStartedRef.current) {
-                initAudio();
-                startDrone();
-                hasStartedRef.current = true;
-            }
-        };
-
-        window.addEventListener('click', handleInteraction);
-        window.addEventListener('keydown', handleInteraction);
-
-        return () => {
-            window.removeEventListener('click', handleInteraction);
-            window.removeEventListener('keydown', handleInteraction);
-        };
-    }, [isPlaying, initAudio, startDrone]);
+    }, [isPlaying, initAudio]);
 
 
     // SFX Generators

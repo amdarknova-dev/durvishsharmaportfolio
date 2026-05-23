@@ -4,10 +4,14 @@
         "about": "Sobre",
         "skills": "Habilidades",
         "projects": "Projetos",
-        "experience": "Experi�ncia",
+        "experience": "Experiência",
         "services": "Serviços",
         "beyond_work": "Além do Trabalho",
-        "contact": "Contato"
+        "contact": "Contato",
+        "blog": "Blog",
+        "guestbook": "Livro de Visitas",
+        "changelog": "Registro de Alterações",
+        "hall_of_fame": "Classificação"
     },
     "hero": {
         "greeting": "Olá, eu sou",
@@ -17,7 +21,7 @@
         "mission_title": "MISSÃO:",
         "mission_desc": "Desbloquear Temas Secretos e Conquistas",
         "cta_projects": "Ver Projetos",
-        "cta_contact": "Entre em Contato"
+        "cta_contact": "Contate-me"
     },
     "about": {
         "title": "Sobre Mim",
@@ -33,10 +37,10 @@
         "title_prefix": "Projetos",
         "title_suffix": "Selecionados",
         "view_case_study": "Ver Estudo de Caso",
-        "parallel_tracks": "Trilhas Paralelas",
-        "key_features": "Recursos Principais",
+        "parallel_tracks": "Pistas Paralelas",
+        "key_features": "Principais Recursos",
         "tech_used": "Tecnologias Utilizadas",
-        "live_demo": "Demo ao Vivo",
+        "live_demo": "Demonstração ao Vivo",
         "view_code": "Ver Código"
     },
     "experience": {
@@ -44,7 +48,7 @@
         "title_suffix": "Habilidades",
         "technical_proficiency": "Proficiência Técnica",
         "professional_experience": "Experiência Profissional",
-        "contribution_title": "Contribuições Principais",
+        "contribution_title": "Principais Contribuições",
         "workflow_title": "Fluxo de Trabalho Associado"
     },
     "globe": {
@@ -54,6 +58,55 @@
         "client": "Cliente",
         "view_case_study": "Ver Estudo de Caso",
         "status_completed": "CONCLUÍDO",
-        "status_progress": "EM_ANDAMENTO"
+        "status_progress": "EM_PROGRESSO"
+    },
+    "guestbook": {
+        "title": "Livro de Visitas",
+        "subtitle": "Hub da Comunidade",
+        "description": "Deixe sua marca na fronteira digital. Assine o registro.",
+        "sign_registry": "Assinar Registro",
+        "identify": "Identifique-se",
+        "transmission": "Transmissão",
+        "upload": "Carregar Assinatura",
+        "transmitting": "Transmitindo...",
+        "no_signals": "Nenhum sinal detectado ainda. Seja o primeiro.",
+        "placeholder_name": "Nome de exibição",
+        "placeholder_msg": "Escreva sua mensagem..."
+    },
+    "changelog": {
+        "title": "Registro de Alterações",
+        "subtitle": "Logs do Sistema",
+        "description": "Acompanhando a evolução da arquitetura do Cinematic OS.",
+        "version": "VERSÃO",
+        "date": "DATA"
+    },
+    "blog": {
+        "title": "Dados",
+        "subtitle": "Logs",
+        "secure_archives": "Arquivos Seguros",
+        "search_placeholder": "CONSULTAR_BASE_DE_DADOS...",
+        "read_time": "Tempo de Leitura",
+        "decrypt": "DESCRIPTOGRAFAR",
+        "subscribe_title": "Inicializar Uplink",
+        "subscribe_desc": "Inscreva-se no feed neural. Receba pacotes prioritários sobre arquiteturas técnicas e protocolos de projeto.",
+        "input_label": "ENTRADA:",
+        "enter": "[ENTER]"
+    },
+    "system": {
+        "title": "Sistema",
+        "audio": "Áudio",
+        "display": "Tela",
+        "general": "Geral",
+        "localization": "Localização",
+        "theme": "Tema da Interface",
+        "reboot": "Reiniciar Sistema",
+        "overclock": "Modo Overclock"
+    },
+    "menu": {
+        "settings": "Configurações do Sistema",
+        "admin": "Painel de Administração",
+        "disconnect": "Desconectar",
+        "login": "Iniciar Sincronização",
+        "navigation": "Navegação"
     }
 }

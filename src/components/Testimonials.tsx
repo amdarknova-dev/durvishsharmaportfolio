@@ -77,7 +77,7 @@ const Testimonials = () => {
     const currentTestimonial = testimonials[currentIndex];
 
     return (
-        <section id="testimonials" ref={sectionRef} className="relative py-32 px-6 bg-black overflow-hidden">
+        <section id="testimonials" ref={sectionRef} className="relative py-24 md:py-32 px-6 bg-black overflow-hidden">
             {/* Background HUD Elements */}
             <div className="absolute top-0 left-0 w-full h-full opacity-[0.02] pointer-events-none">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white rounded-full" />
@@ -94,7 +94,7 @@ const Testimonials = () => {
                         className="space-y-4"
                     >
                         <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] block">Verified Authentications</span>
-                        <h2 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
+                        <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
                             Client <br />
                             <span className="text-gradient">Transmissions</span>
                         </h2>
@@ -145,7 +145,7 @@ const Testimonials = () => {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: 1, delay: 0.3 }}
-                                        className="text-3xl md:text-5xl lg:text-6xl text-white font-serif italic font-light leading-[1.1] tracking-tight max-w-4xl mx-auto px-4"
+                                        className="text-2xl md:text-5xl lg:text-6xl text-white font-serif italic font-light leading-[1.1] tracking-tight max-w-4xl mx-auto px-4"
                                     >
                                         "{currentTestimonial.text}"
                                     </motion.p>

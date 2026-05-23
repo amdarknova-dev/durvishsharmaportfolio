@@ -1,221 +1,214 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import React, { useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Terminal, Calendar, MapPin, Zap, ChevronRight } from 'lucide-react';
-import { useSound } from '@/context/SoundContext';
-import { useTranslation } from 'react-i18next';
 
-const ExperienceSection = () => {
-  const { t } = useTranslation();
-  const { playHover, playClick } = useSound();
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+gsap.registerPlugin(ScrollTrigger);
 
-  const experiences = [
-    {
-      title: 'Anime Game & Cinematic Developer',
-      company: 'Independent Creator',
-      period: '2024 - PRESENT',
-      location: 'HARYANA, IN',
-      status: 'ACTIVE',
-      bullets: [
-        'Designed and built anime-inspired action RPG prototypes using Unreal Engine 5, focusing on combat systems, VFX, and cinematics.',
-        'Created Demon Slayer–style cinematic shorts using a hybrid 3D + anime workflow with Unreal Engine and Blender.',
-        'Developed reusable combat frameworks, enemy AI behavior trees, and cinematic camera systems.',
-        'Produced playable vertical slices demonstrating AAA-feel gameplay at indie scale.'
-      ],
-      tech: ['Unreal Engine 5', 'Blender', 'Niagara VFX', 'FMOD', 'Behavior Trees'],
-      color: 'from-primary to-accent'
-    },
-    {
-      title: 'Full-Stack Developer',
-      company: 'Portfolio & Web Projects',
-      period: '2024 - PRESENT',
-      location: 'REMOTE',
-      status: 'ACTIVE',
-      bullets: [
-        'Built and deployed a full-stack portfolio platform to showcase interactive demos and cinematic content.',
-        'Developed high-performance web applications using React, Next.js, and Tailwind CSS.',
-        'Implemented advanced motion design and 3D web experiences with Three.js and Framer Motion.',
-        'Maintained clean GitHub repositories and modular project structures.'
-      ],
-      tech: ['React', 'Next.js', 'TypeScript', 'Node.js', 'MongoDB', 'Three.js'],
-      color: 'from-blue-500 to-indigo-500'
-    },
-    {
-      title: 'VFX & Anime Artist',
-      company: 'Personal Development',
-      period: '2023 - 2024',
-      location: 'HARYANA, IN',
-      status: 'COMPLETED',
-      bullets: [
-        'Integrated Niagara VFX for lightning, aura, and anime impact effects.',
-        'Combined game assets and cinematic workflows to optimize production time.',
-        'Learned anime timing, impact frames, and camera language for cinematic storytelling.',
-        'Managed complete production pipelines solo: concept → development → polish → presentation.'
-      ],
-      tech: ['Niagara', 'Blender', 'Clip Studio Paint', 'DaVinci Resolve', 'After Effects'],
-      color: 'from-purple-500 to-pink-500'
-    }
-  ];
+const experiences = [
+  {
+    num: '01',
+    title: 'Full-Stack Developer',
+    company: 'Freelance & Personal Projects',
+    period: '2024 — PRESENT',
+    location: 'Remote, India',
+    status: 'ACTIVE',
+    bullets: [
+      'Architected and shipped a cinematic developer portfolio with Three.js WebGL scenes, GSAP scroll animations, and a custom AI chatbot achieving 100 Lighthouse performance score.',
+      'Delivered 5+ full-stack production projects end-to-end — from schema design and REST/GraphQL APIs to pixel-perfect React frontends, CI/CD pipelines, and cloud deployments.',
+      'Built a SaaS analytics dashboard with real-time WebSocket feeds, D3 visualisations, RBAC, and exportable reporting for a 50+ user enterprise client.',
+      'Implemented GSAP & Framer Motion animation systems creating fluid, performant motion design patterns across multiple production applications.',
+    ],
+    tech: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Go', 'GraphQL', 'PostgreSQL', 'GSAP', 'Three.js'],
+  },
+  {
+    num: '02',
+    title: 'Frontend Engineer',
+    company: 'Open Source & Community',
+    period: '2022 — 2024',
+    location: 'Remote',
+    status: 'COMPLETED',
+    bullets: [
+      'Contributed to open-source React component libraries — improving accessibility, adding dark-mode tokens, and writing Storybook documentation.',
+      'Built and published reusable UI packages on npm — a drag-and-drop Kanban library and a date-range picker — gaining 200+ weekly downloads.',
+      'Mentored junior developers through code review, pair programming sessions, and technical writing on frontend architecture patterns.',
+    ],
+    tech: ['React', 'TypeScript', 'Tailwind CSS', 'Storybook', 'Rollup', 'Zustand'],
+  },
+];
+
+const ExperienceItem = ({ exp, idx }: { exp: typeof experiences[0]; idx: number }) => {
+  const ref    = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section id="experience" ref={sectionRef} className="relative py-32 px-6 bg-black overflow-hidden scroll-mt-24 md:scroll-mt-32">
-      {/* Background Glows */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] -z-10" />
-
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="space-y-4"
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
+      className="group relative"
+    >
+      {/* Top row */}
+      <div
+        className="flex flex-wrap items-start justify-between gap-4 pb-6 mb-6"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+      >
+        <div className="flex items-start gap-5">
+          <span
+            className="font-mono text-[10px] uppercase tracking-[0.4em] mt-1.5"
+            style={{ color: 'rgba(194,164,255,0.4)' }}
           >
-            <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] block">Operational Logs</span>
-            <h2 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase leading-none">
-              Mission <br />
-              <span className="text-gradient">Experience</span>
-            </h2>
-          </motion.div>
+            {exp.num}
+          </span>
+          <div>
+            <div
+              className="font-mono text-[9px] uppercase tracking-[0.3em] mb-2"
+              style={{ color: '#c2a4ff' }}
+            >
+              {exp.company}
+            </div>
+            <h3
+              className="text-2xl md:text-3xl font-bold uppercase tracking-tight"
+              style={{ color: '#eae5ec' }}
+            >
+              {exp.title}
+            </h3>
+          </div>
         </div>
 
-        {/* Timeline Container */}
-        <div className="relative">
-          {/* Vertical Line */}
-          <motion.div
-            initial={{ height: 0 }}
-            animate={isInView ? { height: '100%' } : {}}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 w-[1px] bg-gradient-to-b from-primary via-accent to-transparent z-0"
-          />
+        <div className="flex flex-col items-end gap-1.5">
+          <span
+            className="font-mono text-[9px] uppercase tracking-widest px-3 py-1 rounded-full border"
+            style={{
+              color: exp.status === 'ACTIVE' ? '#c2a4ff' : 'rgba(234,229,236,0.3)',
+              borderColor: exp.status === 'ACTIVE' ? 'rgba(194,164,255,0.3)' : 'rgba(255,255,255,0.08)',
+              background: exp.status === 'ACTIVE' ? 'rgba(194,164,255,0.06)' : 'transparent',
+            }}
+          >
+            {exp.status}
+          </span>
+          <div
+            className="flex items-center gap-2 font-mono text-[10px]"
+            style={{ color: 'rgba(234,229,236,0.3)' }}
+          >
+            <Calendar className="w-3 h-3" />
+            {exp.period}
+          </div>
+          <div
+            className="flex items-center gap-2 font-mono text-[10px]"
+            style={{ color: 'rgba(234,229,236,0.2)' }}
+          >
+            <MapPin className="w-3 h-3" />
+            {exp.location}
+          </div>
+        </div>
+      </div>
 
-          {/* Experience Entries */}
-          <div className="space-y-24">
-            {experiences.map((exp, index) => (
-              <ExperienceItem
-                key={exp.title}
-                exp={exp}
-                index={index}
-                isLeft={index % 2 === 0}
-                playHover={playHover}
-                playClick={playClick}
+      {/* Bullets */}
+      <div className="grid md:grid-cols-2 gap-8 mb-8">
+        <div className="space-y-3">
+          {exp.bullets.map((b, i) => (
+            <div key={i} className="flex gap-3 text-sm leading-relaxed font-light">
+              <ChevronRight
+                className="w-3.5 h-3.5 mt-1 shrink-0"
+                style={{ color: '#c2a4ff', opacity: 0.5 }}
               />
+              <p style={{ color: 'rgba(234,229,236,0.55)' }}>{b}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Tech stack */}
+        <div>
+          <p
+            className="font-mono text-[9px] uppercase tracking-[0.4em] mb-4"
+            style={{ color: 'rgba(194,164,255,0.4)' }}
+          >
+            Tech Used
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {exp.tech.map(t => (
+              <span
+                key={t}
+                className="px-3 py-1 rounded-full border font-mono text-[10px] uppercase tracking-widest transition-colors duration-300"
+                style={{
+                  color: 'rgba(234,229,236,0.4)',
+                  borderColor: 'rgba(255,255,255,0.08)',
+                  background: 'rgba(255,255,255,0.02)',
+                }}
+              >
+                {t}
+              </span>
             ))}
           </div>
         </div>
       </div>
-    </section>
+    </motion.div>
   );
 };
 
-const ExperienceItem = ({ exp, index, isLeft, playHover, playClick }: any) => {
-  const itemRef = useRef(null);
-  const isInView = useInView(itemRef, { once: true, amount: 0.3 });
-  const [isHovered, setIsHovered] = useState(false);
+const ExperienceSection = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headRef    = useRef<HTMLDivElement>(null);
+  const inView     = useInView(sectionRef, { once: true, amount: 0.1 });
+
+  useEffect(() => {
+    if (!headRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        headRef.current,
+        { yPercent: 25, opacity: 0 },
+        {
+          yPercent: 0, opacity: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            end: 'top 30%',
+            scrub: 0.8,
+          },
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div
-      ref={itemRef}
-      className={`relative flex items-center justify-between md:justify-normal group ${isLeft ? 'md:flex-row-reverse' : ''}`}
+    <section
+      id="experience"
+      ref={sectionRef}
+      className="relative py-24 md:py-40 overflow-hidden"
+      style={{ background: '#0d0a0f' }}
     >
-      {/* Glow Node */}
-      <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 w-4 h-4 z-10">
-        <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-20" />
-        <div className="w-4 h-4 bg-black border-2 border-primary rounded-full relative z-10 flex items-center justify-center">
-          <div className="w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+      {/* Bg glow */}
+      <div
+        className="absolute top-0 right-0 w-[600px] h-[600px] pointer-events-none -z-10"
+        style={{ background: 'radial-gradient(circle, rgba(194,164,255,0.04) 0%, transparent 70%)' }}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Header */}
+        <div ref={headRef} className="mb-20 md:mb-32">
+          <span className="section-label">Operational Logs</span>
+          <h2 className="heading-xl" style={{ color: '#eae5ec' }}>
+            MISSION
+            <br />
+            <span style={{ color: 'transparent', WebkitTextStroke: '1px rgba(234,229,236,0.15)' }}>
+              HISTORY
+            </span>
+          </h2>
+        </div>
+
+        {/* Entries */}
+        <div className="space-y-20">
+          {experiences.map((exp, i) => (
+            <ExperienceItem key={exp.num} exp={exp} idx={i} />
+          ))}
         </div>
       </div>
-
-      {/* Content Card container */}
-      <div className={`flex-1 pl-16 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-24' : 'md:pl-24'}`}>
-        <motion.div
-          initial={{ opacity: 0, x: isLeft ? 50 : -50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, delay: index * 0.1 }}
-          onMouseEnter={() => {
-            setIsHovered(true);
-            playHover();
-          }}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <Card className={`glass-premium border-white/5 overflow-hidden transition-all duration-500 ${isHovered ? 'border-primary/30 -translate-y-2 shadow-[0_20px_40px_rgba(0,0,0,0.5)]' : ''}`}>
-            {/* Header / Meta Info */}
-            <div className={`h-1 w-full bg-gradient-to-r ${exp.color} opacity-30 ${isHovered ? 'opacity-100' : ''} transition-opacity duration-500`} />
-
-            <div className="p-8">
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-[10px] font-mono text-primary uppercase tracking-widest">
-                    <Terminal className="w-3 h-3" />
-                    <span>Log {String(index + 1).padStart(2, '0')}</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white tracking-tight">{exp.title}</h3>
-                </div>
-
-                <div className="flex flex-col items-end">
-                  <Badge variant="outline" className={`border-primary/20 text-primary bg-primary/5 text-[9px] font-mono tracking-widest mb-1`}>
-                    STATUS: {exp.status}
-                  </Badge>
-                  <div className="flex items-center gap-2 text-gray-500 text-[10px] font-mono">
-                    <Calendar className="w-3 h-3" />
-                    <span>{exp.period}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-2 text-primary font-semibold text-sm">
-                  <Zap className="w-4 h-4" />
-                  <span>{exp.company}</span>
-                  <span className="text-gray-600 mx-2">|</span>
-                  <div className="flex items-center gap-1 text-gray-400 font-normal">
-                    <MapPin className="w-3 h-3" />
-                    <span className="text-xs">{exp.location}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  {exp.bullets.map((bullet: string, i: number) => (
-                    <div key={i} className="flex gap-3 text-sm text-gray-400 leading-relaxed font-light">
-                      <div className="mt-1.5 w-1 h-1 rounded-full bg-primary/40 shrink-0" />
-                      <p>{bullet}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Expandable Tech Stack */}
-              <div className="pt-6 border-t border-white/5">
-                <div className="flex flex-wrap gap-2">
-                  {exp.tech.map((tech: string) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-gray-500 font-mono hover:text-white hover:border-primary/50 transition-colors cursor-default"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Cinematic Decor */}
-            <div className="absolute right-0 bottom-0 p-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
-              <Terminal className="w-24 h-24" />
-            </div>
-          </Card>
-        </motion.div>
-      </div>
-
-      {/* Decorative Label for Desktop */}
-      <div className={`hidden md:block w-1/2 font-mono text-[10px] text-gray-700 uppercase tracking-[0.5em] px-24 ${isLeft ? 'text-left' : 'text-right'}`}>
-        Transmission Signal: 100%
-      </div>
-    </div>
+    </section>
   );
 };
 

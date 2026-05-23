@@ -1,87 +1,50 @@
-import { useState, useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-import Index from "./pages/Index";
-import AboutMe from "./pages/AboutMe";
-import BeyondWork from "./pages/BeyondWork";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
-import TheLab from "./pages/TheLab";
-import LoginPage from "./pages/LoginPage";
-import AdminDashboard from "./pages/AdminDashboard";
-import Blog from "./pages/Blog";
-import TheArsenal from "./pages/TheArsenal";
-import MissionBrief from "./pages/MissionBrief";
-import TheHub from "./pages/TheHub";
-import CaseStudy from "./pages/CaseStudy";
-import Changelog from "./pages/Changelog";
-import Guestbook from "./pages/Guestbook";
-import HallOfFame from "./pages/HallOfFame";
+// Essential pages
+const Index = lazy(() => import("./pages/Index"));
+const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
-import CustomCursor from "./components/CustomCursor";
-import DeveloperConsole from "./components/DeveloperConsole";
-import KonamiCode from "./components/KonamiCode";
-import WarpTransition from "./components/WarpTransition";
-import AIChatbot from "./components/AIChatbot";
-import WeatherEffects from "./components/WeatherEffects";
-import CommandCenter from "./components/CommandCenter";
-import KeyboardShortcuts from "./components/KeyboardShortcuts";
-import SmoothScroll from "./components/SmoothScroll";
-import CinematicOverlay from "./components/CinematicOverlay";
-import Preloader from "./components/Preloader";
+// Core UI
 import TransitionWrapper from "./components/TransitionWrapper";
-import AmbientSound from "./components/AmbientSound";
-import Nova from "./components/Nova";
-import SystemControlPanel from "./components/SystemControlPanel";
-import MusicPlayer from "./components/MusicPlayer";
-import GlobalBackground from "./components/GlobalBackground";
-
-import { SoundProvider } from "./context/SoundContext";
-import { AchievementProvider } from "./context/AchievementContext";
-import { HackProvider } from "./context/HackContext";
-import { WeatherProvider } from "./context/WeatherContext";
+import SmoothScroll from "./components/SmoothScroll";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { trackPageView } from "./lib/analytics";
 
 const queryClient = new QueryClient();
 
+const LanguageHandler = () => {
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    document.documentElement.lang = i18n.language;
+    document.documentElement.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
+  return null;
+};
+
 const RouteChangeHandler = () => {
   const location = useLocation();
-
   useEffect(() => {
     trackPageView(location.pathname);
   }, [location]);
-
   return null;
 };
 
 const AnimatedRoutes = () => {
   const location = useLocation();
-
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<TransitionWrapper><Index /></TransitionWrapper>} />
-        <Route path="/about-me" element={<TransitionWrapper><AboutMe /></TransitionWrapper>} />
-        <Route path="/beyond-work" element={<TransitionWrapper><BeyondWork /></TransitionWrapper>} />
-        <Route path="/lab" element={<TransitionWrapper><TheLab /></TransitionWrapper>} />
         <Route path="/contact" element={<TransitionWrapper><Contact /></TransitionWrapper>} />
-        <Route path="/login" element={<TransitionWrapper><LoginPage /></TransitionWrapper>} />
-        <Route path="/dashboard" element={<TransitionWrapper><AdminDashboard /></TransitionWrapper>} />
-        <Route path="/blog" element={<TransitionWrapper><Blog /></TransitionWrapper>} />
-        <Route path="/arsenal" element={<TransitionWrapper><TheArsenal /></TransitionWrapper>} />
-        <Route path="/mission" element={<TransitionWrapper><MissionBrief /></TransitionWrapper>} />
-        <Route path="/hub" element={<TransitionWrapper><TheHub /></TransitionWrapper>} />
-        <Route path="/case-study/:id" element={<TransitionWrapper><CaseStudy /></TransitionWrapper>} />
-        <Route path="/changelog" element={<TransitionWrapper><Changelog /></TransitionWrapper>} />
-        <Route path="/guestbook" element={<TransitionWrapper><Guestbook /></TransitionWrapper>} />
-        <Route path="/leaderboard" element={<TransitionWrapper><HallOfFame /></TransitionWrapper>} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<TransitionWrapper><NotFound /></TransitionWrapper>} />
       </Routes>
     </AnimatePresence>
@@ -89,50 +52,25 @@ const AnimatedRoutes = () => {
 };
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
   return (
     <QueryClientProvider client={queryClient}>
-      <HashRouter>
-        <AuthProvider>
-          <WeatherProvider>
-            <SoundProvider>
-              <AmbientSound />
-              <AchievementProvider>
-                <HackProvider>
-                  <SmoothScroll>
-                    <AnimatePresence mode="wait">
-                      {isLoading && <Preloader key="preloader" onComplete={() => setIsLoading(false)} />}
-                    </AnimatePresence>
-
-                    <RouteChangeHandler />
-                    <TooltipProvider>
-                      <WeatherEffects />
-                      <GlobalBackground />
-                      <CinematicOverlay />
-                      <CommandCenter />
-                      <CustomCursor />
-                      <DeveloperConsole />
-                      <KonamiCode />
-                      <WarpTransition />
-                      <AIChatbot />
-                      <Nova />
-                      <KeyboardShortcuts />
-                      <Toaster />
-                      <Sonner />
-                      <SystemControlPanel />
-                      <MusicPlayer />
-
-                      <AnimatedRoutes />
-
-                    </TooltipProvider>
-                  </SmoothScroll>
-                </HackProvider>
-              </AchievementProvider>
-            </SoundProvider>
-          </WeatherProvider>
-        </AuthProvider>
-      </HashRouter>
+      <ThemeProvider>
+        <HashRouter>
+          <AuthProvider>
+            <SmoothScroll>
+              <Suspense fallback={null}>
+                <LanguageHandler />
+                <RouteChangeHandler />
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
+                  <AnimatedRoutes />
+                </TooltipProvider>
+              </Suspense>
+            </SmoothScroll>
+          </AuthProvider>
+        </HashRouter>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

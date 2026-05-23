@@ -4,18 +4,22 @@
         "about": "À propos",
         "skills": "Compétences",
         "projects": "Projets",
-        "experience": "Exp�rience",
+        "experience": "Expérience",
         "services": "Services",
         "beyond_work": "Au-delà du travail",
-        "contact": "Contact"
+        "contact": "Contact",
+        "blog": "Blog",
+        "guestbook": "Livre d'or",
+        "changelog": "Journal des modifications",
+        "hall_of_fame": "Classement"
     },
     "hero": {
         "greeting": "Bonjour, je suis",
         "role": "Développeur Frontend Créatif",
-        "sub_role": "Développeur Web Full Stack & Jeux Vidéo",
-        "description": "Conception et développement d'expériences numériques web performantes, belles et interactives. Accent mis sur la performance et les systèmes de design modernes.",
+        "sub_role": "Développeur Web Full Stack & Développeur de Jeux",
+        "description": "Conception et développement d'expériences numériques web performantes, belles et interactives. Axé sur la performance et les systèmes de conception modernes.",
         "mission_title": "MISSION:",
-        "mission_desc": "Débloquez les thèmes secrets et les succès",
+        "mission_desc": "Débloquer des thèmes secrets et des succès",
         "cta_projects": "Voir les projets",
         "cta_contact": "Contactez-moi"
     },
@@ -26,29 +30,83 @@
     "skills": {
         "title_prefix": "Arsenal",
         "title_suffix": "Technique",
-        "description": "Une galaxie d'outils et de technologies en constante expansion que j'utilise pour donner vie à mes idées."
+        "description": "Une galaxie en constante expansion d'outils et de technologies que j'utilise pour donner vie aux idées."
     },
     "projects": {
         "archive": "Archive",
         "title_prefix": "Projets",
         "title_suffix": "Sélectionnés",
         "view_case_study": "Voir l'étude de cas",
-        "parallel_tracks": "Pistes parallèles",
-        "key_features": "Caractéristiques principales",
-        "tech_used": "Technologies utilisées",
-        "live_demo": "Démo en direct",
-        "view_code": "Voir le code"
+        "parallel_tracks": "Voies Parallèles",
+        "key_features": "Caractéristiques Clés",
+        "tech_used": "Technologies Utilisées",
+        "live_demo": "Démo en Direct",
+        "view_code": "Voir le Code"
     },
     "experience": {
-        "title_prefix": "Expérience &",
+        "title_prefix": "Expérience et",
         "title_suffix": "Compétences",
-        "technical_proficiency": "Compétence technique",
-        "professional_experience": "Expérience professionnelle",
-        "contribution_title": "Contributions clés",
-        "workflow_title": "Workflow associé"
+        "technical_proficiency": "Compétence Technique",
+        "professional_experience": "Expérience Professionnelle",
+        "contribution_title": "Contributions Clés",
+        "workflow_title": "Flux de Travail Associé"
     },
     "globe": {
-        "title": "Empreinte mondiale",
-        "subtitle": "Fournir des solutions cinématographiques dans le monde entier"
+        "title": "Empreinte Globale",
+        "subtitle": "Livrer des solutions cinématographiques dans le monde entier",
+        "project": "Projet",
+        "client": "Client",
+        "view_case_study": "Voir l'étude de cas",
+        "status_completed": "TERMINÉ",
+        "status_progress": "EN_COURS"
+    },
+    "guestbook": {
+        "title": "Livre d'or",
+        "subtitle": "Centre Communautaire",
+        "description": "Laissez votre marque sur la frontière numérique. Signez le registre.",
+        "sign_registry": "Signer le Registre",
+        "identify": "Identifiez-vous",
+        "transmission": "Transmission",
+        "upload": "Charger Signature",
+        "transmitting": "Transmission en cours...",
+        "no_signals": "Aucun signal détecté pour le moment. Soyez le premier.",
+        "placeholder_name": "Nom d'affichage",
+        "placeholder_msg": "Écrivez votre message..."
+    },
+    "changelog": {
+        "title": "Journal des modifications",
+        "subtitle": "Logs du Système",
+        "description": "Suivi de l'évolution de l'architecture de Cinematic OS.",
+        "version": "VERSION",
+        "date": "DATE"
+    },
+    "blog": {
+        "title": "Données",
+        "subtitle": "Logs",
+        "secure_archives": "Archives Sécurisées",
+        "search_placeholder": "REQUÊTE_BASE_DE_DONNÉES...",
+        "read_time": "Temps de Lecture",
+        "decrypt": "DÉCRYPTER",
+        "subscribe_title": "Initialiser Liaison",
+        "subscribe_desc": "Abonnez-vous au flux neural. Recevez des paquets prioritaires concernant les architectures techniques et les protocoles de conception.",
+        "input_label": "ENTRÉE:",
+        "enter": "[ENTRÉE]"
+    },
+    "system": {
+        "title": "Système",
+        "audio": "Audio",
+        "display": "Affichage",
+        "general": "Général",
+        "localization": "Localisation",
+        "theme": "Thème d'Interface",
+        "reboot": "Redémarrer le Système",
+        "overclock": "Mode Overclock"
+    },
+    "menu": {
+        "settings": "Paramètres Système",
+        "admin": "Panneau d'Administration",
+        "disconnect": "Déconnexion",
+        "login": "Initialiser Sync",
+        "navigation": "Navigation"
     }
 }

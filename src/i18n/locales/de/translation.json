@@ -6,18 +6,22 @@
         "projects": "Projekte",
         "experience": "Erfahrung",
         "services": "Dienstleistungen",
-        "beyond_work": "Jenseits der Arbeit",
-        "contact": "Kontakt"
+        "beyond_work": "Hinter den Kulissen",
+        "contact": "Kontakt",
+        "blog": "Blog",
+        "guestbook": "Gästebuch",
+        "changelog": "Änderungsprotokoll",
+        "hall_of_fame": "Bestenliste"
     },
     "hero": {
         "greeting": "Hallo, ich bin",
         "role": "Kreativer Frontend-Entwickler",
-        "sub_role": "Full Stack Web- & Spieleentwickler",
-        "description": "Design und Entwicklung von hochperformanten, schönen und interaktiven digitalen Web-Erlebnissen. Fokus auf Performance und moderne Design-Systeme.",
+        "sub_role": "Full-Stack Web- & Spieleentwickler",
+        "description": "Entwurf und Entwicklung von leistungsstarken, schönen und interaktiven digitalen Web-Erlebnissen. Fokus auf Performance und moderne Designsysteme.",
         "mission_title": "MISSION:",
-        "mission_desc": "Geheime Themen und Erfolge freischalten",
+        "mission_desc": "Geheime Themes & Erfolge freischalten",
         "cta_projects": "Projekte ansehen",
-        "cta_contact": "Kontaktiere mich"
+        "cta_contact": "Kontakt aufnehmen"
     },
     "about": {
         "title": "Über mich",
@@ -26,7 +30,7 @@
     "skills": {
         "title_prefix": "Technisches",
         "title_suffix": "Arsenal",
-        "description": "Eine sich ständig erweiternde Galaxie von Werkzeugen und Technologien, mit denen ich Ideen zum Leben erwecke."
+        "description": "Eine sich ständig erweiternde Galaxie von Werkzeugen und Technologien, die ich nutze, um Ideen zum Leben zu erwecken."
     },
     "projects": {
         "archive": "Archiv",
@@ -37,18 +41,72 @@
         "key_features": "Hauptmerkmale",
         "tech_used": "Verwendete Technologien",
         "live_demo": "Live-Demo",
-        "view_code": "Code anzeigen"
+        "view_code": "Code ansehen"
     },
     "experience": {
         "title_prefix": "Erfahrung &",
         "title_suffix": "Fähigkeiten",
         "technical_proficiency": "Technische Kompetenz",
         "professional_experience": "Berufserfahrung",
-        "contribution_title": "Wichtige Beiträge",
+        "contribution_title": "Hauptbeiträge",
         "workflow_title": "Zugehöriger Workflow"
     },
     "globe": {
         "title": "Globale Präsenz",
-        "subtitle": "Weltweite Bereitstellung kinoreifer Lösungen"
+        "subtitle": "Weltweite Bereitstellung kinoreifer Lösungen",
+        "project": "Projekt",
+        "client": "Kunde",
+        "view_case_study": "Fallstudie ansehen",
+        "status_completed": "ABGESCHLOSSEN",
+        "status_progress": "IN_ARBEIT"
+    },
+    "guestbook": {
+        "title": "Gästebuch",
+        "subtitle": "Community-Hub",
+        "description": "Hinterlassen Sie Spuren an der digitalen Grenze. Tragen Sie sich ins Register ein.",
+        "sign_registry": "Register unterschreiben",
+        "identify": "Identifizieren Sie sich",
+        "transmission": "Übertragung",
+        "upload": "Unterschrift hochladen",
+        "transmitting": "Übertragung läuft...",
+        "no_signals": "Noch keine Signale erkannt. Seien Sie der Erste.",
+        "placeholder_name": "Anzeigename",
+        "placeholder_msg": "Schreiben Sie Ihre Nachricht..."
+    },
+    "changelog": {
+        "title": "Änderungsprotokoll",
+        "subtitle": "Systemprotokolle",
+        "description": "Verfolgung der Entwicklung der Cinematic OS Architektur.",
+        "version": "VERSION",
+        "date": "DATUM"
+    },
+    "blog": {
+        "title": "Daten",
+        "subtitle": "Logs",
+        "secure_archives": "Sichere Archive",
+        "search_placeholder": "DATENBANK_ABFRAGE...",
+        "read_time": "Lesezeit",
+        "decrypt": "ENTSCHLÜSSELN",
+        "subscribe_title": "Uplink initialisieren",
+        "subscribe_desc": "Abonnieren Sie den Neural-Feed. Erhalten Sie prioritäre Pakete zu technischen Architekturen und Designprotokollen.",
+        "input_label": "EINGABE:",
+        "enter": "[ENTER]"
+    },
+    "system": {
+        "title": "System",
+        "audio": "Audio",
+        "display": "Anzeige",
+        "general": "Allgemein",
+        "localization": "Lokalisierung",
+        "theme": "Interface-Theme",
+        "reboot": "System Neustart",
+        "overclock": "Overclock-Modus"
+    },
+    "menu": {
+        "settings": "Systemeinstellungen",
+        "admin": "Admin-Bereich",
+        "disconnect": "Trennen",
+        "login": "Sync starten",
+        "navigation": "Navigation"
     }
 }

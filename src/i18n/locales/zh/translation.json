@@ -4,38 +4,42 @@
         "about": "关于",
         "skills": "技能",
         "projects": "项目",
-        "experience": "??",
+        "experience": "经历",
         "services": "服务",
         "beyond_work": "工作之外",
-        "contact": "联系"
+        "contact": "联系",
+        "blog": "博客",
+        "guestbook": "留言板",
+        "changelog": "更新日志",
+        "hall_of_fame": "排行榜"
     },
     "hero": {
         "greeting": "你好，我是",
-        "role": "创意前端开发者",
-        "sub_role": "全栈Web开发者和游戏开发者",
-        "description": "设计和开发高性能、美观且互动的Web数字体验。专注于性能和现代设计系统。",
-        "mission_title": "任务：",
-        "mission_desc": "解锁秘密主题和成就",
+        "role": "创意前端开发工程师",
+        "sub_role": "全栈 Web 与游戏开发工程师",
+        "description": "设计和开发高性能、美观且具有交互性的 Web 数字体验。专注于性能和现代设计系统。",
+        "mission_title": "任务:",
+        "mission_desc": "解锁秘密主题与成就",
         "cta_projects": "查看项目",
         "cta_contact": "联系我"
     },
     "about": {
         "title": "关于我",
-        "description": "我是一名充满热情的开发者，热爱创造美观且功能强大的用户体验。"
+        "description": "我是一名充满热情的开发人员，热衷于创造美观且实用的用户体验。"
     },
     "skills": {
         "title_prefix": "技术",
-        "title_suffix": "武器库",
-        "description": "一个不断扩展的工具和技术星系，我用它们将想法变为现实。"
+        "title_suffix": "军械库",
+        "description": "一个不断扩大的工具和技术星系，我用它们将创意变为现实。"
     },
     "projects": {
-        "archive": "档案",
+        "archive": "存档",
         "title_prefix": "精选",
         "title_suffix": "项目",
         "view_case_study": "查看案例研究",
-        "parallel_tracks": "并行轨道",
-        "key_features": "关键功能",
-        "tech_used": "使用的技术",
+        "parallel_tracks": "平行轨道",
+        "key_features": "核心功能",
+        "tech_used": "所用技术",
         "live_demo": "在线演示",
         "view_code": "查看代码"
     },
@@ -44,8 +48,8 @@
         "title_suffix": "技能",
         "technical_proficiency": "技术熟练度",
         "professional_experience": "专业经验",
-        "contribution_title": "主要贡献",
-        "workflow_title": "相关工作流程"
+        "contribution_title": "核心贡献",
+        "workflow_title": "相关工作流"
     },
     "globe": {
         "title": "全球足迹",
@@ -55,5 +59,54 @@
         "view_case_study": "查看案例研究",
         "status_completed": "已完成",
         "status_progress": "进行中"
+    },
+    "guestbook": {
+        "title": "留言板",
+        "subtitle": "社区中心",
+        "description": "在数字前沿留下你的印记。签署登记簿。",
+        "sign_registry": "签署登记簿",
+        "identify": "身份识别",
+        "transmission": "传输",
+        "upload": "上传签名",
+        "transmitting": "传输中...",
+        "no_signals": "尚未检测到信号。成为第一个留下印记的人。",
+        "placeholder_name": "显示名称",
+        "placeholder_msg": "写下你的留言..."
+    },
+    "changelog": {
+        "title": "更新日志",
+        "subtitle": "系统日志",
+        "description": "追踪 Cinematic OS 架构的演变。",
+        "version": "版本",
+        "date": "日期"
+    },
+    "blog": {
+        "title": "数据",
+        "subtitle": "日志",
+        "secure_archives": "安全存档",
+        "search_placeholder": "查询数据库...",
+        "read_time": "阅读时长",
+        "decrypt": "解密",
+        "subscribe_title": "初始化上行链路",
+        "subscribe_desc": "订阅神经反馈。接收有关技术架构和设计协议的优先级数据包。",
+        "input_label": "输入:",
+        "enter": "[确认]"
+    },
+    "system": {
+        "title": "系统",
+        "audio": "音频",
+        "display": "显示",
+        "general": "常规",
+        "localization": "本地化",
+        "theme": "界面主题",
+        "reboot": "系统重启",
+        "overclock": "超频模式"
+    },
+    "menu": {
+        "settings": "系统设置",
+        "admin": "管理面板",
+        "disconnect": "断开连接",
+        "login": "开始同步",
+        "navigation": "导航"
     }
 }

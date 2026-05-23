@@ -1,122 +1,153 @@
+import React, { useRef, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import MarqueeStrip from './MarqueeStrip';
 
-import React, { useEffect, useRef, useState } from 'react';
-import SkillConstellation from './SkillConstellation';
-import { useTranslation } from 'react-i18next';
-import { useMobile } from '@/hooks/useMobile';
-import { Badge } from './ui/badge';
-import { motion } from 'framer-motion';
+gsap.registerPlugin(ScrollTrigger);
 
 const skillsList = [
-    // Game Development
-    { name: 'Unreal Engine 5', category: 'Game Dev', color: '#0050B5' },
-    { name: 'Blueprints', category: 'Game Dev', color: '#0050B5' },
-    { name: 'Niagara VFX', category: 'VFX', color: '#FF6B35' },
-    { name: 'Behavior Trees', category: 'Game Dev', color: '#0050B5' },
-    { name: 'Sequencer', category: 'Cinematic', color: '#E040FB' },
-    // 3D & Animation
-    { name: 'Blender', category: '3D', color: '#F5792A' },
-    { name: 'Substance Painter', category: '3D', color: '#FF6B35' },
-    { name: 'Rigging', category: '3D', color: '#F5792A' },
-    // Anime Production
-    { name: 'Clip Studio Paint', category: 'Anime', color: '#FFD93D' },
-    { name: 'Storyboarding', category: 'Anime', color: '#FFD93D' },
-    // Audio
-    { name: 'FMOD', category: 'Audio', color: '#88CE02' },
-    { name: 'FL Studio', category: 'Audio', color: '#FF5722' },
-    // Full-Stack Development
-    { name: 'React', category: 'Frontend', color: '#61DAFB' },
-    { name: 'Next.js', category: 'Frontend', color: '#FFFFFF' },
-    { name: 'TypeScript', category: 'Frontend', color: '#3178C6' },
-    { name: 'Tailwind CSS', category: 'Frontend', color: '#38B2AC' },
-    { name: 'Node.js', category: 'Backend', color: '#339933' },
-    { name: 'MongoDB', category: 'Backend', color: '#47A248' },
-    { name: 'PostgreSQL', category: 'Backend', color: '#4479A1' },
-    { name: 'Docker', category: 'DevOps', color: '#2496ED' },
-    // AI
-    { name: 'Python', category: 'AI', color: '#FFD43B' },
-    { name: 'OpenAI APIs', category: 'AI', color: '#10A37F' },
+  // Languages
+  { name: 'TypeScript',    category: 'Language'  },
+  { name: 'JavaScript',    category: 'Language'  },
+  { name: 'Python',        category: 'Language'  },
+  { name: 'Go',            category: 'Backend'   },
+  { name: 'SQL',           category: 'Database'  },
+  // Frontend
+  { name: 'React',         category: 'Frontend'  },
+  { name: 'Next.js',       category: 'Frontend'  },
+  { name: 'Tailwind CSS',  category: 'Styling'   },
+  { name: 'Framer Motion', category: 'Animation' },
+  { name: 'GSAP',          category: 'Animation' },
+  { name: 'Three.js',      category: '3D Web'    },
+  // Backend
+  { name: 'Node.js',       category: 'Backend'   },
+  { name: 'GraphQL',       category: 'API'       },
+  { name: 'REST APIs',     category: 'API'       },
+  // Databases
+  { name: 'PostgreSQL',    category: 'Database'  },
+  { name: 'MongoDB',       category: 'Database'  },
+  { name: 'Supabase',      category: 'BaaS'      },
+  { name: 'Docker',        category: 'DevOps'    },
+  // Tools
+  { name: 'OpenAI SDK',    category: 'AI'        },
+  { name: 'Git',           category: 'Tooling'   },
+  { name: 'Figma',         category: 'Design'    },
+  { name: 'Vite',          category: 'Tooling'   },
 ];
 
+const row1 = skillsList.slice(0, 12).map(s => s.name);
+const row2 = skillsList.slice(10).map(s => s.name);
+
 const SkillsSection = () => {
-    const { t } = useTranslation();
-    const isMobile = useMobile();
-    const [isVisible, setIsVisible] = useState(false);
-    const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headRef    = useRef<HTMLDivElement>(null);
+  const inView     = useInView(sectionRef, { once: true, amount: 0.1 });
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                }
-            },
-            { threshold: 0.1 }
-        );
-
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+  // GSAP scroll-pin title
+  useEffect(() => {
+    if (!headRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        headRef.current,
+        { yPercent: 30, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            end: 'top 20%',
+            scrub: 0.8,
+          },
         }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
 
-        return () => observer.disconnect();
-    }, []);
+  return (
+    <section
+      id="skills"
+      ref={sectionRef}
+      className="relative py-24 md:py-40 overflow-hidden"
+      style={{ background: '#0b080c', borderTop: '1px solid rgba(255,255,255,0.04)' }}
+    >
+      {/* Header */}
+      <div ref={headRef} className="max-w-7xl mx-auto px-6 md:px-12 text-center mb-20 md:mb-32">
+        <span className="section-label">Capabilities</span>
+        <h2
+          className="heading-xl"
+          style={{ color: '#eae5ec' }}
+        >
+          SKILL
+          <br />
+          <span style={{ color: 'transparent', WebkitTextStroke: '1px rgba(234,229,236,0.15)' }}>
+            STACK
+          </span>
+        </h2>
+        <p
+          className="mt-6 text-base font-light max-w-md mx-auto leading-relaxed"
+          style={{ color: 'rgba(234,229,236,0.4)' }}
+        >
+          Technologies I use to build fast, beautiful, and scalable web products.
+        </p>
+      </div>
 
-    return (
-        <section id="skills" ref={sectionRef} className="relative py-48 px-6 bg-[#050505] min-h-[90vh] flex flex-col items-center overflow-hidden scroll-mt-24 md:scroll-mt-32">
-            {/* Minimal Header */}
-            <div className={`text-center mb-32 transition-all duration-1000 z-10 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-                <span className="text-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block">Capabilities</span>
-                <h2 className="text-6xl md:text-[8rem] font-black mb-8 tracking-tighter text-white uppercase leading-none">
-                    Tech <br />
-                    <span className="text-gradient">Arsenal</span>
-                </h2>
-                <p className="mt-8 text-gray-500 text-lg max-w-xl mx-auto font-light leading-relaxed">
-                    {t('skills.description')}
-                </p>
-            </div>
+      {/* Marquee rows */}
+      <div className="space-y-6 mb-20">
+        <MarqueeStrip items={row1} speed={40} />
+        <MarqueeStrip items={row2} reverse speed={35} separator="◆" />
+      </div>
 
-            {/* Cinematic Container */}
-            <div className={`w-full max-w-6xl transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'translate-y-10'}`}>
-                {isMobile ? (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 py-12 glass-premium rounded-[3rem] border border-white/5">
-                        {skillsList.map((skill, index) => (
-                            <motion.div
-                                key={skill.name}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.05 }}
-                                className="flex flex-col items-center group"
-                            >
-                                <div className="w-20 h-20 rounded-full glass-premium border border-white/10 flex items-center justify-center mb-4 transition-all duration-500 group-hover:border-primary/50 group-hover:shadow-[0_0_30px_rgba(34,197,94,0.2)]">
-                                    <div
-                                        className="w-3 h-3 rounded-full shadow-[0_0_15px_rgba(255,255,255,0.5)]"
-                                        style={{ backgroundColor: skill.color }}
-                                    />
-                                </div>
-                                <span className="text-white font-bold text-center text-xs tracking-widest uppercase mb-1">{skill.name}</span>
-                                <span className="text-[10px] text-gray-600 uppercase tracking-[0.2em] font-mono">{skill.category}</span>
-                            </motion.div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="relative h-[600px] flex items-center justify-center">
-                        <div className="absolute inset-0 -z-10 opacity-60">
-                            <SkillConstellation />
-                        </div>
-                        {/* Centered HUD Element */}
-                        <div className="glass-premium p-10 rounded-[2.5rem] border border-white/5 text-center space-y-4 max-w-sm backdrop-blur-3xl">
-                            <h4 className="text-white font-black text-2xl uppercase tracking-tighter italic leading-none">Multiplex <br /> Environment</h4>
-                            <p className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Hover nodes to reveal transmission details</p>
-                        </div>
-                    </div>
-                )}
-            </div>
+      {/* Skills grid */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {skillsList.map((skill, i) => (
+            <motion.div
+              key={skill.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.04 }}
+              className="group flex flex-col items-center text-center p-4 rounded-2xl border transition-all duration-500 cursor-default"
+              style={{
+                borderColor: 'rgba(255,255,255,0.06)',
+                background: 'rgba(255,255,255,0.02)',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(194,164,255,0.3)';
+                (e.currentTarget as HTMLElement).style.background = 'rgba(194,164,255,0.05)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
+                (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)';
+              }}
+            >
+              <span
+                className="font-semibold text-[11px] tracking-wide mb-1 transition-colors duration-300 group-hover:text-[#c2a4ff]"
+                style={{ color: 'rgba(234,229,236,0.8)' }}
+              >
+                {skill.name}
+              </span>
+              <span
+                className="font-mono text-[9px] uppercase tracking-widest"
+                style={{ color: 'rgba(234,229,236,0.2)' }}
+              >
+                {skill.category}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
-            {/* Visual Depth */}
-            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_hsl(var(--primary)/0.03),transparent_70%)] -z-10 pointer-events-none" />
-        </section>
-    );
+      {/* Background glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] pointer-events-none -z-10"
+        style={{ background: 'radial-gradient(ellipse, rgba(194,164,255,0.04) 0%, transparent 70%)' }}
+      />
+    </section>
+  );
 };
 
 export default SkillsSection;

@@ -7,7 +7,11 @@
         "experience": "अनुभव",
         "services": "सेवाएं",
         "beyond_work": "काम से परे",
-        "contact": "संपर्क"
+        "contact": "संपर्क",
+        "blog": "ब्लॉग",
+        "guestbook": "गेस्टबुक",
+        "changelog": "चेंजलॉग",
+        "hall_of_fame": "लीडरबोर्ड"
     },
     "hero": {
         "greeting": "नमस्ते, मैं हूँ",
@@ -55,5 +59,54 @@
         "view_case_study": "केस स्टडी देखें",
         "status_completed": "पूर्ण",
         "status_progress": "प्रगति में"
+    },
+    "guestbook": {
+        "title": "गेस्टबुक",
+        "subtitle": "कम्युनिटी हब",
+        "description": "डिजिटल फ्रंटियर पर अपनी छाप छोड़ें। रजिस्ट्री साइन करें।",
+        "sign_registry": "रजिस्ट्री साइन करें",
+        "identify": "अपनी पहचान बताएं",
+        "transmission": "ट्रांसमिशन",
+        "upload": "हस्ताक्षर अपलोड करें",
+        "transmitting": "ट्रांसमिट हो रहा है...",
+        "no_signals": "अभी तक कोई सिग्नल नहीं मिला। पहले बनें।",
+        "placeholder_name": "प्रदर्शित नाम",
+        "placeholder_msg": "अपना संदेश लिखें..."
+    },
+    "changelog": {
+        "title": "चेंजलॉग",
+        "subtitle": "सिस्टम लॉग्स",
+        "description": "सिनेमैटिक OS आर्किटेक्चर के विकास को ट्रैक करना।",
+        "version": "वर्जन",
+        "date": "दिनांक"
+    },
+    "blog": {
+        "title": "डेटा",
+        "subtitle": "लॉग्स",
+        "secure_archives": "सुरक्षित अभिलेखागार",
+        "search_placeholder": "डेटाबेस क्वैरी...",
+        "read_time": "पढ़ने का समय",
+        "decrypt": "डिक्रिप्ट",
+        "subscribe_title": "अपलिंक शुरू करें",
+        "subscribe_desc": "न्यूरल फीड को सब्सक्राइब करें। तकनीकी आर्किटेक्चर और डिज़ाइन प्रोटोकॉल के बारे में प्राथमिकता वाले पैकेट प्राप्त करें।",
+        "input_label": "इनपुट:",
+        "enter": "[ENTER]"
+    },
+    "system": {
+        "title": "सिस्टम",
+        "audio": "ऑडियो",
+        "display": "डिस्प्ले",
+        "general": "सामान्य",
+        "localization": "स्थानीयकरण",
+        "theme": "इंटरफ़ेस थीम",
+        "reboot": "सिस्टम रीबूट",
+        "overclock": "ओवरक्लॉक मोड"
+    },
+    "menu": {
+        "settings": "सिस्टम सेटिंग्स",
+        "admin": "एडमिन पैनल",
+        "disconnect": "डिस्कनेक्ट",
+        "login": "सिंक शुरू करें",
+        "navigation": "नेविगेशन"
     }
 }

@@ -1,59 +1,112 @@
 {
     "nav": {
         "home": "ホーム",
-        "about": "について",
+        "about": "私について",
         "skills": "スキル",
         "projects": "プロジェクト",
-        "experience": "経験",
+        "experience": "経歴",
         "services": "サービス",
         "beyond_work": "仕事以外",
-        "contact": "お問い合わせ"
+        "contact": "お問い合わせ",
+        "blog": "ブログ",
+        "guestbook": "ゲストブック",
+        "changelog": "更新履歴",
+        "hall_of_fame": "リーダーボード"
     },
     "hero": {
         "greeting": "こんにちは、私は",
-        "role": "クリエイティブフロントエンド開発者",
-        "sub_role": "フルスタックWeb開発者＆ゲーム開発者",
-        "description": "高性能で美しく、インタラクティブなWebデジタル体験を設計・開発しています。パフォーマンスと最新のデザインシステムに焦点を当てています。",
-        "mission_title": "ミッション：",
-        "mission_desc": "秘密のテーマと実績をアンロック",
+        "role": "クリエイティブ フロントエンド デベロッパー",
+        "sub_role": "フルスタック Web & ゲーム デベロッパー",
+        "description": "高性能で美しく、インタラクティブな Web デジタル エクスペリエンスの設計と開発。パフォーマンスと最新のデザイン システムに重点を置いています。",
+        "mission_title": "ミッション:",
+        "mission_desc": "シークレット テーマと実績のロック解除",
         "cta_projects": "プロジェクトを見る",
         "cta_contact": "お問い合わせ"
     },
     "about": {
         "title": "私について",
-        "description": "美しく機能的なユーザー体験を作ることが大好きな情熱的な開発者です。"
+        "description": "私は美しい、かつ機能的なユーザー エクスペリエンスを作成することを愛する情熱的な開発者です。"
     },
     "skills": {
         "title_prefix": "技術的",
-        "title_suffix": "武器庫",
-        "description": "アイデアを実現するために使用するツールとテクノロジーの絶えず拡大する銀河。"
+        "title_suffix": "アーセナル",
+        "description": "アイデアを形にするために使用する、絶えず拡大し続けるツールとテクノロジーの銀河。"
     },
     "projects": {
         "archive": "アーカイブ",
-        "title_prefix": "選択された",
+        "title_prefix": "厳選",
         "title_suffix": "プロジェクト",
         "view_case_study": "ケーススタディを見る",
         "parallel_tracks": "並行トラック",
-        "key_features": "主な機能",
+        "key_features": "主な特徴",
         "tech_used": "使用技術",
         "live_demo": "ライブデモ",
         "view_code": "コードを見る"
     },
     "experience": {
-        "title_prefix": "経験と",
+        "title_prefix": "経歴と",
         "title_suffix": "スキル",
-        "technical_proficiency": "技術的熟練度",
-        "professional_experience": "職務経験",
+        "technical_proficiency": "技術的習熟度",
+        "professional_experience": "実務経験",
         "contribution_title": "主な貢献",
         "workflow_title": "関連ワークフロー"
     },
     "globe": {
-        "title": "グローバルフットプリント",
+        "title": "グローバルな足跡",
         "subtitle": "世界中にシネマティックなソリューションを提供",
         "project": "プロジェクト",
         "client": "クライアント",
         "view_case_study": "ケーススタディを見る",
         "status_completed": "完了",
         "status_progress": "進行中"
+    },
+    "guestbook": {
+        "title": "ゲストブック",
+        "subtitle": "コミュニティハブ",
+        "description": "デジタル フロンティアにあなたの足跡を残してください。レジストリに署名してください。",
+        "sign_registry": "レジストリに署名",
+        "identify": "本人確認",
+        "transmission": "通信",
+        "upload": "署名をアップロード",
+        "transmitting": "送信中...",
+        "no_signals": "まだ信号が検出されていません。最初の一人になりましょう。",
+        "placeholder_name": "表示名",
+        "placeholder_msg": "メッセージを入力..."
+    },
+    "changelog": {
+        "title": "更新履歴",
+        "subtitle": "システムログ",
+        "description": "Cinematic OS アーキテクチャの進化を追跡します。",
+        "version": "バージョン",
+        "date": "日付"
+    },
+    "blog": {
+        "title": "データ",
+        "subtitle": "ログ",
+        "secure_archives": "セキュア アーカイブ",
+        "search_placeholder": "データベース・クエリ...",
+        "read_time": "読了時間",
+        "decrypt": "復号化",
+        "subscribe_title": "アップリンク初期化",
+        "subscribe_desc": "ニューラル フィードを購読します。技術アーキテクチャや設計プロトコルに関する優先パケットを受信します。",
+        "input_label": "入力:",
+        "enter": "[確定]"
+    },
+    "system": {
+        "title": "システム",
+        "audio": "オーディオ",
+        "display": "ディスプレイ",
+        "general": "一般",
+        "localization": "ローカライゼーション",
+        "theme": "インターフェース テーマ",
+        "reboot": "システム再起動",
+        "overclock": "オーバークロック モード"
+    },
+    "menu": {
+        "settings": "システム設定",
+        "admin": "管理者パネル",
+        "disconnect": "切断",
+        "login": "同期開始",
+        "navigation": "ナビゲーション"
     }
 }
