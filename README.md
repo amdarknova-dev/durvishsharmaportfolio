@@ -1,124 +1,87 @@
-<div align="center">
+# Durvish Sharma — Creative Developer Portfolio ✦
 
-# 🎬 CINEMATIC PORTFOLIO
+A high-performance, immersive portfolio website built to showcase creative frontend development, 3D web experiences, and modern UI/UX design.
 
-### A Premium Developer Portfolio Experience
+![Portfolio Preview](./public/preview.png)
 
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+## ⚡ Tech Stack
 
-**[🌐 Live Demo](https://durvish-sharma.netlify.app)** · **[📧 Contact](mailto:durvishsharma23221@gmail.com)**
+This portfolio is built with bleeding-edge web technologies prioritizing performance and fluid animations:
 
-</div>
-
----
-
-## ⚡ Overview
-
-A high-end, cinematic developer portfolio featuring immersive animations, AI assistants, and a futuristic dark aesthetic. Built for performance and designed to impress.
+- **Framework**: [React 18](https://reactjs.org/) + [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [GSAP](https://gsap.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Forms**: [EmailJS](https://www.emailjs.com/)
 
 ## ✨ Key Features
 
-| Feature | Description |
-|---------|-------------|
-| 🤖 **Nova AI** | Voice & text assistant for navigation |
-| 💬 **Nexus Chatbot** | AI-powered Q&A about skills & projects |
-| 🌍 **12 Languages** | Full i18n support (EN, HI, JA, DE, FR, ES, ZH, PT, RU, AR, KO, IT) |
-| 🎨 **Theme System** | Dark/Light modes with smooth transitions |
-| ✨ **Custom Cursor** | Animated cursor with particle trails |
-| 🎮 **Easter Eggs** | Konami code, achievements, secret themes |
-| 📱 **Responsive** | Optimized for mobile, tablet, desktop & TV |
-| ⚡ **Performance** | Heavy animations hidden on low-power devices |
+- **Fluid Animations**: Smooth page transitions, magnetic buttons, and scroll-triggered reveals powered by Framer Motion and GSAP.
+- **Modern UI/UX**: Premium aesthetic featuring glassmorphism, dynamic glowing gradients, and custom marquee strips.
+- **Fully Responsive**: Carefully crafted to look exceptional on all devices, from ultra-wide monitors to mobile phones.
+- **Interactive Contact Form**: A gamified, fully functional contact form integrated with EmailJS for real-time inquiries.
+- **Performance Optimized**: Built with Vite for instant server start and lightning-fast HMR.
 
-## 🛠️ Tech Stack
+## 🚀 Local Development Setup
 
-```
-Frontend        │  React 19 · TypeScript · Vite 6
-Styling         │  Tailwind CSS · Framer Motion · GSAP
-3D/Graphics     │  Three.js · React Three Fiber
-UI Components   │  shadcn/ui · Radix UI · Lucide Icons
-State           │  React Context · TanStack Query
-i18n            │  react-i18next
-```
+To run this project locally, follow these steps:
 
-## 🚀 Quick Start
-
+### 1. Clone the repository
 ```bash
-# Clone the repository
 git clone https://github.com/amdarknova-dev/cinematic_portfolio.git
-
-# Navigate to directory
 cd cinematic_portfolio
+```
 
-# Install dependencies
+### 2. Install dependencies
+Ensure you have Node.js installed, then run:
+```bash
 npm install
+```
 
-# Start development server
+### 3. Environment Variables
+Create a `.env` file in the root directory and add your EmailJS credentials to enable the contact form:
+```env
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+```
+
+### 4. Start the Development Server
+```bash
 npm run dev
 ```
+The site will be running at `http://localhost:5173`.
 
-Open **https://localhost:8080** in your browser.
-
-## 📁 Project Structure
-
-```
-src/
-├── components/     # UI components (70+)
-├── pages/          # Route pages (14)
-├── hooks/          # Custom React hooks
-├── context/        # Global state (Auth, Sound, Theme)
-├── lib/            # Utilities (analytics, emailjs)
-├── i18n/           # Translations (12 languages)
-└── styles/         # Global CSS
+### 5. Production Build
+To create a highly optimized production build:
+```bash
+npm run build
 ```
 
-## 🎯 Pages
+## 📂 Project Structure
 
-| Page | Route | Description |
-|------|-------|-------------|
-| Home | `/` | Hero, Skills, Projects, Experience |
-| About Me | `/about-me` | Detailed bio & journey |
-| Contact | `/contact` | Form with EmailJS integration |
-| Beyond Work | `/beyond-work` | Personal interests & hobbies |
-| The Lab | `/lab` | Experimental projects |
-| Blog | `/blog` | Articles & tutorials |
-
-## � Environment Variables
-
-Create a `.env` file:
-
-```env
-VITE_GEMINI_API_KEY=your_gemini_api_key
+```text
+├── public/               # Static assets
+├── src/
+│   ├── components/       # Reusable UI components (Hero, Skills, Projects, etc.)
+│   ├── context/          # React Context providers (Theme, Auth, Sound)
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # Utility functions and library wrappers
+│   ├── pages/            # Main page routes (Index, Contact)
+│   ├── styles/           # Global CSS and Tailwind directives
+│   ├── App.tsx           # Main application routing
+│   └── main.tsx          # React entry point
+├── index.html            # HTML template
+├── tailwind.config.ts    # Tailwind CSS configuration
+└── vite.config.ts        # Vite configuration
 ```
 
-## 📱 Responsive Breakpoints
+## 🌐 Connect
 
-| Device | Breakpoint | Optimizations |
-|--------|------------|---------------|
-| Mobile | < 768px | Hidden: Nova, Cursor, Shapes |
-| Tablet | 768-1024px | Hidden: Custom Cursor |
-| Desktop | 1024-1536px | All features enabled |
-| TV | > 1536px | Hidden: Nova, Cursor, Shapes |
-
-## 🤝 Connect
-
-<div align="center">
-
-[![GitHub](https://img.shields.io/badge/GitHub-amdarknova--dev-181717?style=for-the-badge&logo=github)](https://github.com/amdarknova-dev)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Durvish_Sharma-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/durvish-sharma)
-[![Twitter](https://img.shields.io/badge/Twitter-@durvishsharma01-1DA1F2?style=for-the-badge&logo=twitter)](https://x.com/durvishsharma01)
-[![Email](https://img.shields.io/badge/Email-durvishsharma23221@gmail.com-EA4335?style=for-the-badge&logo=gmail)](mailto:durvishsharma23221@gmail.com)
-
-</div>
+- **Portfolio**: [durvish.dev](https://durvish.dev) (Replace with your actual domain)
+- **LinkedIn**: [Durvish Sharma](https://www.linkedin.com/in/durvish-sharma-a936b93a5)
+- **Twitter / X**: [@durvishsharma01](https://x.com/durvishsharma01)
 
 ---
-
-<div align="center">
-
-**Built with ❤️ by Durvish Sharma**
-
-*Full Stack Developer & Game Developer*
-
-</div>
+*Designed & Engineered by Durvish Sharma.*
