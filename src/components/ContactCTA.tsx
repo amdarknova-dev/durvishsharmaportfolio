@@ -96,13 +96,13 @@ const ContactCTA = () => {
 
           {/* Direct email link */}
           <a
-            href="mailto:durvishsharma01@gmail.com"
+            href="mailto:amdarknova23221@gmail.com"
             className="font-mono text-xs uppercase tracking-widest transition-colors duration-300 px-6 py-4"
             style={{ color: 'rgba(234,229,236,0.35)' }}
             onMouseEnter={e => (e.currentTarget.style.color = '#c2a4ff')}
             onMouseLeave={e => (e.currentTarget.style.color = 'rgba(234,229,236,0.35)')}
           >
-            durvishsharma01@gmail.com
+            amdarknova23221@gmail.com
           </a>
         </motion.div>
 

@@ -8,7 +8,7 @@ const socialLinks = [
   { icon: Github,       href: 'https://github.com/amdarknova-dev',                     label: 'GH'  },
   { icon: Linkedin,     href: 'https://www.linkedin.com/in/durvish-sharma-a936b93a5',  label: 'LI'  },
   { icon: Twitter,      href: 'https://x.com/durvishsharma01',                         label: 'TW'  },
-  { icon: Mail,         href: 'mailto:durvishsharma01@gmail.com',                      label: 'EM'  },
+  { icon: Mail,         href: 'mailto:amdarknova23221@gmail.com',                     label: 'EM'  },
   { icon: MessageSquare,href: 'https://discord.gg/N33AErabrg',                         label: 'DC'  },
 ];
 
