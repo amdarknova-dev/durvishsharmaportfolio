@@ -85,7 +85,7 @@ const Navigation = () => {
               <button
                 key={item.id}
                 onClick={() => handleNav(item)}
-                className="relative px-5 py-2 group overflow-hidden"
+                className="relative px-4 py-2 group overflow-hidden"
                 style={{
                   fontSize: '0.7rem',
                   letterSpacing: '0.15em',
@@ -97,7 +97,7 @@ const Navigation = () => {
               >
                 {/* Sliding underline */}
                 <span
-                  className="absolute bottom-1 left-5 right-5 h-px origin-left transition-transform duration-300"
+                  className="absolute bottom-1 left-4 right-4 h-px origin-left transition-transform duration-300"
                   style={{
                     background: '#c2a4ff',
                     transform: activeSection === item.id ? 'scaleX(1)' : 'scaleX(0)',
@@ -105,13 +105,25 @@ const Navigation = () => {
                 />
                 {/* Hover underline */}
                 <span
-                  className="absolute bottom-1 left-5 right-5 h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
+                  className="absolute bottom-1 left-4 right-4 h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
                   style={{ background: 'rgba(194,164,255,0.4)' }}
                 />
                 {item.label}
               </button>
             ))}
           </nav>
+
+          {/* Quick Actions (Command Center + System Pill) */}
+          <div className="hidden lg:flex items-center gap-3">
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('open-command-center'))}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03] hover:border-[#c2a4ff]/40 hover:bg-[#c2a4ff]/10 text-white/70 hover:text-[#c2a4ff] transition-all duration-300"
+            >
+              <span className="font-mono text-[10px] uppercase tracking-wider">Search Nexus</span>
+              <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[9px] font-mono text-white/50">⌘K</kbd>
+            </button>
+          </div>
+
 
           {/* Mobile toggle */}
           <button

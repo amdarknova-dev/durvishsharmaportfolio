@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const roles = ['WEB DEVELOPER', 'UI ENGINEER', 'CREATIVE CODER', 'REACT SPECIALIST'];
+const roles = ['LOW-LEVEL & KERNEL DEVELOPER', 'FULL-STACK SYSTEMS ARCHITECT', 'CREATIVE CODER', 'REVERSE ENGINEER'];
 
 const socials = [
   { icon: Github,        href: 'https://github.com/amdarknova-dev',                      label: 'GitHub'   },
@@ -164,12 +164,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="text-base md:text-lg leading-relaxed md:max-w-[45%] mb-10 font-light"
+          className="text-base md:text-lg leading-relaxed md:max-w-[50%] mb-10 font-light"
           style={{ color: 'rgba(234,229,236,0.5)' }}
         >
-          I build <strong style={{ color: '#eae5ec', fontWeight: 600 }}>high-performance, beautiful web experiences</strong> that
-          solve real problems — from React frontends to full-stack systems.
-          Based in Haryana, India.
+          I engineer <strong style={{ color: '#eae5ec', fontWeight: 600 }}>low-level C++ kernel systems & high-performance web applications</strong> —
+          spanning ring-0 drivers, memory hooks, and monorepo architectures down to pixel-perfect modern interfaces.
         </motion.p>
 
         {/* CTA buttons */}

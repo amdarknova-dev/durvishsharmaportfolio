@@ -8,34 +8,34 @@ gsap.registerPlugin(ScrollTrigger);
 
 const pillars = [
   {
+    icon: Cpu,
+    title: 'Low-Level & Kernel Engineering',
+    desc: 'Expertise in C/C++, Windows Internals, ring-0 kernel drivers (.sys), memory manipulation, AOB scanning, and high-performance native hooks.',
+  },
+  {
     icon: Zap,
     title: 'Performance First',
     desc: 'Every project scores 100 on Lighthouse. I optimise at every layer — lazy loading, code splitting, tree shaking, and CDN caching.',
   },
   {
     icon: Globe,
-    title: 'Full-Stack Ready',
-    desc: 'From pixel-perfect React UIs to Node.js and Go backends. I own the entire product lifecycle from DB schema to deployment.',
+    title: 'Full-Stack Ecosystems',
+    desc: 'From custom C++ game frameworks and Next.js storefronts to Python AI backends. Complete domain mastery across complex monorepos.',
   },
   {
     icon: Code2,
     title: 'Clean Architecture',
-    desc: 'TypeScript-strict, component-driven, and well-documented. I write code that\'s a pleasure for the next engineer to maintain.',
+    desc: 'Strict TypeScript & modern C++ standards. Component-driven design, modular architecture, and thorough documentation.',
   },
   {
     icon: Layers,
     title: 'Design-Aware',
-    desc: 'Trained eye for spacing, typography, and motion. I bridge the gap between Figma mockups and production-ready interfaces.',
-  },
-  {
-    icon: Cpu,
-    title: 'AI Integration',
-    desc: 'Hands-on experience with OpenAI APIs, LangChain, and building real-time AI features into production web applications.',
+    desc: 'Trained eye for spacing, typography, and motion. I bridge the gap between complex low-level engineering and stunning modern UIs.',
   },
   {
     icon: Gamepad2,
-    title: 'Valorant Grinder',
-    desc: 'Away from the keyboard I\'m grinding ranked. Strategic thinking that carries over into debugging and problem solving.',
+    title: 'Game & Systems Reverse Engineering',
+    desc: 'Deep interest in game engines, memory structure analysis, anti-cheat mechanisms, and building sophisticated desktop applications.',
   },
 ];
 

@@ -9,6 +9,21 @@ gsap.registerPlugin(ScrollTrigger);
 const experiences = [
   {
     num: '01',
+    title: 'Systems & Kernel Architect',
+    company: 'Obsidian Framework (ProjectX)',
+    period: '2025 — PRESENT',
+    location: 'Remote, India',
+    status: 'ACTIVE',
+    bullets: [
+      'Engineered ring-0 Windows kernel driver (.sys) with anti-tamper protections, custom I/O communication protocols, and crash recovery logic.',
+      'Developed low-level C++ cheat framework targeting 17 commercial games (CS2, Valorant, Apex) featuring VMT/IAT hooks, multi-level pointer resolution, and AOB scanning.',
+      'Architected ring-3 injector loader (ObsidianLoader) and HWID spoofer GUI with hardware serial virtualization.',
+      'Integrated Python AI voice assistant (Jarvis AI) with 80+ modules and full desktop automation capabilities.',
+    ],
+    tech: ['C++', 'Kernel Driver (.sys)', 'WinAPI', 'MASM', 'MinHook', 'Python', 'Next.js', 'CMake'],
+  },
+  {
+    num: '02',
     title: 'Full-Stack Developer',
     company: 'Freelance & Personal Projects',
     period: '2024 — PRESENT',
@@ -23,7 +38,7 @@ const experiences = [
     tech: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Go', 'GraphQL', 'PostgreSQL', 'GSAP', 'Three.js'],
   },
   {
-    num: '02',
+    num: '03',
     title: 'Frontend Engineer',
     company: 'Open Source & Community',
     period: '2022 — 2024',

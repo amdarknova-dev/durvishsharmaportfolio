@@ -59,9 +59,9 @@ const Footer = () => {
       <motion.div style={{ y, opacity }} className="px-6 md:px-12 py-20 md:py-28">
         <div className="max-w-7xl mx-auto">
 
-          {/* Top row */}
+          {/* Navigation & Systems Links */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
-            {/* Brand */}
+            {/* Brand & System Monitor */}
             <div className="lg:col-span-5 space-y-8">
               <div>
                 <h3
@@ -79,37 +79,46 @@ const Footer = () => {
                 </p>
               </div>
 
-              {/* Status pill */}
-              <div
-                className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border"
-                style={{
-                  borderColor: 'rgba(194,164,255,0.15)',
-                  background: 'rgba(194,164,255,0.04)',
-                }}
-              >
-                <div className="relative">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{ background: '#c2a4ff' }}
-                  />
-                  <div
-                    className="absolute inset-0 w-2 h-2 rounded-full animate-ping opacity-40"
-                    style={{ background: '#c2a4ff' }}
-                  />
+              {/* Status & Live Ping Monitor Pill */}
+              <div className="flex flex-wrap gap-4 items-center">
+                <div
+                  className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl border"
+                  style={{
+                    borderColor: 'rgba(194,164,255,0.15)',
+                    background: 'rgba(194,164,255,0.04)',
+                  }}
+                >
+                  <div className="relative">
+                    <div
+                      className="w-2 h-2 rounded-full"
+                      style={{ background: '#c2a4ff' }}
+                    />
+                    <div
+                      className="absolute inset-0 w-2 h-2 rounded-full animate-ping opacity-40"
+                      style={{ background: '#c2a4ff' }}
+                    />
+                  </div>
+                  <div>
+                    <p
+                      className="text-xs font-bold uppercase tracking-widest"
+                      style={{ color: '#eae5ec' }}
+                    >
+                      Available
+                    </p>
+                    <p
+                      className="font-mono text-[9px] uppercase tracking-widest"
+                      style={{ color: 'rgba(234,229,236,0.3)' }}
+                    >
+                      Open to elite projects
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p
-                    className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: '#eae5ec' }}
-                  >
-                    Available
-                  </p>
-                  <p
-                    className="font-mono text-[9px] uppercase tracking-widest"
-                    style={{ color: 'rgba(234,229,236,0.3)' }}
-                  >
-                    Open to elite projects
-                  </p>
+
+                {/* System Ping & Status badge */}
+                <div className="px-4 py-3 rounded-2xl border border-white/5 bg-white/[0.02] flex items-center gap-3 font-mono text-[10px]">
+                  <span className="text-emerald-400 font-bold">12ms</span>
+                  <span className="text-white/20">|</span>
+                  <span className="text-white/50">SYSTEM ONLINE</span>
                 </div>
               </div>
             </div>
@@ -138,30 +147,55 @@ const Footer = () => {
               </nav>
             </div>
 
-            {/* Socials */}
-            <div className="lg:col-span-4">
-              <h4
-                className="font-mono text-[9px] uppercase tracking-[0.4em] mb-6"
-                style={{ color: 'rgba(234,229,236,0.2)' }}
-              >
-                Social Uplink
-              </h4>
-              <div className="flex flex-col gap-3">
-                {socialLinks.map(s => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-3 transition-all duration-300 w-fit"
-                    style={{ color: 'rgba(234,229,236,0.3)' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#c2a4ff')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(234,229,236,0.3)')}
-                  >
-                    <s.icon className="w-3.5 h-3.5" />
-                    <span className="font-mono text-[10px] uppercase tracking-widest">{s.label}</span>
-                  </a>
-                ))}
+            {/* Ecosystem Apps & Socials */}
+            <div className="lg:col-span-4 grid grid-cols-2 gap-4">
+              <div>
+                <h4
+                  className="font-mono text-[9px] uppercase tracking-[0.4em] mb-6"
+                  style={{ color: 'rgba(234,229,236,0.2)' }}
+                >
+                  Modules
+                </h4>
+                <div className="flex flex-col gap-3 font-mono text-xs uppercase tracking-widest text-white/40">
+                  <button onClick={() => navigate('/guestbook')} className="text-left hover:text-[#c2a4ff] transition-colors">
+                    Guestbook
+                  </button>
+                  <button onClick={() => navigate('/leaderboard')} className="text-left hover:text-[#c2a4ff] transition-colors">
+                    Hall of Fame
+                  </button>
+                  <button onClick={() => navigate('/lab')} className="text-left hover:text-[#c2a4ff] transition-colors">
+                    The Lab
+                  </button>
+                  <button onClick={() => navigate('/changelog')} className="text-left hover:text-[#c2a4ff] transition-colors">
+                    Changelog
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <h4
+                  className="font-mono text-[9px] uppercase tracking-[0.4em] mb-6"
+                  style={{ color: 'rgba(234,229,236,0.2)' }}
+                >
+                  Social Uplink
+                </h4>
+                <div className="flex flex-col gap-3">
+                  {socialLinks.map(s => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-3 transition-all duration-300 w-fit"
+                      style={{ color: 'rgba(234,229,236,0.3)' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#c2a4ff')}
+                      onMouseLeave={e => (e.currentTarget.style.color = 'rgba(234,229,236,0.3)')}
+                    >
+                      <s.icon className="w-3.5 h-3.5" />
+                      <span className="font-mono text-[10px] uppercase tracking-widest">{s.label}</span>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -210,6 +244,7 @@ const Footer = () => {
               <ArrowUp className="w-3 h-3 group-hover:-translate-y-1 transition-transform duration-300" />
             </button>
           </div>
+
         </div>
       </motion.div>
     </div>
