@@ -14,6 +14,7 @@ const Skills = lazy(() => import("./pages/Skills"));
 const Projects = lazy(() => import("./pages/Projects"));
 const Services = lazy(() => import("./pages/Services"));
 const Experience = lazy(() => import("./pages/Experience"));
+const Terminal = lazy(() => import("./pages/Terminal"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -57,6 +58,7 @@ const AnimatedRoutes = () => {
         <Route path="/projects" element={<TransitionWrapper><Projects /></TransitionWrapper>} />
         <Route path="/services" element={<TransitionWrapper><Services /></TransitionWrapper>} />
         <Route path="/experience" element={<TransitionWrapper><Experience /></TransitionWrapper>} />
+        <Route path="/terminal" element={<TransitionWrapper><Terminal /></TransitionWrapper>} />
         <Route path="/contact" element={<TransitionWrapper><Contact /></TransitionWrapper>} />
         <Route path="/blog" element={<TransitionWrapper><BlogList /></TransitionWrapper>} />
         <Route path="/blog/:slug" element={<TransitionWrapper><BlogPost /></TransitionWrapper>} />

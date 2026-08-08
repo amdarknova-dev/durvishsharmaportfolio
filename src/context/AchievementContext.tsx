@@ -51,7 +51,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     { id: 'Hyper-Navigator', title: 'Hyper-Navigator', description: 'Visited projects, contact, and beyond-work.', hint: 'Visit the key sections.' },
     { id: 'Achievement Hunter', title: 'Achievement Hunter', description: 'Unlocked 5 achievements.', hint: 'Keep collecting.' },
     { id: 'combo-breaker', title: 'Combo Breaker', description: 'Clicked 5 times rapidly.', hint: 'Try clicking things fast.' },
-    { id: 'explorer', title: 'Early Explorer', description: 'First time visiting the portfolio.', hint: 'Just show up!' }
+    { id: 'explorer', title: 'Early Explorer', description: 'First time visiting the portfolio.', hint: 'Just show up!' },
+    { id: 'Root Access', title: 'Root Access', description: 'Gained root access via the terminal.', hint: 'Type a dangerous command.' }
 ];
 
 const TOTAL_SYSTEM_ROUTES = 5; // Home, Projects, Contact, Beyond Work, Lab

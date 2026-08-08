@@ -26,6 +26,17 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        navigate('/terminal');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [navigate]);
+
   const handleNav = (item: typeof navItems[0]) => {
     playClick();
     setMobileOpen(false);
@@ -106,13 +117,13 @@ const Navigation = () => {
             ))}
           </nav>
 
-          {/* Quick Actions (Command Center + System Pill) */}
+          {/* Quick Actions (Terminal + System Pill) */}
           <div className="hidden lg:flex items-center gap-3">
             <button
-              onClick={() => window.dispatchEvent(new CustomEvent('open-command-center'))}
+              onClick={() => { playClick(); navigate('/terminal'); }}
               className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03] hover:border-[#c2a4ff]/40 hover:bg-[#c2a4ff]/10 text-white/70 hover:text-[#c2a4ff] transition-all duration-300"
             >
-              <span className="font-mono text-[10px] uppercase tracking-wider">Search Nexus</span>
+              <span className="font-mono text-[10px] uppercase tracking-wider">Terminal Access</span>
               <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[9px] font-mono text-white/50">⌘K</kbd>
             </button>
           </div>
