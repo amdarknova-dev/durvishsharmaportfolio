@@ -14,11 +14,13 @@ export default function AdminPayments() {
   const [filter, setFilter] = useState('ALL');
   const [search, setSearch] = useState('');
 
-  const fetchOrders = async () => {
+  const fetchOrders = () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
-      if (data) setOrders(data);
+      const stored = JSON.parse(localStorage.getItem('admin_orders') || '[]');
+      // Sort by newest first
+      stored.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setOrders(stored);
     } catch (err) {
       console.error(err);
     } finally {
@@ -27,40 +29,26 @@ export default function AdminPayments() {
   };
 
   useEffect(() => {
-    // Check if already logged in via Supabase session
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) setIsAuthenticated(true);
-    };
-    checkSession();
-  }, []);
-
-  useEffect(() => {
     if (isAuthenticated) fetchOrders();
   }, [isAuthenticated]);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setAuthError('');
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-    if (error) {
-      setAuthError(error.message);
-    } else {
+    if (password === 'DarkNova!2322' || password === 'goku8684') {
       setIsAuthenticated(true);
+    } else {
+      alert("Invalid credentials.");
     }
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
     setIsAuthenticated(false);
   };
 
-  const updateStatus = async (id: string, newStatus: string) => {
-    await supabase.from('orders').update({ status: newStatus }).eq('id', id);
-    fetchOrders();
+  const updateStatus = (id: string, newStatus: string) => {
+    const updated = orders.map(o => o.id === id ? { ...o, status: newStatus } : o);
+    setOrders(updated);
+    localStorage.setItem('admin_orders', JSON.stringify(updated));
   };
 
   const filteredOrders = orders.filter(o => 
@@ -77,23 +65,15 @@ export default function AdminPayments() {
             <Lock className="w-10 h-10 text-[#3b82f6]" />
           </div>
           <h2 className="text-2xl font-bold text-white text-center mb-6">Admin Access</h2>
-          {authError && <p className="text-red-500 text-sm text-center mb-2">{authError}</p>}
-          <input 
-            type="email" 
-            placeholder="Admin Email"
-            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#3b82f6] focus:outline-none"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
           <input 
             type="password" 
-            placeholder="Master Password"
+            placeholder="Enter Master Password"
             className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#3b82f6] focus:outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit" className="w-full py-3 bg-[#3b82f6] text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">
-            Secure Login
+            Login
           </button>
         </form>
       </div>

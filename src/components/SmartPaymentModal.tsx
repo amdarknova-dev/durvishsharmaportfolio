@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, QrCode, CheckCircle2, AlertCircle, ScanLine, UploadCloud, FileWarning, DollarSign, Smartphone } from 'lucide-react';
 import { useSound } from '@/context/SoundContext';
-import { supabase } from '@/lib/supabase';
+import { sendPaymentVerificationEmail } from '@/lib/emailjs';
 import { QRCodeSVG } from 'qrcode.react';
 import { createWorker } from 'tesseract.js';
 
@@ -98,16 +98,31 @@ const SmartPaymentModal: React.FC<SmartPaymentModalProps> = ({ isOpen, onClose, 
 
   const saveOrderToDB = async (utr: string, status: string) => {
     try {
-      await supabase.from('orders').insert({
+      // Save locally for admin portal simulation
+      const existingOrders = JSON.parse(localStorage.getItem('admin_orders') || '[]');
+      existingOrders.push({
+        id: Math.random().toString(),
+        created_at: new Date().toISOString(),
         order_id: orderId,
         service_name: serviceName,
         amount: numericPrice,
         status: status,
         utr_number: utr,
-        customer_email: 'unknown' // In a full app, we'd grab this from auth/context
+        customer_email: 'unknown'
+      });
+      localStorage.setItem('admin_orders', JSON.stringify(existingOrders));
+
+      // Send actual email to admin
+      await sendPaymentVerificationEmail({
+        customerName: "Anonymous",
+        customerEmail: "unknown@example.com",
+        serviceName: serviceName,
+        amount: numericPrice,
+        utrNumber: utr,
+        senderUpiId: "Unknown"
       });
     } catch (e) {
-      console.warn("DB save failed (maybe table doesn't exist yet)", e);
+      console.warn("Save failed", e);
     }
   };
 

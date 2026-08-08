@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
+
 import { useToast } from '@/hooks/use-toast';
 import { useHack } from './HackContext';
 
@@ -102,31 +102,35 @@ export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }, []);
 
     const fetchGlobalStats = useCallback(async () => {
-        const { data, error } = await supabase
-            .from('pioneers')
-            .select('*')
-            .order('points', { ascending: false })
-            .limit(10);
-
-        if (!error && data) {
-            setGlobalPioneers(data as Pioneer[]);
+        try {
+            const stored = JSON.parse(localStorage.getItem('global_pioneers') || '[]');
+            stored.sort((a: Pioneer, b: Pioneer) => b.points - a.points);
+            setGlobalPioneers(stored.slice(0, 10));
+        } catch (e) {
+            console.error(e);
         }
     }, []);
 
     const syncHandle = useCallback(async (handle: string) => {
         const points = unlockedAchievements.length * 100;
-        const { error } = await supabase
-            .from('pioneers')
-            .upsert({
-                handle,
-                points,
-                achievements: unlockedAchievements.length,
-                last_active: new Date().toISOString()
-            });
+        const stored = JSON.parse(localStorage.getItem('global_pioneers') || '[]');
+        
+        const existingIdx = stored.findIndex((p: Pioneer) => p.handle === handle);
+        const newPioneer = {
+            handle,
+            points,
+            achievements: unlockedAchievements.length,
+            last_active: new Date().toISOString()
+        };
 
-        if (!error) {
-            fetchGlobalStats();
+        if (existingIdx >= 0) {
+            stored[existingIdx] = newPioneer;
+        } else {
+            stored.push(newPioneer);
         }
+        
+        localStorage.setItem('global_pioneers', JSON.stringify(stored));
+        fetchGlobalStats();
     }, [unlockedAchievements.length, fetchGlobalStats]);
 
     useEffect(() => {
@@ -173,14 +177,6 @@ export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     useEffect(() => {
         fetchGlobalStats();
-        const channel = supabase
-            .channel('public:pioneers')
-            .on('postgres_changes' as never, { event: '*', table: 'pioneers' }, fetchGlobalStats)
-            .subscribe();
-
-        return () => {
-            supabase.removeChannel(channel);
-        };
     }, [fetchGlobalStats]);
 
     const progress = useMemo(() => (unlockedAchievements.length / ACHIEVEMENTS.length) * 100, [unlockedAchievements.length]);
