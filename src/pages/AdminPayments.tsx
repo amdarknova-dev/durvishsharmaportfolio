@@ -5,7 +5,9 @@ import { motion } from 'framer-motion';
 
 export default function AdminPayments() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
   
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -25,16 +27,35 @@ export default function AdminPayments() {
   };
 
   useEffect(() => {
+    // Check if already logged in via Supabase session
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) setIsAuthenticated(true);
+    };
+    checkSession();
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) fetchOrders();
   }, [isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'DarkNova!2322' || password === 'goku8684') {
-      setIsAuthenticated(true);
+    setAuthError('');
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    if (error) {
+      setAuthError(error.message);
     } else {
-      alert("Invalid credentials.");
+      setIsAuthenticated(true);
     }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsAuthenticated(false);
   };
 
   const updateStatus = async (id: string, newStatus: string) => {
@@ -56,15 +77,23 @@ export default function AdminPayments() {
             <Lock className="w-10 h-10 text-[#3b82f6]" />
           </div>
           <h2 className="text-2xl font-bold text-white text-center mb-6">Admin Access</h2>
+          {authError && <p className="text-red-500 text-sm text-center mb-2">{authError}</p>}
+          <input 
+            type="email" 
+            placeholder="Admin Email"
+            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#3b82f6] focus:outline-none"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <input 
             type="password" 
-            placeholder="Enter Master Password"
+            placeholder="Master Password"
             className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-[#3b82f6] focus:outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="w-full py-3 bg-[#3b82f6] text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">
-            Login
+          <button type="submit" className="w-full py-3 bg-[#3b82f6] text-white font-bold rounded-lg hover:bg-blue-600 transition-colors">
+            Secure Login
           </button>
         </form>
       </div>
@@ -87,6 +116,9 @@ export default function AdminPayments() {
             </button>
             <button className="flex items-center gap-2 px-4 py-2 bg-[#10b981]/20 hover:bg-[#10b981]/30 border border-[#10b981]/50 text-[#10b981] rounded-lg text-sm">
               <Download className="w-4 h-4" /> Export CSV
+            </button>
+            <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 rounded-lg text-sm font-bold">
+              Logout
             </button>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { ArrowDown, Github, MessageCircle, Youtube, Instagram, Mail, Gamepad2 } 
 import { useSound } from '@/context/SoundContext';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Custom3DModel from './Custom3DModel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,14 +79,10 @@ const HeroSection = () => {
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       style={{ background: '#0b080c' }}
     >
-      {/* ── Radial glow behind mesh ── */}
-      <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(194,164,255,0.12) 0%, transparent 70%)',
-          zIndex: 0,
-        }}
-      />
+      {/* ── 3D WebGL Background ── */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] opacity-80 pointer-events-auto" style={{ zIndex: 1 }}>
+        <Custom3DModel />
+      </div>
 
       {/* ── Main content (left) ── */}
       <div

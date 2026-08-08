@@ -13,6 +13,7 @@ const navItems = [
   { id: 'services',   label: 'Services'   },
   { id: 'experience', label: 'Experience' },
   { id: 'contact',    label: 'Contact',   path: '/contact' },
+  { id: 'blog',       label: 'Blog',      path: '/blog' },
 ];
 
 const Navigation = () => {

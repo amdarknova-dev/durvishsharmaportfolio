@@ -12,6 +12,8 @@ const Index = lazy(() => import("./pages/Index"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AdminPayments = lazy(() => import("./pages/AdminPayments"));
+const BlogList = lazy(() => import("./pages/BlogList"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 
 // Core UI
 import TransitionWrapper from "./components/TransitionWrapper";
@@ -47,6 +49,8 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<TransitionWrapper><Index /></TransitionWrapper>} />
         <Route path="/contact" element={<TransitionWrapper><Contact /></TransitionWrapper>} />
         <Route path="/admin/payments" element={<TransitionWrapper><AdminPayments /></TransitionWrapper>} />
+        <Route path="/blog" element={<TransitionWrapper><BlogList /></TransitionWrapper>} />
+        <Route path="/blog/:slug" element={<TransitionWrapper><BlogPost /></TransitionWrapper>} />
         <Route path="*" element={<TransitionWrapper><NotFound /></TransitionWrapper>} />
       </Routes>
     </AnimatePresence>
