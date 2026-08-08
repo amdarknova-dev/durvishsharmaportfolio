@@ -155,7 +155,7 @@ export const AchievementProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }, [visitedRoutes.size, unlockAchievement]);
 
     useEffect(() => {
-        if (visitedRoutes.has('/projects') && visitedRoutes.has('/contact') && visitedRoutes.has('/beyond-work')) {
+        if (visitedRoutes.has('/projects') && visitedRoutes.has('/contact') && visitedRoutes.has('/services')) {
             unlockAchievement('Hyper-Navigator');
         }
     }, [visitedRoutes, unlockAchievement]);

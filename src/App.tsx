@@ -9,6 +9,11 @@ import { useTranslation } from "react-i18next";
 
 // Essential pages
 const Index = lazy(() => import("./pages/Index"));
+const About = lazy(() => import("./pages/About"));
+const Skills = lazy(() => import("./pages/Skills"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Services = lazy(() => import("./pages/Services"));
+const Experience = lazy(() => import("./pages/Experience"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -47,6 +52,11 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<TransitionWrapper><Index /></TransitionWrapper>} />
+        <Route path="/about" element={<TransitionWrapper><About /></TransitionWrapper>} />
+        <Route path="/skills" element={<TransitionWrapper><Skills /></TransitionWrapper>} />
+        <Route path="/projects" element={<TransitionWrapper><Projects /></TransitionWrapper>} />
+        <Route path="/services" element={<TransitionWrapper><Services /></TransitionWrapper>} />
+        <Route path="/experience" element={<TransitionWrapper><Experience /></TransitionWrapper>} />
         <Route path="/contact" element={<TransitionWrapper><Contact /></TransitionWrapper>} />
         <Route path="/blog" element={<TransitionWrapper><BlogList /></TransitionWrapper>} />
         <Route path="/blog/:slug" element={<TransitionWrapper><BlogPost /></TransitionWrapper>} />

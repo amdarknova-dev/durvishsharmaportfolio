@@ -6,10 +6,6 @@ import { useLocation } from 'react-router-dom';
 import Preloader from '@/components/Preloader';
 import { AnimatePresence } from 'framer-motion';
 
-const SkillsSection    = React.lazy(() => import('@/components/SkillsSection'));
-const ProjectsSection  = React.lazy(() => import('@/components/ProjectsSection'));
-const ServicesSection  = React.lazy(() => import('@/components/ServicesSection'));
-const ExperienceSection = React.lazy(() => import('@/components/ExperienceSection'));
 const ContactCTA       = React.lazy(() => import('@/components/ContactCTA'));
 const Footer           = React.lazy(() => import('@/components/Footer'));
 
@@ -51,11 +47,6 @@ const Index = () => {
           <Navigation />
           <main>
             <HeroSection />
-            <AboutSection />
-            <SkillsSection />
-            <ProjectsSection />
-            <ServicesSection />
-            <ExperienceSection />
             <ContactCTA />
           </main>
           <Footer />

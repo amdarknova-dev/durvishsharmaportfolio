@@ -6,47 +6,38 @@ import { useSound } from '@/context/SoundContext';
 import { useMobile } from '@/hooks/useMobile';
 
 const navItems = [
-  { id: 'home',       label: 'Home'       },
-  { id: 'about',      label: 'About'      },
-  { id: 'skills',     label: 'Skills'     },
-  { id: 'projects',   label: 'Projects'   },
-  { id: 'services',   label: 'Services'   },
-  { id: 'experience', label: 'Experience' },
-  { id: 'contact',    label: 'Contact',   path: '/contact' },
-  { id: 'blog',       label: 'Blog',      path: '/blog' },
+  { id: 'home',       label: 'Home',       path: '/' },
+  { id: 'about',      label: 'About',      path: '/about' },
+  { id: 'skills',     label: 'Skills',     path: '/skills' },
+  { id: 'projects',   label: 'Projects',   path: '/projects' },
+  { id: 'services',   label: 'Services',   path: '/services' },
+  { id: 'experience', label: 'Experience', path: '/experience' },
+  { id: 'contact',    label: 'Contact',    path: '/contact' },
+  { id: 'blog',       label: 'Blog',       path: '/blog' },
 ];
 
 const Navigation = () => {
-  const [activeSection, setActiveSection] = useState('home');
-  const [isScrolled, setIsScrolled]       = useState(false);
-  const [mobileOpen, setMobileOpen]       = useState(false);
-  const isMobile  = useMobile();
-  const location  = useLocation();
-  const navigate  = useNavigate();
-  const { playClick } = useSound();
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
-      if (location.pathname !== '/') return;
-      const scrollPos = window.scrollY + 180;
-      const ids = navItems.filter(i => !i.path).map(i => i.id);
-      for (let i = ids.length - 1; i >= 0; i--) {
-        const el = document.getElementById(ids[i]);
-        if (el && el.offsetTop <= scrollPos) { setActiveSection(ids[i]); break; }
-      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname]);
+  }, []);
 
   const handleNav = (item: typeof navItems[0]) => {
     playClick();
     setMobileOpen(false);
-    if (item.path) { navigate(item.path); return; }
-    if (location.pathname !== '/') { navigate('/#' + item.id); return; }
-    document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+    navigate(item.path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const currentPath = location.pathname;
+  const getIsActive = (path: string) => {
+    if (path === '/' && currentPath === '/') return true;
+    if (path !== '/' && currentPath.startsWith(path)) return true;
+    return false;
   };
 
   return (
@@ -92,9 +83,9 @@ const Navigation = () => {
                   fontSize: '0.7rem',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
-                  color: activeSection === item.id ? '#c2a4ff' : 'rgba(234,229,236,0.45)',
+                  color: getIsActive(item.path) ? '#c2a4ff' : 'rgba(234,229,236,0.45)',
                   transition: 'color 0.3s ease',
-                  fontWeight: activeSection === item.id ? 600 : 400,
+                  fontWeight: getIsActive(item.path) ? 600 : 400,
                 }}
               >
                 {/* Sliding underline */}
@@ -102,7 +93,7 @@ const Navigation = () => {
                   className="absolute bottom-1 left-4 right-4 h-px origin-left transition-transform duration-300"
                   style={{
                     background: '#c2a4ff',
-                    transform: activeSection === item.id ? 'scaleX(1)' : 'scaleX(0)',
+                    transform: getIsActive(item.path) ? 'scaleX(1)' : 'scaleX(0)',
                   }}
                 />
                 {/* Hover underline */}
@@ -187,9 +178,9 @@ const Navigation = () => {
                     onClick={() => handleNav(item)}
                     className="w-full text-left px-4 py-4 rounded-xl text-sm font-medium transition-all duration-300"
                     style={{
-                      color: activeSection === item.id ? '#c2a4ff' : 'rgba(234,229,236,0.5)',
-                      background: activeSection === item.id ? 'rgba(194,164,255,0.08)' : 'transparent',
-                      border: activeSection === item.id ? '1px solid rgba(194,164,255,0.2)' : '1px solid transparent',
+                      color: getIsActive(item.path) ? '#c2a4ff' : 'rgba(234,229,236,0.5)',
+                      background: getIsActive(item.path) ? 'rgba(194,164,255,0.08)' : 'transparent',
+                      border: getIsActive(item.path) ? '1px solid rgba(194,164,255,0.2)' : '1px solid transparent',
                       letterSpacing: '0.1em',
                       textTransform: 'uppercase',
                       fontSize: '0.7rem',
