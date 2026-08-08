@@ -169,41 +169,40 @@ export const useEmailJS = () => {
 };
 
 // ============================================
-// 📝 USAGE EXAMPLE
+// 💸 PAYMENT NOTIFICATION
 // ============================================
-/*
 
-import { useEmailJS } from '@/lib/emailjs';
-
-const ContactForm = () => {
-  const { sendEmail, isSubmitting } = useEmailJS();
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    const success = await sendEmail({
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john@example.com',
-      phone: '1234567890',
-      countryCode: '+91',
-      inquiryType: 'website',
-      message: 'Hello!',
-    });
-    
-    if (success) {
-      // Clear form
-      setFormData({ ... });
+export const sendPaymentVerificationEmail = async (params: {
+    customerName: string;
+    customerEmail: string;
+    serviceName: string;
+    amount: string;
+    utrNumber: string;
+    senderUpiId: string;
+}) => {
+    try {
+        const notifyResults = await Promise.allSettled(
+            NOTIFICATION_EMAILS.map((recipientEmail) =>
+                fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        service_id: EMAILJS_CONFIG.SERVICE_ID,
+                        template_id: EMAILJS_CONFIG.TEMPLATE_ID, // You can use a specific payment template here
+                        user_id: EMAILJS_CONFIG.PUBLIC_KEY,
+                        template_params: {
+                            from_name: params.customerName,
+                            from_email: params.customerEmail,
+                            inquiry_type: 'PAYMENT_VERIFICATION',
+                            message: `Payment received for ${params.serviceName}. Amount: ₹${params.amount}. UTR: ${params.utrNumber}. UPI ID: ${params.senderUpiId}`,
+                            to_email: recipientEmail,
+                        },
+                    }),
+                })
+            )
+        );
+        console.log("Payment notification sent via emailjs", notifyResults);
+    } catch (err) {
+        console.error("Failed to send payment email", err);
     }
-  };
-  
-  return (
-    <form onSubmit={handleSubmit}>
-      <button disabled={isSubmitting}>
-        {isSubmitting ? 'Sending...' : 'Send Message'}
-      </button>
-    </form>
-  );
 };
-
-*/
