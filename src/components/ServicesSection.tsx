@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShoppingCart, Globe, Gamepad2, Cpu, Palette, ArrowRight } from 'lucide-react';
 import { useSound } from '@/context/SoundContext';
 import Magnetic from './Magnetic';
-import PaymentModal from './SmartPaymentModal';
+import DiscordPaymentModal from './DiscordPaymentModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -173,14 +173,14 @@ const ServicesSection = () => {
                 >
                   <div className="flex items-center justify-between w-full">
                     <span className="font-mono text-xs uppercase tracking-[0.2em] font-bold text-[#eae5ec]">
-                      Pay via UPI
+                      Purchase Service
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#10b981] group-hover:scale-110 transition-all duration-300 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#5865F2] group-hover:scale-110 transition-all duration-300 shrink-0">
                       <ShoppingCart className="w-3.5 h-3.5 text-white" />
                     </div>
                   </div>
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#10b981]/80 group-hover:text-[#10b981]">
-                    9017250790@fam
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#5865F2]/80 group-hover:text-[#5865F2]">
+                    Via Discord
                   </span>
                 </button>
               </Magnetic>
@@ -189,7 +189,7 @@ const ServicesSection = () => {
         })}
       </div>
 
-      <PaymentModal
+      <DiscordPaymentModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         serviceName={selectedService?.name || ''}
