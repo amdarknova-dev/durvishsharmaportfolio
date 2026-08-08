@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShoppingCart, Globe, Gamepad2, Cpu, Palette, ArrowRight } from 'lucide-react';
 import { useSound } from '@/context/SoundContext';
 import Magnetic from './Magnetic';
+import PaymentModal from './PaymentModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -52,6 +53,9 @@ const ServicesSection = () => {
   const headRef = useRef<HTMLDivElement>(null);
   const inView = useInView(sectionRef, { once: true, amount: 0.1 });
   const { playClick, playHover } = useSound();
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<{name: string, price: string} | null>(null);
 
   useEffect(() => {
     if (!headRef.current) return;
@@ -75,9 +79,10 @@ const ServicesSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const handlePurchase = () => {
+  const handlePurchase = (serviceName: string, servicePrice: string) => {
     playClick();
-    window.open('https://discord.gg/F39kaAf4z', '_blank');
+    setSelectedService({ name: serviceName, price: servicePrice });
+    setIsModalOpen(true);
   };
 
   return (
@@ -162,20 +167,20 @@ const ServicesSection = () => {
 
               <Magnetic intensity={0.2}>
                 <button
-                  onClick={handlePurchase}
+                  onClick={() => handlePurchase(service.title, service.price)}
                   onMouseEnter={() => playHover()}
                   className="w-full flex flex-col items-center justify-center px-6 py-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 gap-3"
                 >
                   <div className="flex items-center justify-between w-full">
                     <span className="font-mono text-xs uppercase tracking-[0.2em] font-bold text-[#eae5ec]">
-                      Purchase via Discord
+                      Pay via UPI
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#5865F2] group-hover:scale-110 transition-all duration-300 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#10b981] group-hover:scale-110 transition-all duration-300 shrink-0">
                       <ShoppingCart className="w-3.5 h-3.5 text-white" />
                     </div>
                   </div>
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#5865F2]/80 group-hover:text-[#5865F2]">
-                    DM darknova001.hd for full payment
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#10b981]/80 group-hover:text-[#10b981]">
+                    9017250790@fam
                   </span>
                 </button>
               </Magnetic>
@@ -183,6 +188,13 @@ const ServicesSection = () => {
           );
         })}
       </div>
+
+      <PaymentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        serviceName={selectedService?.name || ''}
+        servicePrice={selectedService?.price || ''}
+      />
     </section>
   );
 };
