@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShoppingCart, Globe, Gamepad2, Cpu, Palette, ArrowRight } from 'lucide-react';
 import { useSound } from '@/context/SoundContext';
 import Magnetic from './Magnetic';
-import PaymentModal from './PaymentModal';
+import PaymentModal from './SmartPaymentModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
