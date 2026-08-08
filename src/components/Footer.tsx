@@ -1,15 +1,16 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Github, Linkedin, Twitter, Mail, MessageSquare, ArrowUp } from 'lucide-react';
+import { Github, Mail, MessageSquare, ArrowUp, Youtube, Instagram, Gamepad2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useSound } from '@/context/SoundContext';
 
 const socialLinks = [
-  { icon: Github,       href: 'https://github.com/amdarknova-dev',                     label: 'GH'  },
-  { icon: Linkedin,     href: 'https://www.linkedin.com/in/durvish-sharma-a936b93a5',  label: 'LI'  },
-  { icon: Twitter,      href: 'https://x.com/durvishsharma01',                         label: 'TW'  },
-  { icon: Mail,         href: 'mailto:amdarknova23221@gmail.com',                     label: 'EM'  },
-  { icon: MessageSquare,href: 'https://discord.gg/N33AErabrg',                         label: 'DC'  },
+  { icon: Youtube,       href: 'https://www.youtube.com/@OfficialDarkNovaGG',            label: 'YT' },
+  { icon: MessageSquare, href: 'https://discord.gg/F39kaAf4z',                           label: 'DC' },
+  { icon: Instagram,     href: 'https://instagram.com/durvish_sharma.22.23',             label: 'IG' },
+  { icon: Github,        href: 'https://github.com/amdarknova-dev',                      label: 'GH' },
+  { icon: Gamepad2,      href: 'https://steamcommunity.com/profiles/76561198682671838/', label: 'ST' },
+  { icon: Mail,          href: 'mailto:amdarknova4228@gmail.com',                        label: 'EM' },
 ];
 
 const quickLinks = [
@@ -17,6 +18,7 @@ const quickLinks = [
   { label: 'About',      id: 'about'      },
   { label: 'Skills',     id: 'skills'     },
   { label: 'Projects',   id: 'projects'   },
+  { label: 'Services',   id: 'services'   },
   { label: 'Experience', id: 'experience' },
 ];
 

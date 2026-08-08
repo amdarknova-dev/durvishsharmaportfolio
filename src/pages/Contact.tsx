@@ -16,8 +16,8 @@ import {
     Lightbulb,
     Globe,
     Instagram,
-    Twitter,
-    Linkedin,
+    Youtube,
+    Gamepad2,
     Github,
     Plus,
     ArrowUpRight
@@ -314,7 +314,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-500 uppercase tracking-widest">Email me at</p>
-                                    <p className="text-white font-medium select-text">amdarknova23221@gmail.com</p>
+                                    <p className="text-white font-medium select-text">amdarknova4228@gmail.com</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-6">
@@ -531,23 +531,28 @@ const Contact = () => {
 
                                 <div className="flex gap-4 pt-6">
                                     <Magnetic intensity={0.3}>
+                                        <a href="https://www.youtube.com/@OfficialDarkNovaGG" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                            <Youtube className="w-5 h-5" />
+                                        </a>
+                                    </Magnetic>
+                                    <Magnetic intensity={0.3}>
+                                        <a href="https://discord.gg/F39kaAf4z" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                            <MessageSquare className="w-5 h-5" />
+                                        </a>
+                                    </Magnetic>
+                                    <Magnetic intensity={0.3}>
                                         <a href="https://instagram.com/durvish_sharma.22.23" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
                                             <Instagram className="w-5 h-5" />
                                         </a>
                                     </Magnetic>
                                     <Magnetic intensity={0.3}>
-                                        <a href="https://x.com/durvishsharma01" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                            <Twitter className="w-5 h-5" />
-                                        </a>
-                                    </Magnetic>
-                                    <Magnetic intensity={0.3}>
-                                        <a href="https://www.linkedin.com/in/durvish-sharma-a936b93a5" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
-                                            <Linkedin className="w-5 h-5" />
-                                        </a>
-                                    </Magnetic>
-                                    <Magnetic intensity={0.3}>
                                         <a href="https://github.com/amdarknova-dev" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
                                             <Github className="w-5 h-5" />
+                                        </a>
+                                    </Magnetic>
+                                    <Magnetic intensity={0.3}>
+                                        <a href="https://steamcommunity.com/profiles/76561198682671838/" target="_blank" rel="noopener noreferrer" onMouseEnter={() => playHover()} onClick={() => playClick()} className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center hover:text-primary transition-colors">
+                                            <Gamepad2 className="w-5 h-5" />
                                         </a>
                                     </Magnetic>
                                 </div>

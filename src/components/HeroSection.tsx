@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Twitter, MessageCircle } from 'lucide-react';
+import { ArrowDown, Github, MessageCircle, Youtube, Instagram, Mail, Gamepad2 } from 'lucide-react';
 import { useSound } from '@/context/SoundContext';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,10 +10,12 @@ gsap.registerPlugin(ScrollTrigger);
 const roles = ['LOW-LEVEL & KERNEL DEVELOPER', 'FULL-STACK SYSTEMS ARCHITECT', 'CREATIVE CODER', 'REVERSE ENGINEER'];
 
 const socials = [
-  { icon: Github,        href: 'https://github.com/amdarknova-dev',                      label: 'GitHub'   },
-  { icon: Linkedin,      href: 'https://www.linkedin.com/in/durvish-sharma-a936b93a5',   label: 'LinkedIn' },
-  { icon: Twitter,       href: 'https://x.com/durvishsharma01',                          label: 'Twitter'  },
-  { icon: MessageCircle, href: 'https://discord.com/users/darknova001.hd',               label: 'Discord'  },
+  { icon: Youtube,       href: 'https://www.youtube.com/@OfficialDarkNovaGG',            label: 'YouTube'   },
+  { icon: MessageCircle, href: 'https://discord.gg/F39kaAf4z',                           label: 'Discord'   },
+  { icon: Instagram,     href: 'https://instagram.com/durvish_sharma.22.23',             label: 'Instagram' },
+  { icon: Github,        href: 'https://github.com/amdarknova-dev',                      label: 'GitHub'    },
+  { icon: Gamepad2,      href: 'https://steamcommunity.com/profiles/76561198682671838/', label: 'Steam'     },
+  { icon: Mail,          href: 'mailto:amdarknova4228@gmail.com',                        label: 'Email'     },
 ];
 
 const HeroSection = () => {

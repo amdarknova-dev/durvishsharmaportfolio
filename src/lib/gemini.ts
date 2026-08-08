@@ -18,7 +18,7 @@ const LOCAL_BRAIN = [
     },
     {
         keywords: ['contact', 'email', 'hire', 'reach', 'social'],
-        answer: "You can reach Durvish via:\n• **Email**: durvishsharma01@gmail.com\n• **LinkedIn**: linkedin.com/in/durvish-sharma\n• **GitHub**: github.com/durvishsharma\n\nHe is currently open to new opportunities!"
+        answer: "You can reach Durvish via:\n• **Email**: amdarknova4228@gmail.com\n• **YouTube**: youtube.com/@OfficialDarkNovaGG\n• **Discord**: discord.gg/F39kaAf4z\n• **Instagram**: instagram.com/durvish_sharma.22.23\n• **GitHub**: github.com/amdarknova-dev\n• **Steam**: steamcommunity.com/profiles/76561198682671838\n\nHe is currently open to new opportunities!"
     },
     {
         keywords: ['game', 'unity', 'c#', '3d'],

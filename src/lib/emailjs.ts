@@ -15,7 +15,7 @@ const EMAILJS_CONFIG = {
 
 // ✉️ Contact form notification inbox
 const NOTIFICATION_EMAILS = [
-    'amdarknova23221@gmail.com',
+    'amdarknova4228@gmail.com',
 ];
 
 // ============================================
